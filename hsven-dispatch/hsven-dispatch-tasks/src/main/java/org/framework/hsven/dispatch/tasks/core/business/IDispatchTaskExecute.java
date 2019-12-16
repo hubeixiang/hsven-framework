@@ -10,7 +10,8 @@ public interface IDispatchTaskExecute {
 	/**
 	 * 派发指定任务id的任务.不同的业务可以在自己的任务执行中更新记录中间结果,但是不得更新任务调度状态
 	 *
-	 * @param taskId
+	 * @param taskId   任务的id
+	 * @param taskType 任务的类型
 	 */
-	public void dispatch(Long taskId);
+	public void dispatch(Long taskId, String taskType);
 }

@@ -10,7 +10,9 @@ import org.springframework.stereotype.Service;
  */
 @Service("simpleDispatchTaskExecute")
 public class SimpleDispatchTaskExecute implements IDispatchTaskExecute {
-	public void dispatch(Long taskId) {
+
+	@Override
+	public void dispatch(Long taskId, String taskType) {
 
 	}
 }

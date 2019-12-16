@@ -124,7 +124,7 @@ public abstract class AbstractDispatchTasksService implements IDispatchTasksServ
 					logger.info("dispatch tasks pool is full.");
 					break;
 				}
-				taskExecutorService.submit(new TaskExecutor(task.getTaskId()));
+				taskExecutorService.submit(new TaskExecutor(task.getTaskId(), task.getTaskType()));
 			}
 		} finally {
 			readWriteLock.writeLock().unlock();
@@ -134,10 +134,12 @@ public abstract class AbstractDispatchTasksService implements IDispatchTasksServ
 	private class TaskExecutor implements Runnable {
 
 		private final long taskId;
+		private final String taskType;
 
-		private TaskExecutor(long taskId) {
+		private TaskExecutor(long taskId, String taskType) {
 			Assert.isTrue(taskId > 0);
 			this.taskId = taskId;
+			this.taskType = taskType;
 		}
 
 		public void run() {
@@ -151,7 +153,7 @@ public abstract class AbstractDispatchTasksService implements IDispatchTasksServ
 								localHost, new Date())) {
 					logger.info("dispatch tasks: {}, dispatch sucess", taskId);
 					//派发任务,并调用具体三方实现的任务具体执行服务
-					iDispatchTaskExecute.dispatch(taskId);
+					iDispatchTaskExecute.dispatch(taskId, taskType);
 					//任务正常派发时,更新任务状态为正常完成
 					boolean endNormal = iDispatchTaskOperation.updateStatusAndClientEndNormal(taskId, TaskDispatchConstans.STATUS_EXECUTING,
 							TaskDispatchConstans.STATUS_SUCCESSED, localHost, new Date());
