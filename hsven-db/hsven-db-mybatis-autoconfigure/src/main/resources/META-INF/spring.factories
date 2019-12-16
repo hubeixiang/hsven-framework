@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+org.framework.hsven.mybatis.autoconfigure.MyBatisAutoConfiguration,\
+org.framework.hsven.mybatis.config.MybatisProperties

@@ -1,0 +1,10 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+org.framework.hsven.datasource.autoconfigure.HDataSourceAutoConfiguration,\
+org.framework.hsven.datasource.transaction.atomikos.AtomikosSpringJPATransactionManager,\
+org.framework.hsven.datasource.UtilsAutoConfiguration,\
+org.framework.hsven.datasource.connection.HDataSourceProperties,\
+org.framework.hsven.datasource.connection.DatasourceLoaderNames,\
+org.framework.hsven.datasource.pool.atomikos.AtomikosJdbcPoolConfig,\
+org.framework.hsven.datasource.pool.c3p0.C3p0JdbcPoolConfig,\
+org.framework.hsven.datasource.pool.druid.DruidJdbcPoolConfig
+

@@ -1,0 +1,22 @@
+{
+  "properties": [
+    {
+      "name": "mybatis.db.%s.factor.config-location",
+      "type": "org.springframework.core.io.Resource",
+      "sourceType": "org.mybatis.spring.SqlSessionFactoryBean",
+      "description": "mybatis-config.xml配置"
+    },
+    {
+      "name": "mybatis.db.%s.factor.mapper-locations",
+      "type": "org.springframework.core.io.Resource[]",
+      "sourceType": "org.mybatis.spring.SqlSessionFactoryBean",
+      "description": "需要加载的mapper的路径"
+    },
+    {
+      "name": "mybatis.db.%s.scanner.base-package",
+      "type": "java.lang.String",
+      "sourceType": "org.mybatis.spring.mapper.MapperScannerConfigurer",
+      "description": "需要使用MapperScannerConfigurer自动扫描并加载接口的包路径"
+    }
+  ]
+}
