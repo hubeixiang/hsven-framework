@@ -9,12 +9,12 @@ import java.io.Serializable;
  */
 public class FileLocation implements Serializable {
     private final static long serialVersionUID = 128L;
-    //文件后缀
+    //文件后缀,不能为空
     private FileExtension fileExtension;
-    //文件唯一定位标志,算法生成uuid
+    //文件唯一定位标志,算法生成uuid,不能为空
     private String fileUuid;
-    //服务标志,默认为空.标志文件在服务上存储的目录区分,可能不同的服务或者接口会存储上传的文件到不同的目录下
-    private String service;
+    //文件在服务器上存放的目录,不能为空
+    private String serviceUrl;
 
     public FileExtension getFileExtension() {
         return fileExtension;
@@ -32,19 +32,19 @@ public class FileLocation implements Serializable {
         this.fileUuid = fileUuid;
     }
 
-    public String getService() {
-        return service;
+    public String getServiceUrl() {
+        return serviceUrl;
     }
 
-    public void setService(String service) {
-        this.service = service;
+    public void setServiceUrl(String serviceUrl) {
+        this.serviceUrl = serviceUrl;
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         return sb.append("FileLocation[extension=").append(fileExtension).append(",fileUuid=").append(fileUuid).append(",service=")
-                .append(service).append("]").toString();
+                .append(serviceUrl).append("]").toString();
     }
 
     @Override
@@ -53,7 +53,7 @@ public class FileLocation implements Serializable {
         int result = 1;
         result = prime * result + ((fileExtension == null) ? 0 : fileExtension.hashCode());
         result = prime * result + ((fileUuid == null) ? 0 : fileUuid.hashCode());
-        result = prime * result + ((service == null) ? 0 : service.hashCode());
+        result = prime * result + ((serviceUrl == null) ? 0 : serviceUrl.hashCode());
         return result;
     }
 
@@ -76,10 +76,10 @@ public class FileLocation implements Serializable {
                 return false;
         } else if (!fileUuid.equals(other.fileUuid))
             return false;
-        if (service == null) {
-            if (other.service != null)
+        if (serviceUrl == null) {
+            if (other.serviceUrl != null)
                 return false;
-        } else if (!service.equals(other.service))
+        } else if (!serviceUrl.equals(other.serviceUrl))
             return false;
         return true;
     }

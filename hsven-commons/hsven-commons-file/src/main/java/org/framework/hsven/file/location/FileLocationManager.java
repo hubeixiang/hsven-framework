@@ -1,5 +1,7 @@
 package org.framework.hsven.file.location;
 
+import java.io.File;
+
 /**
  * 提供的文件定位管理工具
  */
@@ -71,6 +73,14 @@ public class FileLocationManager {
                     return String.format("%s%s", fileLocation.getFileUuid(), fileLocation.getFileExtension().getExtension());
                 }
             }
+        }
+        return null;
+    }
+
+    public String fileUrl(FileLocation fileLocation) {
+        String fileName = getFileName(fileLocation);
+        if (StringUtils.isNotEmpty(fileName)) {
+            return fileLocation.getServiceUrl() + File.pathSeparator + fileName;
         }
         return null;
     }
