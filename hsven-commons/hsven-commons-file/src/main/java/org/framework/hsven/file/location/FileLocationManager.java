@@ -80,7 +80,7 @@ public class FileLocationManager {
     public String fileUrl(FileLocation fileLocation) {
         String fileName = getFileName(fileLocation);
         if (StringUtils.isNotEmpty(fileName)) {
-            return fileLocation.getServiceUrl() + File.pathSeparator + fileName;
+            return fileLocation.getServiceUrl() + File.separator + fileName;
         }
         return null;
     }
