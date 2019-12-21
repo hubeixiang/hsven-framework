@@ -12,7 +12,7 @@ public class TestMain {
         FileNameDescribe fileNameDescribe = FileLocationManager.getInstance().parserFileNameDescribe(fileName);
         fileLocation.setFileExtension(fileNameDescribe.getFileExtension());
         fileLocation.setFileUuid(fileNameDescribe.getFileName());
-        fileLocation.setService("ser");
+        fileLocation.setServiceUrl("E:\\");
 
 
         System.out.println(fileNameDescribe);
