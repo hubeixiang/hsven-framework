@@ -46,6 +46,7 @@ public class MybatisBeanNameGenerator extends DefaultBeanNameGenerator {
 
 		String shortClassName = ClassUtils.getShortName(definition.getBeanClassName());
 		String name = String.format("%s%s", dbName, shortClassName);
+		//TODO 此处的生成方式与 org.framework.hsven.datasource.util.DataSourceNameGenerator 中的生成方式一致
 		return name;
 		/**
 		return Introspector.decapitalize(shortClassName);

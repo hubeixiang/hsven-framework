@@ -10,32 +10,32 @@ import org.springframework.context.ApplicationContextAware;
  */
 public final class SpringDataSourceContextUtil implements ApplicationContextAware {
 
-	private static ApplicationContext ctx = null;
+    private static ApplicationContext ctx = null;
 
-	public SpringDataSourceContextUtil() {
-	}
+    public SpringDataSourceContextUtil() {
+    }
 
-	public void setApplicationContext(ApplicationContext ctx) throws BeansException {
-		SpringDataSourceContextUtil.ctx = ctx;
-	}
+    public static Object getBean(String beanName) throws BeansException {
+        return ctx == null ? null : ctx.getBean(beanName);
+    }
 
-	public static Object getBean(String beanName) throws BeansException {
-		return ctx == null ? null : ctx.getBean(beanName);
-	}
+    public static <T> T getBean(Class<T> requiredType) throws BeansException {
+        return ctx == null ? null : ctx.getBean(requiredType);
+    }
 
-	public static <T> T getBean(Class<T> requiredType) throws BeansException {
-		return ctx == null ? null : ctx.getBean(requiredType);
-	}
+    public static boolean containsBean(String beanName) {
+        return ctx != null && ctx.containsBean(beanName);
+    }
 
-	public static boolean containsBean(String beanName) {
-		return ctx != null && ctx.containsBean(beanName);
-	}
+    public static ApplicationContext getApplicationContext() {
+        return ctx;
+    }
 
-	public static ApplicationContext getApplicationContext() {
-		return ctx;
-	}
+    public void setApplicationContext(ApplicationContext ctx) throws BeansException {
+        SpringDataSourceContextUtil.ctx = ctx;
+    }
 
-	public static <T> T getDataSourceRelevant(String dbName, Class<T> classzz) {
-		return ctx == null ? null : (T) ctx.getBean(DataSourceNameGenerator.getMybatisMapperBeanName(dbName,classzz));
-	}
+    public static <T> T getDataSourceRelevant(String dbName, Class<T> classzz) {
+        return ctx == null ? null : (T) ctx.getBean(DataSourceNameGenerator.getMybatisMapperBeanName(dbName, classzz));
+    }
 }

@@ -10,8 +10,15 @@ public class DataSourceNameGenerator {
         return String.format("%sDataSource", dbName);
     }
 
+    /**
+     * 创建SqlSessionFactoryBean对应的名称,但是SqlSessionFactoryBean对象是工厂对象(FactoryBean),
+     * 所以获取出来的实际对象是SqlSessionFactory的实现
+     *
+     * @param dbName
+     * @return
+     */
     public static String getSqlSessionFactoryBeanName(String dbName) {
-        return String.format("%sSqlSessionFactory", dbName);
+        return String.format("%sSqlSessionFactoryBean", dbName);
     }
 
     public static String getSpringJdbcTemplate(String dbName) {

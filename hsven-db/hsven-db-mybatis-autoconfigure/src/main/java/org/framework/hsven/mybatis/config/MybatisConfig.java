@@ -7,59 +7,61 @@ import org.apache.commons.lang3.StringUtils;
  * @date 2019/12/2 9:57
  */
 public class MybatisConfig {
-	private MybatisConfig.Factor factor = new MybatisConfig.Factor();
+    private MybatisConfig.Factor factor = new MybatisConfig.Factor();
 
-	private MybatisConfig.Scanner scanner = new MybatisConfig.Scanner();
+    private MybatisConfig.Scanner scanner = new MybatisConfig.Scanner();
 
-	public MybatisConfig.Factor getFactor() {
-		return factor;
-	}
+    public MybatisConfig.Factor getFactor() {
+        return factor;
+    }
 
-	public MybatisConfig.Scanner getScanner() {
-		return scanner;
-	}
+    public MybatisConfig.Scanner getScanner() {
+        return scanner;
+    }
 
-	public static class Factor {
+    public static class Factor {
 
-		private String configLocation;
+        private String configLocation;
 
-		private String mapperLocations;
+        private String mapperLocations;
 
-		public String getConfigLocation() {
-			return configLocation;
-		}
+        public String getConfigLocation() {
+            return configLocation;
+        }
 
-		public void setConfigLocation(String configLocation) {
-			this.configLocation = configLocation;
-		}
+        public void setConfigLocation(String configLocation) {
+            this.configLocation = configLocation;
+        }
 
-		public String getMapperLocations() {
-			return mapperLocations;
-		}
+        public String getMapperLocations() {
+            return mapperLocations;
+        }
 
-		public void setMapperLocations(String mapperLocations) {
-			this.mapperLocations = mapperLocations;
-		}
+        public void setMapperLocations(String mapperLocations) {
+            this.mapperLocations = mapperLocations;
+        }
 
-		public boolean isValid() {
-			return StringUtils.isNoneBlank(this.configLocation) && StringUtils.isNoneBlank(this.mapperLocations);
-		}
-	}
+        public boolean isValid() {
+            //return StringUtils.isNoneBlank(this.configLocation) || StringUtils.isNoneBlank(this.mapperLocations);
+            //只需要configLocation不为空即可
+            return StringUtils.isNoneBlank(this.configLocation);
+        }
+    }
 
-	public static class Scanner {
+    public static class Scanner {
 
-		private String basePackage;
+        private String basePackage;
 
-		public String getBasePackage() {
-			return basePackage;
-		}
+        public String getBasePackage() {
+            return basePackage;
+        }
 
-		public void setBasePackage(String basePackage) {
-			this.basePackage = basePackage;
-		}
+        public void setBasePackage(String basePackage) {
+            this.basePackage = basePackage;
+        }
 
-		public boolean isValid() {
-			return StringUtils.isNoneBlank(this.basePackage);
-		}
-	}
+        public boolean isValid() {
+            return StringUtils.isNoneBlank(this.basePackage);
+        }
+    }
 }
