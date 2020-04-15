@@ -1,5 +1,6 @@
 package org.framework.hsven.datasource;
 
+import org.framework.hsven.datasource.util.DataSourceNameGenerator;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -35,6 +36,6 @@ public final class SpringDataSourceContextUtil implements ApplicationContextAwar
 	}
 
 	public static <T> T getDataSourceRelevant(String dbName, Class<T> classzz) {
-		return ctx == null ? null : (T) ctx.getBean(String.format("%s%s", dbName, classzz.getSimpleName()));
+		return ctx == null ? null : (T) ctx.getBean(DataSourceNameGenerator.getMybatisMapperBeanName(dbName,classzz));
 	}
 }

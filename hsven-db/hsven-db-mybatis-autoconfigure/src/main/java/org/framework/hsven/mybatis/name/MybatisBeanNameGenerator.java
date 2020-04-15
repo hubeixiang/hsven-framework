@@ -16,6 +16,7 @@
 
 package org.framework.hsven.mybatis.name;
 
+import org.framework.hsven.datasource.util.DataSourceNameGenerator;
 import org.springframework.beans.factory.BeanDefinitionStoreException;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
@@ -44,7 +45,8 @@ public class MybatisBeanNameGenerator extends DefaultBeanNameGenerator {
 		}
 
 		String shortClassName = ClassUtils.getShortName(definition.getBeanClassName());
-		return String.format("%s%s", dbName, toUpperCaseFirstOne(shortClassName));
+		String name = String.format("%s%s", dbName, shortClassName);
+		return name;
 		/**
 		return Introspector.decapitalize(shortClassName);
 

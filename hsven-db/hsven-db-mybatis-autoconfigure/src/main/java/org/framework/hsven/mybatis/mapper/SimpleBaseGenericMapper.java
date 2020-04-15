@@ -9,9 +9,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by sven on 2017/3/18.
  */
-public interface GenericMapper {
+public interface SimpleBaseGenericMapper {
 
     List<LowerCaseResultMap> executeSql(String sql);
 

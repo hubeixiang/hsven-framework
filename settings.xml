@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0" 
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+  <servers>
+    <server>  
+      <id>releases</id>  
+      <username>deployment</username>
+      <password>deployment123</password>
+    </server>  
+    <server>
+      <id>snapshots</id>  
+      <username>deployment</username>
+      <password>deployment123</password>
+    </server>
+    <server>
+      <id>maven-publish</id>  
+      <username>admin</username>  
+      <password>admin123</password>  
+    </server>
+  </servers>
+  
+  <mirrors>
+    <mirror>
+	  <id>nexus</id>
+	  <mirrorOf>*</mirrorOf>
+	  <url>http://10.12.2.232:8081/repository/public/</url>
+    </mirror>
+  </mirrors>
+  
+  <profiles>
+    <profile>
+      <id>CI</id>
+      <properties>
+          <ReleasesRepository>http://10.12.2.232:8081/repository/releases/</ReleasesRepository>
+          <SnapshotsRepository>http://10.12.2.232:8081/repository/snapshots/</SnapshotsRepository>
+      </properties>
+      <!-- deploy jar包，pom中需要增加如下配置 -->
+      <!-- <distributionManagement>
+          <repository>
+              <id>releases</id>
+              <name>Releases Repository</name>
+              <url>${ReleasesRepository}</url>
+          </repository>
+          <snapshotRepository>
+              <id>snapshots</id>
+              <name>Snapshots Repository</name>
+              <url>${SnapshotsRepository}</url>
+          </snapshotRepository>
+      </distributionManagement> -->
+      
+      <repositories>
+        <repository> 
+          <id>nexus-boco</id> 
+          <url>http://10.12.2.232:8081/repository/public/</url> 
+          <releases><enabled>true</enabled></releases> 
+          <snapshots><enabled>true</enabled></snapshots> 
+        </repository>
+      </repositories> 
+    
+      <pluginRepositories> 
+        <pluginRepository> 
+          <id>nexus-boco</id> 
+          <url>http://10.12.2.232:8081/repository/public/</url>  
+          <releases><enabled>true</enabled></releases> 
+          <snapshots><enabled>true</enabled></snapshots> 
+        </pluginRepository>
+      </pluginRepositories>
+
+    </profile>
+  </profiles>
+
+  <activeProfiles>
+    <activeProfile>CI</activeProfile>
+  </activeProfiles>
+</settings>
