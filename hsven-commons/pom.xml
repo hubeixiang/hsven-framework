@@ -35,6 +35,7 @@
         <module>hsven-commons-aop</module>
         <module>hsven-commons-utils</module>
         <module>hsven-commons-file</module>
+        <module>hsven-commons-executor</module>
     </modules>
 
 </project>
