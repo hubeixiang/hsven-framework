@@ -1,8 +1,8 @@
 package org.framework.hsven.datasource.pool.atomikos;
 
 import com.atomikos.jdbc.nonxa.AtomikosNonXADataSourceBean;
-import org.framework.hsven.datasource.connection.DataSourceConfig;
-import org.framework.hsven.datasource.enums.DatabaseType;
+import org.framework.hsven.datasource.enums.DataSourceType;
+import org.framework.hsven.datasource.model.DataSourceConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.FactoryBean;
@@ -122,14 +122,14 @@ public class AtomikosXADataSourceFactoryBean implements FactoryBean<AtomikosNonX
 		atomikosNonXADataSourceBean.setMaxLifetime(jdbcPoolConfig.getMaxLifetime());
 		atomikosNonXADataSourceBean.setBorrowConnectionTimeout(60);
 
-		DatabaseType dataSourceType = DatabaseType.ORACLE;
+		DataSourceType dataSourceType = DataSourceType.ORACLE;
 		boolean isNeedSetTransaction = isNeedSetTransaction(dataSourceType);
 		if (isNeedSetTransaction) {
 			atomikosNonXADataSourceBean.setDefaultIsolationLevel(Connection.TRANSACTION_READ_UNCOMMITTED);
 		}
 	}
 
-	private boolean isNeedSetTransaction(DatabaseType dataSourceType) {
+	private boolean isNeedSetTransaction(DataSourceType dataSourceType) {
 		boolean needSetTransaction = false;
 		switch (dataSourceType) {
 

@@ -1,7 +1,9 @@
 package org.framework.hsven.datasource;
 
-import org.framework.hsven.datasource.connection.DataSourceConfig;
+import org.framework.hsven.datasource.enums.DataSourceType;
+import org.framework.hsven.datasource.model.DataSourceConfig;
 import org.framework.hsven.datasource.pool.JdbcPoolConfig;
+import org.framework.hsven.datasource.util.DataSourceUtil;
 
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -16,112 +18,114 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  * 数据源加载时,保存加载的数据源的信息
  */
 public class InternalDBContextHelper {
-	private final ReentrantReadWriteLock readWriteLock = new ReentrantReadWriteLock();
-	private static InternalDBContextHelper internalDbContextHelper;
-	private Set<String> dbNames = new LinkedHashSet<>();
-	private ConcurrentMap<String, DataSourceConfig> dbConfigMap = new ConcurrentHashMap<>();
-	private JdbcPoolConfig jdbcPoolConfig;
+    private static InternalDBContextHelper internalDbContextHelper;
+    private final ReentrantReadWriteLock readWriteLock = new ReentrantReadWriteLock();
+    private Set<String> dbNames = new LinkedHashSet<>();
+    private ConcurrentMap<String, DataSourceConfig> dbConfigMap = new ConcurrentHashMap<>();
+    private JdbcPoolConfig jdbcPoolConfig;
 
-	private InternalDBContextHelper() {
-	}
+    private InternalDBContextHelper() {
+    }
 
-	private void init() {
-	}
+    public static InternalDBContextHelper getInstance() {
 
-	public static InternalDBContextHelper getInstance() {
+        if (internalDbContextHelper != null) {
+            return internalDbContextHelper;
+        }
 
-		if (internalDbContextHelper != null) {
-			return internalDbContextHelper;
-		}
+        return createInstance();
+    }
 
-		return createInstance();
-	}
+    private static synchronized InternalDBContextHelper createInstance() {
+        if (internalDbContextHelper != null) {
+            return internalDbContextHelper;
+        }
 
-	private static synchronized InternalDBContextHelper createInstance() {
-		if (internalDbContextHelper != null) {
-			return internalDbContextHelper;
-		}
+        internalDbContextHelper = new InternalDBContextHelper();
+        internalDbContextHelper.init();
+        return internalDbContextHelper;
+    }
 
-		internalDbContextHelper = new InternalDBContextHelper();
-		internalDbContextHelper.init();
-		return internalDbContextHelper;
-	}
+    private void init() {
+    }
 
-	public boolean containsDb(String dbName) {
-		boolean contains = false;
-		try {
-			readWriteLock.readLock().lock();
-			contains = dbNames.contains(dbName);
-		} finally {
-			readWriteLock.readLock().unlock();
-		}
-		return contains;
-	}
+    public boolean containsDb(String dbName) {
+        boolean contains = false;
+        try {
+            readWriteLock.readLock().lock();
+            contains = dbNames.contains(dbName);
+        } finally {
+            readWriteLock.readLock().unlock();
+        }
+        return contains;
+    }
 
-	public void addDbName(String dbName, DataSourceConfig dataSourceConfig) {
-		try {
-			readWriteLock.writeLock().lock();
-			if (!dbNames.contains(dbName)) {
-				dbNames.add(dbName);
-				dataSourceConfig.setName(dbName);
-				dbConfigMap.put(dbName, dataSourceConfig);
-			}
-		} finally {
-			readWriteLock.writeLock().unlock();
-		}
-	}
+    public void addDbName(String dbName, DataSourceConfig dataSourceConfig) {
+        try {
+            readWriteLock.writeLock().lock();
+            if (!dbNames.contains(dbName)) {
+                dbNames.add(dbName);
+                dataSourceConfig.setName(dbName);
+                DataSourceType dataSourceType = DataSourceUtil.initDataSourceType(dataSourceConfig.getDriver());
+                dataSourceConfig.setDatasourceType(dataSourceType);
+                dbConfigMap.put(dbName, dataSourceConfig);
+            }
+        } finally {
+            readWriteLock.writeLock().unlock();
+        }
+    }
 
-	public void removeDbName(String dbName) {
-		try {
-			readWriteLock.writeLock().lock();
-			if (dbNames.contains(dbName)) {
-				dbNames.remove(dbName);
-				dbConfigMap.remove(dbName);
-			}
-		} finally {
-			readWriteLock.writeLock().unlock();
-		}
-	}
+    public void removeDbName(String dbName) {
+        try {
+            readWriteLock.writeLock().lock();
+            if (dbNames.contains(dbName)) {
+                dbNames.remove(dbName);
+                dbConfigMap.remove(dbName);
+            }
+        } finally {
+            readWriteLock.writeLock().unlock();
+        }
+    }
 
-	public Set<String> getDbNames() {
-		Set<String> names = new HashSet<>();
-		try {
-			readWriteLock.readLock().lock();
-			names.addAll(dbNames);
-		} finally {
-			readWriteLock.readLock().unlock();
-		}
-		return names;
-	}
+    public Set<String> getDbNames() {
+        Set<String> names = new HashSet<>();
+        try {
+            readWriteLock.readLock().lock();
+            names.addAll(dbNames);
+        } finally {
+            readWriteLock.readLock().unlock();
+        }
+        return names;
+    }
 
-	public DataSourceConfig getDataSourceConfig(String dbName) {
-		DataSourceConfig dataSourceConfig = null;
-		try {
-			readWriteLock.readLock().lock();
-			dataSourceConfig = dbConfigMap.get(dbName);
-		} finally {
-			readWriteLock.readLock().unlock();
-		}
-		return dataSourceConfig;
-	}
+    public DataSourceConfig getDataSourceConfig(String dbName) {
+        DataSourceConfig dataSourceConfig = null;
+        try {
+            readWriteLock.readLock().lock();
+            dataSourceConfig = dbConfigMap.get(dbName);
+        } finally {
+            readWriteLock.readLock().unlock();
+        }
+        return dataSourceConfig;
+    }
 
-	public JdbcPoolConfig getJdbcPoolConfig() {
-		JdbcPoolConfig tmpJdbcPoolConfig = null;
-		try {
-			readWriteLock.readLock().lock();
-			tmpJdbcPoolConfig = jdbcPoolConfig;
-		} finally {
-			readWriteLock.readLock().unlock();
-		}
-		return tmpJdbcPoolConfig;
-	}
+    public JdbcPoolConfig getJdbcPoolConfig() {
+        JdbcPoolConfig tmpJdbcPoolConfig = null;
+        try {
+            readWriteLock.readLock().lock();
+            tmpJdbcPoolConfig = jdbcPoolConfig;
+        } finally {
+            readWriteLock.readLock().unlock();
+        }
+        return tmpJdbcPoolConfig;
+    }
 
-	public void setJdbcPoolConfig(JdbcPoolConfig jdbcPoolConfig) {
-		try {
-			readWriteLock.writeLock().lock();
-			this.jdbcPoolConfig = jdbcPoolConfig;
-		} finally {
-			readWriteLock.writeLock().unlock();
-		}
-	}
+    public void setJdbcPoolConfig(JdbcPoolConfig jdbcPoolConfig) {
+        try {
+            readWriteLock.writeLock().lock();
+            this.jdbcPoolConfig = jdbcPoolConfig;
+        } finally {
+            readWriteLock.writeLock().unlock();
+        }
+    }
 }

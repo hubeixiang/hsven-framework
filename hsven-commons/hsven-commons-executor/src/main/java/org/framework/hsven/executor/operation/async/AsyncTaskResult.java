@@ -29,6 +29,6 @@ public class AsyncTaskResult<T extends Runnable> extends AsyncTask {
 
     @Override
     public String toString() {
-        return String.format("AsyncTaskResult[%s,dealFlag=%s,dealException=%s]", super.toString(), dealFlag, dealException);
+        return String.format("AsyncTaskResult[%s,dealFlag=%s,dealException=%s]", super.toString(), dealFlag, dealException == null ? null : dealException.getMessage());
     }
 }

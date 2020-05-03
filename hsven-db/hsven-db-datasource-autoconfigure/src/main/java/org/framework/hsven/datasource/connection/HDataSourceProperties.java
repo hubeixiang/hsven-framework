@@ -1,6 +1,7 @@
 package org.framework.hsven.datasource.connection;
 
 import org.framework.hsven.datasource.constants.Constants;
+import org.framework.hsven.datasource.model.DataSourceConfig;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import java.util.HashMap;

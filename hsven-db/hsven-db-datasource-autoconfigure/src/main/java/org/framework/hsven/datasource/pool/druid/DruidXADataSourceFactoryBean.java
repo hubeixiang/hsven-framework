@@ -1,7 +1,7 @@
 package org.framework.hsven.datasource.pool.druid;
 
 import com.atomikos.jdbc.nonxa.AtomikosNonXADataSourceBean;
-import org.framework.hsven.datasource.connection.DataSourceConfig;
+import org.framework.hsven.datasource.model.DataSourceConfig;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.InitializingBean;
 

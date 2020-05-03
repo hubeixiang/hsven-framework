@@ -1,11 +1,11 @@
 package org.framework.hsven.datasource.autoconfigure;
 
 import org.framework.hsven.datasource.InternalDBContextHelper;
-import org.framework.hsven.datasource.connection.DataSourceConfig;
 import org.framework.hsven.datasource.connection.DatasourceLoaderNames;
 import org.framework.hsven.datasource.connection.HDataSourceProperties;
 import org.framework.hsven.datasource.constants.Constants;
 import org.framework.hsven.datasource.enums.JdbcPoolTypeEnum;
+import org.framework.hsven.datasource.model.DataSourceConfig;
 import org.framework.hsven.datasource.pool.JdbcPoolConfig;
 import org.framework.hsven.datasource.pool.atomikos.AtomikosJdbcPoolConfig;
 import org.framework.hsven.datasource.pool.c3p0.C3p0DataSourceFactoryBean;

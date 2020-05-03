@@ -10,36 +10,47 @@ import java.util.Set;
 
 @ConfigurationProperties(prefix = Constants.DATA_SOURCE_NAMES_PREFIX)
 public class DatasourceLoaderNames {
-	private String names;
-	//数据源适配类型
-	private JdbcPoolTypeEnum poolType;
+    private String names;
+    //数据源适配类型
+    private JdbcPoolTypeEnum poolType;
 
-	public String getNames() {
-		return names;
-	}
+    public static String primaryDbName(DatasourceLoaderNames datasourceLoaderNames) {
+        String dbName = null;
+        if (StringUtils.isNotEmpty(datasourceLoaderNames.names)) {
+            String[] namestr = datasourceLoaderNames.names.split(",");
+            for (String name : namestr) {
+                return name;
+            }
+        }
+        return dbName;
+    }
 
-	public void setNames(String names) {
-		this.names = names;
-	}
+    public String getNames() {
+        return names;
+    }
 
-	public JdbcPoolTypeEnum getPoolType() {
-		return poolType;
-	}
+    public void setNames(String names) {
+        this.names = names;
+    }
 
-	public void setPoolType(JdbcPoolTypeEnum poolType) {
-		this.poolType = poolType;
-	}
+    public JdbcPoolTypeEnum getPoolType() {
+        return poolType;
+    }
 
-	public Set<String> dbNames() {
-		Set<String> dbNames = new LinkedHashSet<>();
-		if (StringUtils.isNotEmpty(names)) {
-			String[] namestr = names.split(",");
-			for (String name : namestr) {
-				if (!dbNames.contains(name)) {
-					dbNames.add(name);
-				}
-			}
-		}
-		return dbNames;
-	}
+    public void setPoolType(JdbcPoolTypeEnum poolType) {
+        this.poolType = poolType;
+    }
+
+    public Set<String> dbNames() {
+        Set<String> dbNames = new LinkedHashSet<>();
+        if (StringUtils.isNotEmpty(names)) {
+            String[] namestr = names.split(",");
+            for (String name : namestr) {
+                if (!dbNames.contains(name)) {
+                    dbNames.add(name);
+                }
+            }
+        }
+        return dbNames;
+    }
 }
