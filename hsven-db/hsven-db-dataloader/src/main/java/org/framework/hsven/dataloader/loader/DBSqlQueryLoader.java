@@ -2,21 +2,20 @@ package org.framework.hsven.dataloader.loader;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
+import org.framework.hsven.dataloader.api.IDBSqlQueryLoaderListener;
+import org.framework.hsven.dataloader.api.IDataSourceProvider;
 import org.framework.hsven.dataloader.beans.DBColumnMetaData;
 import org.framework.hsven.dataloader.beans.DBColumnMetaDataDefine;
 import org.framework.hsven.dataloader.beans.DBColumnValue;
 import org.framework.hsven.dataloader.beans.EnumDbDataType;
 import org.framework.hsven.dataloader.beans.data.DBTableRow;
+import org.framework.hsven.dataloader.beans.data.DBTableRowInfo;
 import org.framework.hsven.dataloader.beans.data.RowInfo;
 import org.framework.hsven.dataloader.exception.LoaderException;
-import org.framework.hsven.dataloader.listener.IDBSqlQueryLoaderListener;
 import org.framework.hsven.dataloader.loader.model.QueryConfig;
 import org.framework.hsven.dataloader.loader.model.QueryLoaderResultDesc;
 import org.framework.hsven.dataloader.util.DBColumnMetaDataUtil;
-import org.framework.hsven.datasource.InternalDBContextHelper;
-import org.framework.hsven.datasource.SpringDataSourceContextUtil;
 import org.framework.hsven.datasource.model.DataSourceConfig;
-import org.framework.hsven.datasource.util.DataSourceNameGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
@@ -34,18 +33,28 @@ public class DBSqlQueryLoader extends Thread {
     private QueryConfig queryConfig;
     private IDBSqlQueryLoaderListener callbackListenerHandler;
     private DBColumnMetaDataDefine dbColumnMetaDataDefine;
+    private IDataSourceProvider dataSourceProvider;
 
-    public void init(IDBSqlQueryLoaderListener callbackListenerHandler, QueryConfig queryConfig) {
+    public void init(IDBSqlQueryLoaderListener callbackListenerHandler, QueryConfig queryConfig, IDataSourceProvider idataSourceProvider) {
         this.callbackListenerHandler = callbackListenerHandler;
         this.queryConfig = queryConfig;
         Assert.isTrue(this.callbackListenerHandler != null, "Loader Database data LoaderLister can't null");
         Assert.isTrue(this.queryConfig != null, this.callbackListenerHandler.listenerIdentification() + " Loader Database data QueryConfig can't null");
         Assert.isTrue(!StringUtils.isEmpty(this.queryConfig.getDbName()), this.callbackListenerHandler.listenerIdentification() + " Loader Database data QueryConfig'dbName can't empty ");
         Assert.isTrue(!StringUtils.isEmpty(this.queryConfig.getSql()), this.callbackListenerHandler.listenerIdentification() + " Loader Database data QueryConfig'sql can't empty ");
-        DataSourceConfig dataSourceConfigTmp = InternalDBContextHelper.getInstance().getDataSourceConfig(this.queryConfig.getDbName());
+        if (idataSourceProvider == null) {
+            dataSourceProvider = new DefaultDataSourceProvider();
+        } else {
+            dataSourceProvider = idataSourceProvider;
+        }
+        String dbName = this.queryConfig.getDbName();
+        DataSourceConfig dataSourceConfigTmp = dataSourceProvider.getDataSourceConfig(dbName);
         Assert.isTrue(dataSourceConfigTmp != null, String.format("%s Loader Database data dbName=%s can't init DataSource", this.callbackListenerHandler.listenerIdentification(), this.queryConfig.getDbName()));
         this.dataSourceConfig = dataSourceConfigTmp;
         this.callbackListenerHandler.init(this.dataSourceConfig, this.queryConfig);
+        if (idataSourceProvider == null) {
+            logger.debug(String.format("%s use default data source provider", this.callbackListenerHandler.listenerIdentification()));
+        }
     }
 
     public void run() {
@@ -91,7 +100,6 @@ public class DBSqlQueryLoader extends Thread {
         Connection connection = null;
         Statement statement = null;
         ResultSet resultSet = null;
-
 
         try {
             //第一步:获取连接,创建查询statement
@@ -188,45 +196,41 @@ public class DBSqlQueryLoader extends Thread {
         DBColumnMetaData dbColumnMetaData = null;
         Object columnValue = null;
         try {
+            boolean dealFull = true;
             for (; columnIndex < columnSize; columnIndex++) {
                 dbColumnMetaData = dbColumnMetaDataDefine.getDBColumnMetaData(columnIndex);
-                int columnMetDataIndex = dbColumnMetaData.getColumnMetDataIndex();
-                columnValue = resultSet.getObject(columnMetDataIndex);
-                Object ruturn_columnValue = DBColumnMetaDataUtil.getColumnValue(dbColumnMetaData, resultSet);
-                DBColumnValue dbColumnValue = new DBColumnValue(dbColumnMetaData, ruturn_columnValue);
-                boolean ok = dbTableRow.addColumnValue(dbColumnMetaDataDefine, dbColumnValue);
-                if (!ok) {
-                    logger.error(String.format("%s dealResult Exception.resultIndex=%s,columnIndex=%s,DBColumnMetaData=%s,columnValue=%s,addColumnValue Failure",
-                            this.callbackListenerHandler.listenerIdentification(), resultIndex, columnIndex, dbColumnMetaData, columnValue));
+                try {
+                    int columnMetDataIndex = dbColumnMetaData.getColumnMetDataIndex();
+                    columnValue = resultSet.getObject(columnMetDataIndex);
+                    Object ruturn_columnValue = DBColumnMetaDataUtil.getColumnValue(dbColumnMetaData, resultSet);
+                    DBColumnValue dbColumnValue = new DBColumnValue(dbColumnMetaData, ruturn_columnValue);
+                    boolean ok = dbTableRow.addColumnValue(dbColumnMetaDataDefine, dbColumnValue);
+                    if (!ok) {
+                        dealFull = false;
+                        logger.error(String.format("%s dealResult Exception.resultIndex=%s,columnIndex=%s,DBColumnMetaData=%s,columnValue=%s,addColumnValue Failure",
+                                this.callbackListenerHandler.listenerIdentification(), resultIndex, columnIndex, dbColumnMetaData, columnValue));
+                    }
+                } catch (Throwable t) {
+                    dealFull = false;
+                    //此处捕捉异常时保证每条数据的每个字段,都进行获取
+                    logger.error(String.format("%s dealResult Exception.resultIndex=%s,columnIndex=%s,DBColumnMetaData=%s,columnValue=%s, get Exception:%s",
+                            this.callbackListenerHandler.listenerIdentification(), resultIndex, columnIndex, dbColumnMetaData, columnValue, t.getMessage()));
                 }
             }
-        } catch (LoaderException le) {
-            RowInfo rowInfo = new RowInfo();
-            rowInfo.setException(true);
-            rowInfo.setThrowable(le);
-            dbTableRow.setRowInfo(rowInfo);
-            String errorDesc = String.format("resultIndex=%s,columnIndex=%s,DBColumnMetaData=%s,columnValue=%s,LoaderException:%s", resultIndex, columnIndex, dbColumnMetaData, columnValue, le.getMessage());
-            rowInfo.setExceptionDesc(errorDesc);
+            if (!dealFull) {
+                RowInfo rowInfo = new RowInfo();
+                rowInfo.setException(true);
+                rowInfo.setThrowable(new LoaderException(String.format("resultIndex=%s Fields without values loader failure", resultIndex)));
+                dbTableRow.setRowInfo(rowInfo);
+            }
+            DBTableRowInfo dbTableRowInfo = new DBTableRowInfo(dbColumnMetaDataDefine, dbTableRow);
+            this.callbackListenerHandler.processRow(dbTableRowInfo);
         } catch (Exception e) {
-            RowInfo rowInfo = new RowInfo();
-            rowInfo.setException(true);
-            rowInfo.setThrowable(e);
-            dbTableRow.setRowInfo(rowInfo);
-            String errorDesc = String.format("resultIndex=%s,columnIndex=%s,DBColumnMetaData=%s,columnValue=%s,Exception:%s", resultIndex, columnIndex, dbColumnMetaData, columnValue, e.getMessage());
-            rowInfo.setExceptionDesc(errorDesc);
             logger.error(String.format("%s dealResult Exception.resultIndex=%s,columnIndex=%s,DBColumnMetaData=%s,columnValue=%s,Exception:%s",
                     this.callbackListenerHandler.listenerIdentification(), resultIndex, columnIndex, dbColumnMetaData, columnValue, e.getMessage()), e);
         } catch (Throwable e) {
-            RowInfo rowInfo = new RowInfo();
-            rowInfo.setException(true);
-            rowInfo.setThrowable(e);
-            dbTableRow.setRowInfo(rowInfo);
-            String errorDesc = String.format("resultIndex=%s,columnIndex=%s,DBColumnMetaData=%s,columnValue=%s,Exception:%s", resultIndex, columnIndex, dbColumnMetaData, columnValue, e.getMessage());
-            rowInfo.setExceptionDesc(errorDesc);
             logger.error(String.format("%s dealResult Throwable.resultIndex=%s,columnIndex=%s,DBColumnMetaData=%s,columnValue=%s,Exception:%s",
                     this.callbackListenerHandler.listenerIdentification(), resultIndex, columnIndex, dbColumnMetaData, columnValue, e.getMessage()), e);
-        } finally {
-            this.callbackListenerHandler.processRow(dbColumnMetaDataDefine, dbTableRow);
         }
     }
 
@@ -323,13 +327,13 @@ public class DBSqlQueryLoader extends Thread {
     }
 
     private DataSource getDataSource(String dbName) {
-        String dataSourceBeanName = DataSourceNameGenerator.getDataSourceBeanName(dbName);
-        Object object = SpringDataSourceContextUtil.getBean(dataSourceBeanName);
-        if (object == null) {
-            logger.error(String.format("%s dbName=%s[dataSourceBeanName=%s] can't find at SpringDataSourceContextUtil", this.callbackListenerHandler.listenerIdentification(), dbName, dataSourceBeanName));
-            throw new LoaderException(String.format("dbName=%s[dataSourceBeanName=%s] can't find at SpringDataSourceContextUtil", dbName, dataSourceBeanName));
+        DataSource dataSource = dataSourceProvider.dataSourceProvider(dbName);
+        if (dataSource == null) {
+            String dataSourceBeanName = dataSourceProvider.getDataSourceBeanName(dbName);
+            logger.error(String.format("%s dbName=%s[dataSourceBeanName=%s] can't find at IDataSourceProvider bean=%s", this.callbackListenerHandler.listenerIdentification(), dbName, dataSourceBeanName, dataSourceProvider.getProviderName()));
+            throw new LoaderException(String.format("dbName=%s[dataSourceBeanName=%s] can't find at IDataSourceProvider bean=%s", dbName, dataSourceBeanName, dataSourceProvider.getProviderName()));
         }
-        return (DataSource) object;
+        return dataSource;
     }
 
     private Connection getConnection(String dbName) throws SQLException {

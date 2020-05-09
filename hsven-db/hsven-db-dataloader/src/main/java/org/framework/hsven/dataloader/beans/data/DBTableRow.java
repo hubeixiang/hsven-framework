@@ -15,7 +15,7 @@ import java.util.List;
 public class DBTableRow implements Serializable {
     private static final long serialVersionUID = 1L;
     private static Logger logger = LoggerFactory.getLogger(DBTableRow.class);
-    //查询出来的数据行号
+    //查询出来的数据行号,first 0,1,2...
     private final int rowIndex;
     private final int columnSize;
     private final List<DBColumnValue> rowData;

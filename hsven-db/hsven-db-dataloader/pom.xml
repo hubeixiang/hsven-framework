@@ -18,6 +18,16 @@
             <artifactId>hsven-db-datasource-autoconfigure</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.framework.hsven</groupId>
+            <artifactId>hsven-commons-utils</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.framework.hsven</groupId>
+            <artifactId>hsven-commons-executor</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 
 </project>

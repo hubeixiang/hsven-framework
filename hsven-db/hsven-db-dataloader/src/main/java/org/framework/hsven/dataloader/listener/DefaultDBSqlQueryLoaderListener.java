@@ -1,8 +1,8 @@
-package org.framework.hsven.dataloader.listener.impl;
+package org.framework.hsven.dataloader.listener;
 
+import org.framework.hsven.dataloader.api.IDBSqlQueryLoaderListener;
 import org.framework.hsven.dataloader.beans.DBColumnMetaDataDefine;
-import org.framework.hsven.dataloader.beans.data.DBTableRow;
-import org.framework.hsven.dataloader.listener.IDBSqlQueryLoaderListener;
+import org.framework.hsven.dataloader.beans.data.DBTableRowInfo;
 import org.framework.hsven.dataloader.loader.model.QueryConfig;
 import org.framework.hsven.dataloader.loader.model.QueryLoaderResultDesc;
 import org.framework.hsven.datasource.model.DataSourceConfig;
@@ -10,7 +10,7 @@ import org.framework.hsven.datasource.model.DataSourceConfig;
 public class DefaultDBSqlQueryLoaderListener implements IDBSqlQueryLoaderListener {
     @Override
     public String listenerIdentification() {
-        return "defualt listener";
+        return "defualt_listener";
     }
 
     @Override
@@ -24,8 +24,8 @@ public class DefaultDBSqlQueryLoaderListener implements IDBSqlQueryLoaderListene
     }
 
     @Override
-    public void processRow(final DBColumnMetaDataDefine dbColumnMetaDataDefine, DBTableRow dbTableRow) {
-        System.out.println(dbTableRow);
+    public void processRow(DBTableRowInfo dbTableRowInfo) {
+        System.out.println(dbTableRowInfo);
     }
 
     @Override
