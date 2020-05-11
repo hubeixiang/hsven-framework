@@ -8,10 +8,10 @@ public class TableRelatedFieldUtil {
     public final static ValidResult isEnable(TableRelatedField tableRelatedField) {
         ValidResult validResult = new ValidResult();
         if (StringUtils.isEmpty(tableRelatedField.getMainTableField())) {
-            validResult.appendAllTipType("关联主表字段必须配置");
+            validResult.appendAllTipTypeByDefaultPosition("关联主表字段必须配置");
         }
         if (StringUtils.isEmpty(tableRelatedField.getChildTableField())) {
-            validResult.appendAllTipType("关联子表字段必须配置");
+            validResult.appendAllTipTypeByDefaultPosition("关联子表字段必须配置");
         }
         return validResult;
     }

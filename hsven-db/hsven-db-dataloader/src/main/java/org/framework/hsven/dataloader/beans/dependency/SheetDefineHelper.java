@@ -1,16 +1,24 @@
 package org.framework.hsven.dataloader.beans.dependency;
 
 
-import org.framework.hsven.dataloader.beans.related.ChildTable;
-import org.framework.hsven.dataloader.beans.related.MainTable;
+import org.framework.hsven.dataloader.beans.related.SimpleChildTable;
+import org.framework.hsven.dataloader.beans.related.SimpleMainTable;
 import org.framework.hsven.dataloader.beans.related.TableField;
 import org.framework.hsven.dataloader.beans.related.TableFieldSet;
 import org.framework.hsven.dataloader.beans.related.TableLoadDefine;
 import org.framework.hsven.dataloader.beans.related.TableRelatedField;
+import org.framework.hsven.dataloader.beans.related.TableRelatedFieldSet;
+import org.framework.hsven.dataloader.related.child.CallableTaskDependency;
+import org.framework.hsven.dataloader.related.child.LazyRelatedTableField;
+import org.framework.hsven.dataloader.related.child.RelatedFieldValueSet;
+import org.framework.hsven.datasource.enums.DataSourceType;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -32,30 +40,30 @@ public class SheetDefineHelper {
     }
 
     public static SheetDefine structSheetDefine(TableLoadDefine tableLoadDefine) {
-        MainTable mainTable = tableLoadDefine.getMainTable();
-        String mainSheetAlais = mainTable.getTableAlias();
-        SheetDefine sheetDefine = new SheetDefine(mainSheetAlais, mainTable.getTableName());
-        TableFieldSet tableFieldSet = mainTable.getFieldSet();
+        SimpleMainTable simpleMainTable = tableLoadDefine.getSimpleMainTable();
+        String mainSheetAlais = simpleMainTable.getTableAlias();
+        SheetDefine sheetDefine = new SheetDefine(mainSheetAlais, simpleMainTable.getTableDefine().getTableName());
+        TableFieldSet tableFieldSet = simpleMainTable.getTableFieldSet();
 
         //主表
         parserSheetField(sheetDefine, tableFieldSet.getFieldSet());
 
         //左关联表
-        Iterator<Map.Entry<String, ChildTable>> it = tableLoadDefine.entryChildTables();
+        Iterator<Map.Entry<String, SimpleChildTable>> it = tableLoadDefine.getChildTables().entryChildTables();
         while (it != null && it.hasNext()) {
-            Map.Entry<String, ChildTable> entry = it.next();
+            Map.Entry<String, SimpleChildTable> entry = it.next();
 
-            ChildTable childTable = entry.getValue();
-            if (childTable == null) {
+            SimpleChildTable simpleChildTable = entry.getValue();
+            if (simpleChildTable == null) {
                 continue;
             }
             //分析字段
-            String leftTableAlias = childTable.getTableAlias();
-            parserSheetField(sheetDefine, childTable.getFieldSet().getFieldSet());
+            String leftTableAlias = simpleChildTable.getTableAlias();
+            parserSheetField(sheetDefine, simpleChildTable.getTableFieldSet().getFieldSet());
 
             //分析表
-            LeftInfo leftInfo = new LeftInfo(leftTableAlias, childTable.getTableDefine().getTableName());
-            Collection<TableRelatedField> tableRelatedFields = childTable.getRelatedFields();
+            LeftInfo leftInfo = new LeftInfo(leftTableAlias, simpleChildTable.getTableDefine().getTableName());
+            Collection<TableRelatedField> tableRelatedFields = simpleChildTable.getTableRelatedFieldSet().getTableRelatedFieldList();
             if (tableRelatedFields == null) {
 
             } else {
@@ -71,12 +79,12 @@ public class SheetDefineHelper {
         return sheetDefine;
     }
 
-    public static CallableTaskDependency structCallableTaskDependency(SheetDependency sheetDependency, TableLoadConfig tableLoadConfig) {
+    public static CallableTaskDependency structCallableTaskDependency(SheetDependency sheetDependency, TableLoadDefine tableLoadDefine) {
         CallableTaskDependency callableTaskDependency = new CallableTaskDependency(true);
         //因为依赖的第一级是主表的字段,此一级没有左关联表
         SheetDependency firstLeftSheetDependency = sheetDependency.getNext();
         if (firstLeftSheetDependency != null && firstLeftSheetDependency.getCurrentSheetAlias() != null && firstLeftSheetDependency.getCurrentSheetAlias().size() > 0) {
-            structCallableTaskDependency(callableTaskDependency, firstLeftSheetDependency, tableLoadConfig);
+            structCallableTaskDependency(callableTaskDependency, firstLeftSheetDependency, tableLoadDefine);
         }
         return callableTaskDependency;
     }
@@ -315,32 +323,32 @@ public class SheetDefineHelper {
         }
     }
 
-    private static void structCallableTaskDependency(CallableTaskDependency callableTaskDependency, SheetDependency sheetDependency, TableLoadConfig tableLoadConfig) {
+    private static void structCallableTaskDependency(CallableTaskDependency callableTaskDependency, SheetDependency sheetDependency, TableLoadDefine tableLoadDefine) {
         Set<String> sheetAlias = sheetDependency.getCurrentSheetAlias();
         if (sheetAlias != null && sheetAlias.size() > 0) {
             //设置左关联表名称
             callableTaskDependency.setChildTableAlias(sheetAlias);
             //对不同的左关联表依据关联字段分组
             boolean isRelatedMainTable = callableTaskDependency.isRelatedMainTable();
-            Map<String, ChildTable> childTableMap = tableLoadConfig.getChildTableMap();
-            Map<String, List<ChildTable>> relatedTableField_childTableList_map = callableTaskDependency.getRelatedTableField_childTableList_map();
+            Map<String, List<SimpleChildTable>> relatedTableField_childTableList_map = callableTaskDependency.getRelatedTableField_childTableList_map();
             Map<String, RelatedFieldValueSet> relatedTableFieldName_relatedTableFieldValueSet_map = callableTaskDependency.getRelatedTableFieldName_relatedTableFieldValueSet_map();
             Map<String, LazyRelatedTableField> relatedTableFieldName_lazyRelatedTableFieldRowIndex_map = callableTaskDependency.getRelatedTableFieldName_lazyRelatedTableFieldRowIndex_map();
             for (String tableAlias : sheetAlias) {
-                ChildTable childTable = childTableMap.get(tableAlias);
-                if (childTable == null) {
+                SimpleChildTable simpleChildTable = tableLoadDefine.getChildTables().getChildTable(tableAlias);
+                if (simpleChildTable == null) {
                     continue;
                 }
-                TableRelatedField tableRelatedField = childTable.getRelatedField();
+                TableRelatedFieldSet tableRelatedFieldSet = simpleChildTable.getTableRelatedFieldSet();
+                TableRelatedField tableRelatedField = tableRelatedFieldSet.getTableRelatedFieldList().get(0);
                 String relatedFieldName = tableRelatedField.getMainTableField();
-                List<ChildTable> childTableList = null;
+                List<SimpleChildTable> simpleChildTableList = null;
                 if (relatedTableField_childTableList_map.containsKey(relatedFieldName)) {
-                    childTableList = relatedTableField_childTableList_map.get(relatedFieldName);
+                    simpleChildTableList = relatedTableField_childTableList_map.get(relatedFieldName);
                 } else {
-                    childTableList = new ArrayList<ChildTable>();
-                    relatedTableField_childTableList_map.put(relatedFieldName, childTableList);
+                    simpleChildTableList = new ArrayList<SimpleChildTable>();
+                    relatedTableField_childTableList_map.put(relatedFieldName, simpleChildTableList);
                 }
-                childTableList.add(childTable);
+                simpleChildTableList.add(simpleChildTable);
                 if (isRelatedMainTable) {
                     RelatedFieldValueSet relatedFieldValueSet = relatedTableFieldName_relatedTableFieldValueSet_map.get(relatedFieldName);
                     if (relatedFieldValueSet == null) {
@@ -352,7 +360,7 @@ public class SheetDefineHelper {
                     if (lazyRelatedTableField == null) {
                         lazyRelatedTableField = new LazyRelatedTableField();
                         lazyRelatedTableField.setFieldName(relatedFieldName);
-                        lazyRelatedTableField.setDataType(tableLoadConfig.getDataBaseColumnType(relatedFieldName));
+//                        lazyRelatedTableField.setDataType(tableLoadConfig.getDataBaseColumnType(relatedFieldName));
                         relatedTableFieldName_lazyRelatedTableFieldRowIndex_map.put(relatedFieldName, lazyRelatedTableField);
                     }
                 }
@@ -360,7 +368,7 @@ public class SheetDefineHelper {
             if (sheetDependency.getNext() != null && sheetDependency.getNext().getCurrentSheetAlias().size() > 0) {
                 CallableTaskDependency next = new CallableTaskDependency(false);
                 callableTaskDependency.setNext(next);
-                structCallableTaskDependency(next, sheetDependency.getNext(), tableLoadConfig);
+                structCallableTaskDependency(next, sheetDependency.getNext(), tableLoadDefine);
             }
         }
     }

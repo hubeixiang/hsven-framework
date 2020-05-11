@@ -1,8 +1,12 @@
 package org.framework.hsven.dataloader.beans.related;
 
+import org.framework.hsven.dataloader.beans.EnumDbDataType;
+
 public class TableField {
     private String tableAlias;
     private String fieldAlias;
+    //定义的查询出来别名的类型
+    private EnumDbDataType fieldAliasDisplayEnumDbDataType;
     private String tableFieldName;
     private String secondTableFieldName;
 
@@ -22,6 +26,14 @@ public class TableField {
         this.fieldAlias = fieldAlias;
     }
 
+    public EnumDbDataType getFieldAliasDisplayEnumDbDataType() {
+        return fieldAliasDisplayEnumDbDataType;
+    }
+
+    public void setFieldAliasDisplayEnumDbDataType(EnumDbDataType fieldAliasDisplayEnumDbDataType) {
+        this.fieldAliasDisplayEnumDbDataType = fieldAliasDisplayEnumDbDataType;
+    }
+
     public String getTableFieldName() {
         return tableFieldName;
     }
@@ -38,8 +50,9 @@ public class TableField {
         this.secondTableFieldName = secondTableFieldName;
     }
 
+
     @Override
     public String toString() {
-        return String.format("TableField [tableAlias=%s,fieldAlias=%s,tableFieldName=%s,secondTableFieldName=%s]", tableAlias, fieldAlias, tableFieldName, secondTableFieldName);
+        return String.format("TableField [tableAlias=%s,fieldAlias=%s,fieldAliasDisplayEnumDbDataType=%s,tableFieldName=%s,secondTableFieldName=%s]", tableAlias, fieldAlias, fieldAliasDisplayEnumDbDataType, tableFieldName, secondTableFieldName);
     }
 }

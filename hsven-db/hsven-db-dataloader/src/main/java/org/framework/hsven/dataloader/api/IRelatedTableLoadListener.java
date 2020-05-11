@@ -1,8 +1,8 @@
 package org.framework.hsven.dataloader.api;
 
 import org.framework.hsven.dataloader.beans.data.DBTableRowInfo;
-import org.framework.hsven.dataloader.beans.related.ChildTable;
-import org.framework.hsven.dataloader.beans.related.MainTable;
+import org.framework.hsven.dataloader.beans.related.SimpleChildTable;
+import org.framework.hsven.dataloader.beans.related.SimpleMainTable;
 import org.framework.hsven.dataloader.beans.related.TableField;
 import org.framework.hsven.dataloader.loader.model.QueryLoaderResultDesc;
 import org.framework.hsven.dataloader.related.child.ChildTableLoadResult;
@@ -20,18 +20,18 @@ public interface IRelatedTableLoadListener {
     /**
      * 主表加载开始
      *
-     * @param mainTable
+     * @param simpleMainTable
      */
-    public void onMainTableLoadBegin(MainTable mainTable);
+    public void onMainTableLoadBegin(SimpleMainTable simpleMainTable);
 
     /**
      * 指定子表加载开始
      *
      * @param loadbyCache
-     * @param childTable
+     * @param simpleChildTable
      * @param select_relatedFieldValueSet
      */
-    public void onChildTableLoadBegin(boolean loadbyCache, ChildTable childTable, Set<String> select_relatedFieldValueSet);
+    public void onChildTableLoadBegin(boolean loadbyCache, SimpleChildTable simpleChildTable, Set<String> select_relatedFieldValueSet);
 
     /**
      * 加载时新增/更新一行数据,只能在DataTable数据初始化时使用

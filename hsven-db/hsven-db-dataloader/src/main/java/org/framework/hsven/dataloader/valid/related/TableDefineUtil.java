@@ -29,18 +29,18 @@ public class TableDefineUtil {
     public final static ValidResult isEnable(TableDefine tableDefine) {
         ValidResult validResult = new ValidResult();
         if (tableDefine == null) {
-            validResult.appendAllTipType("表配置不存在");
+            validResult.appendAllTipTypeByDefaultPosition("表配置不存在");
             return validResult;
         }
 
         if (StringUtils.isEmpty(tableDefine.getDbName())) {
-            validResult.appendAllTipType("查询数据库必须配置");
+            validResult.appendAllTipTypeByDefaultPosition("查询数据库必须配置");
         }
         if (TableAlaisUtil.isEnable(tableDefine.getTableAlias())) {
-            validResult.appendAllTipType("别名必须配置");
+            validResult.appendAllTipTypeByDefaultPosition("别名必须配置");
         }
         if (StringUtils.isEmpty(tableDefine.getTableName())) {
-            validResult.appendAllTipType("查询的表或者SQL必须配置");
+            validResult.appendAllTipTypeByDefaultPosition("查询的表或者SQL必须配置");
         }
         return validResult;
     }

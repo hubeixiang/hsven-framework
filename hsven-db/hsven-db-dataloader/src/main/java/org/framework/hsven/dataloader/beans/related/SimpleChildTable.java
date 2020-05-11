@@ -7,8 +7,8 @@ import org.slf4j.LoggerFactory;
 /**
  * 查询关联的字表,与主表之间进行左外关联
  */
-public class ChildTable {
-    public static Logger logger = LoggerFactory.getLogger(ChildTable.class);
+public class SimpleChildTable {
+    public static Logger logger = LoggerFactory.getLogger(SimpleChildTable.class);
     // <childTable database="NMOSDB" tableAlias="vendor_name" isCache="true">
     // <tableName>vendor_name</tableName>
     // <where></where>
@@ -19,7 +19,7 @@ public class ChildTable {
     //设置字表是否进行全部数据查询缓存,关联到主表时直接从缓存中获取。默认是不用进行缓存,每次关联再次查询获取
     private boolean isConfigCache = false;
     private TableDefine tableDefine;
-    private TableFieldSet fieldSet;
+    private TableFieldSet tableFieldSet;
     private TableRelatedFieldSet tableRelatedFieldSet;
 
 
@@ -35,12 +35,12 @@ public class ChildTable {
         this.tableDefine = tableDefine;
     }
 
-    public TableFieldSet getFieldSet() {
-        return fieldSet;
+    public TableFieldSet getTableFieldSet() {
+        return tableFieldSet;
     }
 
-    public void setFieldSet(TableFieldSet fieldSet) {
-        this.fieldSet = fieldSet;
+    public void setTableFieldSet(TableFieldSet fieldSet) {
+        this.tableFieldSet = fieldSet;
     }
 
     public TableRelatedFieldSet getTableRelatedFieldSet() {
@@ -65,7 +65,7 @@ public class ChildTable {
         int result = 1;
         result = ClassEqualsUtils.hashcode(prime, result, tableRelatedFieldSet);
         result = ClassEqualsUtils.hashcode(prime, result, tableDefine);
-        result = ClassEqualsUtils.hashcode(prime, result, fieldSet);
+        result = ClassEqualsUtils.hashcode(prime, result, tableFieldSet);
         return result;
     }
 
@@ -77,14 +77,14 @@ public class ChildTable {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        ChildTable other = (ChildTable) obj;
+        SimpleChildTable other = (SimpleChildTable) obj;
         if (!ClassEqualsUtils.isEquals(this.tableRelatedFieldSet, other.tableRelatedFieldSet)) {
             return false;
         }
         if (!ClassEqualsUtils.isEquals(this.tableDefine, other.tableDefine)) {
             return false;
         }
-        if (!ClassEqualsUtils.isEquals(this.fieldSet, other.fieldSet)) {
+        if (!ClassEqualsUtils.isEquals(this.tableFieldSet, other.tableFieldSet)) {
             return false;
         }
         return true;
@@ -95,7 +95,7 @@ public class ChildTable {
         StringBuilder builder = new StringBuilder();
         builder.append("ChildTable [isConfigCache=").append(isConfigCache);
         builder.append(", tableDefine=").append(tableDefine);
-        builder.append(", fieldSet=").append(fieldSet);
+        builder.append(", fieldSet=").append(tableFieldSet);
         builder.append(", tableRelatedFieldSet=").append(tableRelatedFieldSet);
         builder.append("]");
         return builder.toString();

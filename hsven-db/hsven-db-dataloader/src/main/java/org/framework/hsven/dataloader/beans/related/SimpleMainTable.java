@@ -6,13 +6,13 @@ import org.framework.hsven.utils.ClassEqualsUtils;
 /**
  * 关联关系中的主表设置
  */
-public class MainTable {
+public class SimpleMainTable {
     //主表表的查询定义
     private TableDefine tableDefine;
     //是否需要做唯一
     private boolean distinct;
     //需要查询出来的字段
-    private TableFieldSet fieldSet;
+    private TableFieldSet tableFieldSet;
 
     public String getTableAlias() {
         return tableDefine == null ? "" : tableDefine.getTableAlias();
@@ -34,12 +34,12 @@ public class MainTable {
         this.distinct = distinct;
     }
 
-    public TableFieldSet getFieldSet() {
-        return fieldSet;
+    public TableFieldSet getTableFieldSet() {
+        return tableFieldSet;
     }
 
-    public void setFieldSet(TableFieldSet fieldSet) {
-        this.fieldSet = fieldSet;
+    public void setTableFieldSet(TableFieldSet fieldSet) {
+        this.tableFieldSet = fieldSet;
     }
 
     @Override
@@ -48,7 +48,7 @@ public class MainTable {
         int result = 1;
         result = ClassEqualsUtils.hashcode(prime, result, distinct);
         result = ClassEqualsUtils.hashcode(prime, result, tableDefine);
-        result = ClassEqualsUtils.hashcode(prime, result, fieldSet);
+        result = ClassEqualsUtils.hashcode(prime, result, tableFieldSet);
         return result;
     }
 
@@ -60,14 +60,14 @@ public class MainTable {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        MainTable other = (MainTable) obj;
+        SimpleMainTable other = (SimpleMainTable) obj;
         if (!ClassEqualsUtils.isequals(this.distinct, other.distinct)) {
             return false;
         }
         if (!ClassEqualsUtils.isEquals(this.tableDefine, other.tableDefine)) {
             return false;
         }
-        if (!ClassEqualsUtils.isEquals(this.fieldSet, other.fieldSet)) {
+        if (!ClassEqualsUtils.isEquals(this.tableFieldSet, other.tableFieldSet)) {
             return false;
         }
         return true;
@@ -76,9 +76,9 @@ public class MainTable {
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        builder.append("MainTable [tableDefine=").append(tableDefine);
+        builder.append("SimpleMainTable [tableDefine=").append(tableDefine);
         builder.append(", distinct=").append(distinct);
-        builder.append(", fieldSet=").append(fieldSet);
+        builder.append(", fieldSet=").append(tableFieldSet);
         builder.append("]");
         return builder.toString();
     }

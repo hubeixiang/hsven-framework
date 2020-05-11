@@ -226,10 +226,10 @@ public class DBSqlQueryLoader extends Thread {
             DBTableRowInfo dbTableRowInfo = new DBTableRowInfo(dbColumnMetaDataDefine, dbTableRow);
             this.callbackListenerHandler.processRow(dbTableRowInfo);
         } catch (Exception e) {
-            logger.error(String.format("%s dealResult Exception.resultIndex=%s,columnIndex=%s,DBColumnMetaData=%s,columnValue=%s,Exception:%s",
+            logger.error(String.format("%s dealResult processRow Exception.resultIndex=%s,columnIndex=%s,DBColumnMetaData=%s,columnValue=%s,Exception:%s",
                     this.callbackListenerHandler.listenerIdentification(), resultIndex, columnIndex, dbColumnMetaData, columnValue, e.getMessage()), e);
         } catch (Throwable e) {
-            logger.error(String.format("%s dealResult Throwable.resultIndex=%s,columnIndex=%s,DBColumnMetaData=%s,columnValue=%s,Exception:%s",
+            logger.error(String.format("%s dealResult processRow Throwable.resultIndex=%s,columnIndex=%s,DBColumnMetaData=%s,columnValue=%s,Exception:%s",
                     this.callbackListenerHandler.listenerIdentification(), resultIndex, columnIndex, dbColumnMetaData, columnValue, e.getMessage()), e);
         }
     }

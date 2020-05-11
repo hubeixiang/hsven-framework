@@ -9,7 +9,7 @@ public class TableFieldSetUtil {
     public final static ValidResult isEnable(TableDefine tableDefine, TableFieldSet tableFieldSet) {
         ValidResult validResult = new ValidResult();
         if (tableFieldSet.getFieldSet() == null || tableFieldSet.getFieldSet().size() == 0) {
-            validResult.appendAllTipType("查询的字段必须配置");
+            validResult.appendAllTipTypeByDefaultPosition("查询的字段必须配置");
         } else {
             String tableAlias = tableDefine.getTableAlias();
             for (TableField tableField : tableFieldSet.getFieldSet()) {

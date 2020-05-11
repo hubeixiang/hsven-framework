@@ -1,15 +1,15 @@
 package org.framework.hsven.dataloader.beans.related;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-
 public class TableLoadDefine {
     private String defineType;
     private boolean isAutoGeneration;
-    private MainTable mainTable;
-    //Map<childTableAlias,ChildTable>
-    private Map<String, ChildTable> childTableMap;
+    //主表只能是一个查询sql(如果主表也是多个查询语句的结果在内存拼接很复杂,此处不做考虑)
+    private SimpleMainTable simpleMainTable;
+    private ChildTables childTables;
+
+    public TableLoadDefine() {
+        this.childTables = new ChildTables();
+    }
 
     public String getDefineType() {
         return defineType;
@@ -27,35 +27,23 @@ public class TableLoadDefine {
         isAutoGeneration = autoGeneration;
     }
 
-    public MainTable getMainTable() {
-        return mainTable;
+    public SimpleMainTable getSimpleMainTable() {
+        return simpleMainTable;
     }
 
-    public void setMainTable(MainTable mainTable) {
-        this.mainTable = mainTable;
+    public void setSimpleMainTable(SimpleMainTable simpleMainTable) {
+        this.simpleMainTable = simpleMainTable;
     }
 
-    public boolean addChildTable(ChildTable childTable) {
-        if (childTable == null) {
-            return false;
-        }
-        if (childTableMap == null) {
-            childTableMap = new HashMap<>();
-        }
-
-        if (childTableMap.containsKey(childTable.getTableAlias())) {
-            return false;
-        }
-
-        childTableMap.put(childTable.getTableAlias(), childTable);
-        return true;
+    public ChildTables getChildTables() {
+        return childTables;
     }
 
-    public Iterator<Map.Entry<String, ChildTable>> entryChildTables() {
-        return childTableMap == null ? null : childTableMap.entrySet().iterator();
+    public boolean hasSimpleChildTable() {
+        return childTables != null && childTables.hasSimpleChildTable();
     }
 
-    public ChildTable getChildTable(String childTableAlias) {
-        return childTableMap == null ? null : childTableMap.get(childTableAlias);
+    public boolean addSimpleChildTable(SimpleChildTable simpleChildTable) {
+        return this.childTables.addChildTable(simpleChildTable);
     }
 }

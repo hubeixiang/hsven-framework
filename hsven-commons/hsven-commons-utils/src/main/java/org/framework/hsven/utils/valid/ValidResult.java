@@ -19,11 +19,11 @@ public class ValidResult {
     }
 
     /**
-     * 所有的提示语类型都添加该错误信息
+     * 所有的提示语类型都添加该错误信息,在默认的位置
      *
      * @param abnormalInfo
      */
-    public void appendAllTipType(String abnormalInfo) {
+    public void appendAllTipTypeByDefaultPosition(String abnormalInfo) {
         appendAbnormalTipType(abnormalInfo, ValidTipType.program);
         appendAbnormalTipType(abnormalInfo, ValidTipType.zh);
     }
