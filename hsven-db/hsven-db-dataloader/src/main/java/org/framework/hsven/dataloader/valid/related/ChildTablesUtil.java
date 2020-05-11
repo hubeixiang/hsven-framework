@@ -2,6 +2,7 @@ package org.framework.hsven.dataloader.valid.related;
 
 import org.framework.hsven.dataloader.beans.related.ChildTables;
 import org.framework.hsven.dataloader.beans.related.SimpleChildTable;
+import org.framework.hsven.dataloader.tips.TipsMessageUsed;
 import org.framework.hsven.utils.valid.ValidResult;
 
 import java.util.Iterator;
@@ -19,7 +20,7 @@ public class ChildTablesUtil {
             SimpleChildTable simpleChildTable = entry.getValue();
             ValidResult childValidResult = SimpleChildTableUtil.isEnable(simpleChildTable);
             if (!childValidResult.isNormal()) {
-                childValidResult.appendAllTipTypeByPosition(String.format("子表[%s]配置错误如下:", entry.getKey()));
+                childValidResult.appendAllTipTypeByPosition(TipsMessageUsed.getMessage("tips.valid_childtable_one_error_config", entry.getKey()));
                 validResult.mergeValidConfigResult(childValidResult);
             }
         }

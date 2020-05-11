@@ -25,6 +25,11 @@
         </dependency>
         <dependency>
             <groupId>org.framework.hsven</groupId>
+            <artifactId>hsven-commons-i18n</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.framework.hsven</groupId>
             <artifactId>hsven-commons-executor</artifactId>
             <version>${project.version}</version>
         </dependency>

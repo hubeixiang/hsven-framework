@@ -2,6 +2,7 @@ package org.framework.hsven.dataloader.valid.related;
 
 import org.framework.hsven.dataloader.beans.dependency.StructSql;
 import org.framework.hsven.dataloader.beans.related.SimpleMainTable;
+import org.framework.hsven.dataloader.tips.TipsMessageUsed;
 import org.framework.hsven.datasource.enums.DataSourceType;
 import org.framework.hsven.utils.valid.ValidResult;
 
@@ -11,7 +12,7 @@ public class SimpleMainTableUtil {
     public final static ValidResult isEnable(SimpleMainTable simpleMainTable) {
         ValidResult validResult = new ValidResult();
         if (simpleMainTable.getTableDefine() == null) {
-            validResult.appendAllTipType("主表的TableDefine必须配置");
+            validResult.appendAllTipType(TipsMessageUsed.getMessage("tips.valid_maintable_tabledefine_must_config"));
             return validResult;
         } else {
             ValidResult tableDefineValidResult = TableDefineUtil.isEnable(simpleMainTable.getTableDefine());
@@ -21,7 +22,7 @@ public class SimpleMainTableUtil {
         }
 
         if (!simpleMainTable.hasTableField()) {
-            validResult.appendAllTipType("主表的查询字段必须配置");
+            validResult.appendAllTipType(TipsMessageUsed.getMessage("tips.valid_maintable_field_must_config"));
         } else {
             ValidResult fieldSetValidResult = TableFieldSetUtil.isEnable(simpleMainTable.getTableDefine(), simpleMainTable.getTableFieldSet());
             if (!fieldSetValidResult.isNormal()) {

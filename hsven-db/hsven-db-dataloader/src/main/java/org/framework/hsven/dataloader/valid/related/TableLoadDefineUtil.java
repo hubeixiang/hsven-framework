@@ -8,6 +8,7 @@ import org.framework.hsven.dataloader.beans.related.TableField;
 import org.framework.hsven.dataloader.beans.related.TableLoadDefine;
 import org.framework.hsven.dataloader.beans.related.TableRelatedField;
 import org.framework.hsven.dataloader.beans.related.TableRelatedFieldSet;
+import org.framework.hsven.dataloader.tips.TipsMessageUsed;
 import org.framework.hsven.utils.valid.ValidResult;
 
 import java.util.HashMap;
@@ -20,7 +21,7 @@ public class TableLoadDefineUtil {
     public final static ValidResult isEnableTableLoadDefine(TableLoadDefine tableLoadDefine) {
         ValidResult validResult = new ValidResult();
         if (StringUtils.isEmpty(tableLoadDefine.getDefineType())) {
-            validResult.appendAllTipType("defineType必须配置");
+            validResult.appendAllTipType(TipsMessageUsed.getMessage("tips.valid_table_define_type"));
         }
         //所有表的字段map
         //Map<fieldNameAlias,TableField>
@@ -29,12 +30,12 @@ public class TableLoadDefineUtil {
         Set<String> repeatFieldAlias = new HashSet<>();
 
         if (!tableLoadDefine.hasSimpleChildTable()) {
-            validResult.appendAllTipType("主表必须配置");
+            validResult.appendAllTipType(TipsMessageUsed.getMessage("tips.valid_maintable_must_config"));
             return validResult;
         } else {
             ValidResult mainValidResult = SimpleMainTableUtil.isEnable(tableLoadDefine.getSimpleMainTable());
             if (!mainValidResult.isNormal()) {
-                mainValidResult.appendAllTipType("主表配置错误如下:");
+                mainValidResult.appendAllTipType(TipsMessageUsed.getMessage("tips.valid_maintable_error_config"));
                 validResult.mergeValidConfigResult(mainValidResult);
             }
             SimpleMainTable simpleMainTable = tableLoadDefine.getSimpleMainTable();
@@ -54,7 +55,7 @@ public class TableLoadDefineUtil {
         ChildTables childTables = tableLoadDefine.getChildTables();
         ValidResult childTablesValidResult = ChildTablesUtil.isEnable(childTables);
         if (!childTablesValidResult.isNormal()) {
-            childTablesValidResult.appendAllTipTypeByPosition("子表配置错误如下:");
+            childTablesValidResult.appendAllTipTypeByPosition(TipsMessageUsed.getMessage("tips.valid_childtable_error_config"));
             validResult.mergeValidConfigResult(childTablesValidResult);
         }
         if (childTables != null && childTables.hasSimpleChildTable()) {
@@ -91,7 +92,7 @@ public class TableLoadDefineUtil {
                         }
                     }
                     if (errorRelatedField.size() > 0) {
-                        String error = String.format("子表[%s]关联主表字段%s必须在主表查询列表中配置.", simpleChildTable.getTableAlias(), errorRelatedField);
+                        String error = TipsMessageUsed.getMessage("tips.valid_childtable_related_maintable_field", simpleChildTable.getTableAlias(), errorRelatedField);
                         if (errorRelatedFieldStringBuffer.length() == 0) {
                             errorRelatedFieldStringBuffer.append(error);
                         } else {
@@ -101,13 +102,13 @@ public class TableLoadDefineUtil {
                 }
             }
             if (errorRelatedFieldStringBuffer.length() > 0) {
-                validResult.appendAllTipTypeByPosition(String.format("子表关联主表的关联错误信息如下:%s", errorRelatedFieldStringBuffer.toString()));
+                validResult.appendAllTipTypeByPosition(TipsMessageUsed.getMessage("tips.valid_allchildtable_related_maintable_error", errorRelatedFieldStringBuffer.toString()));
             }
         }
 
         //验证关联的字段是否已经配置完整
         if (repeatFieldAlias.size() > 0) {
-            validResult.appendAllTipType(String.format("字段别名重复的字段有%s", repeatFieldAlias));
+            validResult.appendAllTipType(TipsMessageUsed.getMessage("tips.valid_table_field_reapeat", repeatFieldAlias));
         }
 
         return validResult;

@@ -2,6 +2,7 @@ package org.framework.hsven.dataloader.valid.related;
 
 import org.apache.commons.lang3.StringUtils;
 import org.framework.hsven.dataloader.beans.related.TableDefine;
+import org.framework.hsven.dataloader.tips.TipsMessageUsed;
 import org.framework.hsven.utils.valid.ValidResult;
 
 public class TableDefineUtil {
@@ -29,18 +30,18 @@ public class TableDefineUtil {
     public final static ValidResult isEnable(TableDefine tableDefine) {
         ValidResult validResult = new ValidResult();
         if (tableDefine == null) {
-            validResult.appendAllTipType("表配置不存在");
+            validResult.appendAllTipType(TipsMessageUsed.getMessage("tips.valid_table_define_must_config"));
             return validResult;
         }
 
         if (StringUtils.isEmpty(tableDefine.getDbName())) {
-            validResult.appendAllTipType("查询数据库必须配置");
+            validResult.appendAllTipType(TipsMessageUsed.getMessage("tips.valid_table_define_db_must_config"));
         }
         if (TableAlaisUtil.isEnable(tableDefine.getTableAlias())) {
-            validResult.appendAllTipType("别名必须配置");
+            validResult.appendAllTipType(TipsMessageUsed.getMessage("tips.valid_table_define_data_alias_must_config"));
         }
         if (StringUtils.isEmpty(tableDefine.getTableName())) {
-            validResult.appendAllTipType("查询的表或者SQL必须配置");
+            validResult.appendAllTipType(TipsMessageUsed.getMessage("tips.valid_table_define_query_sql_must_config"));
         }
         return validResult;
     }
