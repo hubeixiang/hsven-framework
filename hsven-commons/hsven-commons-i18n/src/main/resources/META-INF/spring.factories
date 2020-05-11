@@ -1,0 +1,5 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+org.framework.hsven.i18n.autoconfigure.MessageLocaleProperties,\
+org.framework.hsven.i18n.autoconfigure.I18nMessageSourceAutoConfiguration
+
+
