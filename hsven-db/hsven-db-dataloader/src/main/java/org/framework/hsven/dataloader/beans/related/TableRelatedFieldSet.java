@@ -6,6 +6,10 @@ import java.util.List;
 public class TableRelatedFieldSet {
     private List<TableRelatedField> tableRelatedFieldList = new ArrayList<>();
 
+    public boolean hasTableRelatedField() {
+        return tableRelatedFieldList != null && tableRelatedFieldList.size() > 0;
+    }
+
     public void addTableRelatedField(TableRelatedField tableRelatedField) {
         tableRelatedFieldList.add(tableRelatedField);
     }

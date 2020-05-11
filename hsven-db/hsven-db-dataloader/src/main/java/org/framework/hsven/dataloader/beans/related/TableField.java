@@ -1,6 +1,7 @@
 package org.framework.hsven.dataloader.beans.related;
 
 import org.framework.hsven.dataloader.beans.EnumDbDataType;
+import org.framework.hsven.dataloader.util.StringFormatUtil;
 
 public class TableField {
     private String tableAlias;
@@ -15,7 +16,7 @@ public class TableField {
     }
 
     public void setTableAlias(String tableAlias) {
-        this.tableAlias = tableAlias;
+        this.tableAlias = StringFormatUtil.formatNullOrTrim(tableAlias);
     }
 
     public String getFieldAlias() {
@@ -23,7 +24,7 @@ public class TableField {
     }
 
     public void setFieldAlias(String fieldAlias) {
-        this.fieldAlias = fieldAlias;
+        this.fieldAlias = StringFormatUtil.formatNullOrTrim(fieldAlias);
     }
 
     public EnumDbDataType getFieldAliasDisplayEnumDbDataType() {
@@ -39,7 +40,7 @@ public class TableField {
     }
 
     public void setTableFieldName(String tableFieldName) {
-        this.tableFieldName = tableFieldName;
+        this.tableFieldName = StringFormatUtil.formatNullOrTrim(tableFieldName);
     }
 
     public String getSecondTableFieldName() {
@@ -47,7 +48,7 @@ public class TableField {
     }
 
     public void setSecondTableFieldName(String secondTableFieldName) {
-        this.secondTableFieldName = secondTableFieldName;
+        this.secondTableFieldName = StringFormatUtil.formatNullOrTrim(secondTableFieldName);
     }
 
 

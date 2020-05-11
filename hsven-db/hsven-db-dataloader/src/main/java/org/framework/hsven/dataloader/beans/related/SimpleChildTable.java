@@ -22,6 +22,13 @@ public class SimpleChildTable {
     private TableFieldSet tableFieldSet;
     private TableRelatedFieldSet tableRelatedFieldSet;
 
+    public boolean hasTableField() {
+        return tableFieldSet != null && tableFieldSet.hasTableField();
+    }
+
+    public boolean hasTableRelatedField() {
+        return tableRelatedFieldSet != null && tableRelatedFieldSet.hasTableRelatedField();
+    }
 
     public String getTableAlias() {
         return tableDefine == null ? "" : tableDefine.getTableAlias();

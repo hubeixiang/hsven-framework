@@ -3,11 +3,11 @@ package org.framework.hsven.dataloader.valid.related;
 import org.framework.hsven.dataloader.beans.related.SimpleChildTable;
 import org.framework.hsven.utils.valid.ValidResult;
 
-public class ChildTableUtil {
+public class SimpleChildTableUtil {
     public final static ValidResult isEnable(SimpleChildTable simpleChildTable) {
         ValidResult validResult = new ValidResult();
         if (simpleChildTable.getTableDefine() == null) {
-            validResult.appendAllTipTypeByDefaultPosition("子表的TableDefine必须配置");
+            validResult.appendAllTipType("子表的TableDefine必须配置");
             return validResult;
         } else {
             ValidResult tableDefineValidResult = TableDefineUtil.isEnable(simpleChildTable.getTableDefine());
@@ -16,8 +16,8 @@ public class ChildTableUtil {
             }
         }
 
-        if (simpleChildTable.getTableFieldSet() == null || simpleChildTable.getTableFieldSet().getFieldSet().size() == 0) {
-            validResult.appendAllTipTypeByDefaultPosition("子表的查询字段必须配置");
+        if (!simpleChildTable.hasTableField()) {
+            validResult.appendAllTipType("子表的查询字段必须配置");
         } else {
             ValidResult fieldSetValidResult = TableFieldSetUtil.isEnable(simpleChildTable.getTableDefine(), simpleChildTable.getTableFieldSet());
             if (!fieldSetValidResult.isNormal()) {
@@ -25,8 +25,8 @@ public class ChildTableUtil {
             }
         }
 
-        if (simpleChildTable.getTableRelatedFieldSet() == null || simpleChildTable.getTableRelatedFieldSet().getTableRelatedFieldList().size() == 0) {
-            validResult.appendAllTipTypeByDefaultPosition("子表与主表的关联信息必须配置");
+        if (!simpleChildTable.hasTableRelatedField()) {
+            validResult.appendAllTipType("子表与主表的关联信息必须配置");
         } else {
             ValidResult relatedFieldValidResult = TableRelatedFieldSetUtil.isEnable(simpleChildTable.getTableRelatedFieldSet());
             if (!relatedFieldValidResult.isNormal()) {

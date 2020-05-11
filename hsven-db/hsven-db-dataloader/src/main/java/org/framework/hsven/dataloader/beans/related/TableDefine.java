@@ -1,5 +1,6 @@
 package org.framework.hsven.dataloader.beans.related;
 
+import org.framework.hsven.dataloader.util.StringFormatUtil;
 import org.framework.hsven.utils.ClassEqualsUtils;
 
 import java.io.Serializable;
@@ -30,15 +31,15 @@ public class TableDefine implements Serializable {
     }
 
     public void setTableName(String tableName) {
-        this.tableName = tableName;
+        this.tableName = StringFormatUtil.formatNullOrTrim(tableName);
     }
 
     public String getTableAlias() {
-        return tableAlias == null ? "" : tableAlias;
+        return tableAlias;
     }
 
     public void setTableAlias(String tableAlias) {
-        this.tableAlias = tableAlias;
+        this.tableAlias = StringFormatUtil.formatNullOrTrim(tableAlias);
     }
 
     public String getWhere() {
@@ -46,7 +47,7 @@ public class TableDefine implements Serializable {
     }
 
     public void setWhere(String where) {
-        this.where = where;
+        this.where = StringFormatUtil.formatNullOrTrim(where);
     }
 
     @Override

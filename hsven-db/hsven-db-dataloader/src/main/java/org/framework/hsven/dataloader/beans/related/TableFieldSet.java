@@ -28,6 +28,10 @@ public class TableFieldSet {
         return return_selectStr;
     }
 
+    public boolean hasTableField() {
+        return tableFields != null && tableFields.size() > 0;
+    }
+
     public void addField(TableField tableField) {
         String fiedAlias = tableField.getFieldAlias();
         if (!this.tableFieldSet.containsKey(fiedAlias)) {

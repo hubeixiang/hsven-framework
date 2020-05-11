@@ -23,7 +23,7 @@ public class ValidResult {
      *
      * @param abnormalInfo
      */
-    public void appendAllTipTypeByDefaultPosition(String abnormalInfo) {
+    public void appendAllTipType(String abnormalInfo) {
         appendAbnormalTipType(abnormalInfo, ValidTipType.program);
         appendAbnormalTipType(abnormalInfo, ValidTipType.zh);
     }

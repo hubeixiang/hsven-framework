@@ -1,8 +1,12 @@
 package org.framework.hsven.dataloader.beans.related;
 
+import org.framework.hsven.dataloader.util.StringFormatUtil;
+
 public class TableRelatedField {
     //<relatedField childTableField="vendor_id" mainTableField="vendor_id"></relatedField>
+    //子表的关联字段可以不用在子表的查询列表中出现,在拼接查询sql时主动将此字段添加到查询sql列表中
     private String childTableField;
+    //主表的关联字段是必须要在查询列表中出现的
     private String mainTableField;
 
     public String getChildTableField() {
@@ -10,7 +14,7 @@ public class TableRelatedField {
     }
 
     public void setChildTableField(String childTableField) {
-        this.childTableField = childTableField;
+        this.childTableField = StringFormatUtil.formatNullOrTrim(childTableField);
     }
 
     public String getMainTableField() {
@@ -18,7 +22,7 @@ public class TableRelatedField {
     }
 
     public void setMainTableField(String mainTableField) {
-        this.mainTableField = mainTableField;
+        this.mainTableField = StringFormatUtil.formatNullOrTrim(mainTableField);
     }
 
     @Override
