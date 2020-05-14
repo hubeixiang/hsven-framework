@@ -1,0 +1,5 @@
+native2ascii -encoding UTF-8 origin_zh_tips.properties loader_valid_tips.properties
+native2ascii -encoding UTF-8 loader_valid_tips.properties loader_valid_tips_zh.properties
+native2ascii -encoding UTF-8 loader_valid_tips.properties loader_valid_tips_zh_CN.properties
+native2ascii -encoding UTF-8 loader_valid_tips_en.properties loader_valid_tips_en_EN.properties
+native2ascii -encoding UTF-8 loader_valid_tips_en.properties loader_valid_tips_en_US.properties

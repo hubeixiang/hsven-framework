@@ -17,6 +17,27 @@ import java.util.concurrent.Future;
 public class OperationDecorateSync {
     private static Logger logger = LoggerFactory.getLogger(OperationDecorateSync.class);
 
+    /**
+     * 将包装的实体结果逐个转换为原本的实体结果
+     *
+     * @param results
+     * @param <T>
+     * @return
+     */
+    public <T> List<T> transformation(List<SyncTaskResult<T>> results) {
+        if (results == null) {
+            return null;
+        }
+        List<T> data = new ArrayList<>();
+        for (SyncTaskResult<T> syncTaskResult : results) {
+            if (syncTaskResult.isDealFlag()) {
+                data.add(syncTaskResult.getResult());
+            }
+            logger.debug(String.format("OperationDecorateSync.transformation[%s]", syncTaskResult));
+        }
+        return data;
+    }
+
     public <T> SyncTaskResult<T> submit(ExecutorService executorService, Callable<T> task) {
         try {
             if (task != null) {
