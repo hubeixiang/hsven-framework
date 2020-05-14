@@ -31,6 +31,7 @@
         <module>hsven-db</module>
         <module>hsven-dispatch</module>
         <module>hsven-zookeeper</module>
+        <module>hsven-quartz</module>
     </modules>
 
     <packaging>pom</packaging>
