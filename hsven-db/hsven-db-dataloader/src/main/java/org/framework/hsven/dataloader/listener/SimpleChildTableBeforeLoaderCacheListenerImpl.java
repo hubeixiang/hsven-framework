@@ -5,15 +5,25 @@ import org.framework.hsven.dataloader.beans.DBColumnMetaDataDefine;
 import org.framework.hsven.dataloader.beans.data.DBTableRowInfo;
 import org.framework.hsven.dataloader.loader.model.QueryConfig;
 import org.framework.hsven.dataloader.loader.model.QueryLoaderResultDesc;
+import org.framework.hsven.dataloader.related.child.ChildTableConfigCacheEntity;
+import org.framework.hsven.dataloader.related.child.task.SimpleChildTableBeforeLoaderCacheTask;
 import org.framework.hsven.datasource.model.DataSourceConfig;
 
 /**
- * 关联加载主子表数据时,子表的单条数据的缓存处理类(先一次性查询数据,并将数据进行缓存,后面与主表关联时直接从缓存数据中获取并关联)
+ * 需要需要将子表数据全部查询完,并进行全部缓存的任务,对应的加载每行数据的处理方式
+ *
+ * @see SimpleChildTableBeforeLoaderCacheTask
  */
-public class ChildTableCacheLoaderListenerImpl implements IDBSqlQueryLoaderListener {
+public class SimpleChildTableBeforeLoaderCacheListenerImpl implements IDBSqlQueryLoaderListener {
+    private final ChildTableConfigCacheEntity childTableConfigCacheEntity;
+
+    public SimpleChildTableBeforeLoaderCacheListenerImpl(ChildTableConfigCacheEntity childTableConfigCacheEntity) {
+        this.childTableConfigCacheEntity = childTableConfigCacheEntity;
+    }
+
     @Override
     public String listenerIdentification() {
-        return String.format("ChildTableLoader2Cache");
+        return "ChildTableLoader2Cache";
     }
 
     @Override
@@ -28,7 +38,7 @@ public class ChildTableCacheLoaderListenerImpl implements IDBSqlQueryLoaderListe
 
     @Override
     public void processRow(DBTableRowInfo dbTableRowInfo) {
-
+        childTableConfigCacheEntity.cacheDataBaseTableRow(dbTableRowInfo);
     }
 
     @Override

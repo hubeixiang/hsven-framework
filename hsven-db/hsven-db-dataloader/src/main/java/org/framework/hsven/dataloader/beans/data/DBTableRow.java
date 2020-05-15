@@ -80,7 +80,7 @@ public class DBTableRow implements Serializable {
     }
 
     public DBColumnValue getDataBaseColumnValue(DBColumnMetaDataDefine dbColumnMetaDataDefine, String columnName) {
-        if (StringUtils.isEmpty(columnName)) {
+        if (StringUtils.isEmpty(columnName) || dbColumnMetaDataDefine == null) {
             return null;
         }
 

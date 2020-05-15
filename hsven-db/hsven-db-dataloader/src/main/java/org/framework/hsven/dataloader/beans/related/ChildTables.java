@@ -35,4 +35,9 @@ public class ChildTables {
     public SimpleChildTable getChildTable(String childTableAlias) {
         return childTableMap == null ? null : childTableMap.get(childTableAlias);
     }
+
+    @Override
+    public String toString() {
+        return String.format("ChildTables [ChildTablesSize=%s,childTableMap=%s]", childTableMap == null ? 0 : childTableMap.size(), childTableMap);
+    }
 }

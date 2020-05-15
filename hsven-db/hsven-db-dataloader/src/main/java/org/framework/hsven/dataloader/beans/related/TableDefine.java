@@ -18,6 +18,14 @@ public class TableDefine implements Serializable {
     //附加的查询条件
     private String where;
 
+    public int getQueryTimeoutSeconds() {
+        return queryTimeoutSeconds;
+    }
+
+    public void setQueryTimeoutSeconds(int queryTimeoutSeconds) {
+        this.queryTimeoutSeconds = queryTimeoutSeconds;
+    }
+
     public String getDbName() {
         return dbName;
     }

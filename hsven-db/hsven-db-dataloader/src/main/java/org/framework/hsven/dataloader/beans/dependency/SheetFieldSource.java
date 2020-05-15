@@ -3,15 +3,16 @@ package org.framework.hsven.dataloader.beans.dependency;
 import org.apache.commons.lang3.StringUtils;
 
 public class SheetFieldSource {
-    private String sheetAlias;
+    private String sheetTableAlias;
     private String sheetFieldName;
+    private String secondSheetFieldName;
 
-    public String getSheetAlias() {
-        return sheetAlias;
+    public String getSheetTableAlias() {
+        return sheetTableAlias;
     }
 
-    public void setSheetAlias(String sheetAlias) {
-        this.sheetAlias = sheetAlias;
+    public void setSheetTableAlias(String sheetTableAlias) {
+        this.sheetTableAlias = sheetTableAlias;
     }
 
     public String getSheetFieldName() {
@@ -22,10 +23,23 @@ public class SheetFieldSource {
         this.sheetFieldName = sheetFieldName;
     }
 
+    public String getSecondSheetFieldName() {
+        return secondSheetFieldName;
+    }
+
+    public void setSecondSheetFieldName(String secondSheetFieldName) {
+        this.secondSheetFieldName = secondSheetFieldName;
+    }
+
     public boolean isValid() {
-        if (StringUtils.isNotEmpty(sheetAlias) && StringUtils.isNotEmpty(sheetFieldName)) {
+        if (StringUtils.isNotEmpty(sheetTableAlias) && StringUtils.isNotEmpty(sheetFieldName)) {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("SheetFieldSource [sheetTableAlias=%s,sheetFieldName=%s,secondSheetFieldName=%s]", sheetTableAlias, sheetFieldName, secondSheetFieldName);
     }
 }

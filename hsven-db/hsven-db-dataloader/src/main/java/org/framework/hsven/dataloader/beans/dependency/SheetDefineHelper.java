@@ -162,14 +162,14 @@ public class SheetDefineHelper {
         //1. 获取主表
         String mainSheetAlias = sheetDefine.getMainSheetAlias();
         Map<String, SheetField> mainSheetInfo = sheetDefine.getSheetFieldBySheetAlias(mainSheetAlias);
-        CurrentInfo mainSheetCurrentInfo = new CurrentInfo();
+        CurrentInfo mainSheetCurrentInfo = new CurrentInfo(EnumTableType.Main);
         mainSheetCurrentInfo.setSheetFieldMap(mainSheetInfo);
         dependency.addCurrentInfo(mainSheetCurrentInfo);
-        parserCurrentDependency(dependency, sheetDefine);
+        parserCurrentDependency(dependency, sheetDefine,EnumTableType.Child);
         return dependency;
     }
 
-    private static void parserCurrentDependency(SheetDependency previous, SheetDefine sheetDefine) {
+    private static void parserCurrentDependency(SheetDependency previous, SheetDefine sheetDefine,EnumTableType tableType) {
         if (previous == null || previous.getCurrentInfo() == null) {
             return;
         }
@@ -224,12 +224,12 @@ public class SheetDefineHelper {
         }
 
         //设置previous的下一级左关联表信息
-        CurrentInfo currentInfo = new CurrentInfo();
+        CurrentInfo currentInfo = new CurrentInfo(tableType);
         currentInfo.setSheetFieldMap(leftSheetInfo);
         currentInfo.setLeftInfoMap(currentLeftInfo);
         previous.addNextCurrentInfo(currentInfo);
         SheetDependency currentSheetDependency = previous.getNext();
-        parserCurrentDependency(currentSheetDependency, sheetDefine);
+        parserCurrentDependency(currentSheetDependency, sheetDefine,EnumTableType.Lazy_subtable);
     }
 
 
@@ -241,8 +241,9 @@ public class SheetDefineHelper {
             SheetField sheetField = new SheetField();
             sheetField.setFieldAlias(tableField.getFieldAlias());
             SheetFieldSource sheetFieldSource = new SheetFieldSource();
-            sheetFieldSource.setSheetAlias(tableField.getTableAlias());
+            sheetFieldSource.setSheetTableAlias(tableField.getTableAlias());
             sheetFieldSource.setSheetFieldName(tableField.getTableFieldName());
+            sheetFieldSource.setSecondSheetFieldName(tableField.getSecondTableFieldName());
             sheetField.addSheetFieldSource(sheetFieldSource);
             sheetDefine.addSheetField(sheetField);
         }
@@ -282,8 +283,8 @@ public class SheetDefineHelper {
                     for (String leftSheetAlias : currentSheetAlias) {
                         SheetFieldSource sheetFieldSource = sheetField.getSheetFieldSource(leftSheetAlias);
                         if (sheetFieldSource != null) {
-                            alreadyAppearedTableAlais.add(sheetFieldSource.getSheetAlias());
-                            String column = String.format("%s.%s as %s", sheetFieldSource.getSheetAlias(), sheetFieldSource.getSheetFieldName(), fieldName);
+                            alreadyAppearedTableAlais.add(sheetFieldSource.getSheetTableAlias());
+                            String column = String.format("%s.%s as %s", sheetFieldSource.getSheetTableAlias(), sheetFieldSource.getSheetFieldName(), fieldName);
                             if (columnsb.length() == 0) {
                                 columnsb.append(column);
                             } else {

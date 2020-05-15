@@ -1,8 +1,9 @@
-package org.framework.hsven.dataloader.loader;
+package org.framework.hsven.dataloader.api.impl;
 
 import org.framework.hsven.dataloader.api.IDataSourceProvider;
 import org.framework.hsven.datasource.InternalDBContextHelper;
 import org.framework.hsven.datasource.SpringDataSourceContextUtil;
+import org.framework.hsven.datasource.enums.DataSourceType;
 import org.framework.hsven.datasource.model.DataSourceConfig;
 import org.framework.hsven.datasource.util.DataSourceNameGenerator;
 
@@ -12,6 +13,12 @@ public class DefaultDataSourceProvider implements IDataSourceProvider {
     @Override
     public String getProviderName() {
         return "default_datasource_autoconfigure";
+    }
+
+    @Override
+    public DataSourceType getDataSourceType(String dbName) {
+        DataSourceConfig dataSourceConfig = getDataSourceConfig(dbName);
+        return dataSourceConfig == null ? null : dataSourceConfig.getDatasourceType();
     }
 
     @Override

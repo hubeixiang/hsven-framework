@@ -14,6 +14,10 @@ public class SimpleMainTable {
     //需要查询出来的字段
     private TableFieldSet tableFieldSet;
 
+    public String getIdentify() {
+        return toString();
+    }
+
     public boolean hasTableField() {
         return tableFieldSet != null && tableFieldSet.hasTableField();
     }

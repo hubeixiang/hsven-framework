@@ -8,10 +8,17 @@ import org.joda.time.format.DateTimeFormatter;
 import java.util.Date;
 
 /**
- * 日期时间工具类
+ * 日期时间工具类,使用 joda 三方类转换的
  * @author sven
  */
-public final class DateTimeUtils {
+public final class DateJodaUtils {
+    public static void main(String[] args){
+        String value = "2020-03-01";
+        Date date1 = DateJodaUtils.formatDateString(value,YEAR_MONTH_DAY);
+        System.out.println(date1);
+        Date date2 = DateJodaUtils.formatDateString(value,YEAR_MONTH_DAY_HOUR_MINUTE_SECOND);
+        System.out.println(date2);
+    }
 
     /**
      * 年(yyyy)
@@ -52,6 +59,12 @@ public final class DateTimeUtils {
      * 年-月-日 小时:分钟:秒钟(yyyy-MM-dd HH:mm:ss)
      */
     public static final String YEAR_MONTH_DAY_HOUR_MINUTE_SECOND = "yyyy-MM-dd HH:mm:ss";
+
+    /**
+     *
+     * 年-月-日 小时:分钟:秒钟.毫秒(yyyy-MM-dd HH:mm:ss.S)
+     */
+    public static final String YEAR_MONTH_DAY_HOUR_MINUTE_SECOND_MS = "yyyy-MM-dd HH:mm:ss.S";
 
     /**
      * 年月日小时分钟秒钟(yyyyMMddHHmmss)
@@ -298,7 +311,7 @@ public final class DateTimeUtils {
      * @return 和今天相比的日期字符串
      */
     public static String getCompareWithTodayDateString(Date date) {
-        int days = Math.abs(DateTimeUtils.compareDaysWithToday(date));
+        int days = Math.abs(DateJodaUtils.compareDaysWithToday(date));
         String dateString = "";
         if (days == 0) {
             dateString = "今天";
@@ -483,7 +496,7 @@ public final class DateTimeUtils {
      * @param splitChar  指定分隔符
      * @return 格式正确返回分割后的时间对象数组 格式错误返回null <br>
      * 指定了格式符为. 分隔符为- 返回值为 时间长度为2的Date类型数组<br>
-     * 时间转换的方式详见 {@link DateTimeUtils#formatUnknownString2Date(String dateString)}
+     * 时间转换的方式详见 {@link DateJodaUtils#formatUnknownString2Date(String dateString)}
      */
     public static Date[] formatDatesByString(String dateString, String spaceChar, String splitChar) {
         if (spaceChar.equals(splitChar)) {

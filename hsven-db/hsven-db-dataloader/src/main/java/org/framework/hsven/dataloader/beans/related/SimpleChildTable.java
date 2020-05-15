@@ -1,5 +1,6 @@
 package org.framework.hsven.dataloader.beans.related;
 
+import org.framework.hsven.dataloader.beans.loader.DefineRelatedFields;
 import org.framework.hsven.utils.ClassEqualsUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,6 +10,9 @@ import org.slf4j.LoggerFactory;
  */
 public class SimpleChildTable {
     public static Logger logger = LoggerFactory.getLogger(SimpleChildTable.class);
+    //利用定义的关联字段集合(TableRelatedFieldSet)生成的关联实体,不用外部填写
+    //在验证此配置对象是否正确时,填写对应的值
+    private final DefineRelatedFields defineRelatedFields = new DefineRelatedFields();
     // <childTable database="NMOSDB" tableAlias="vendor_name" isCache="true">
     // <tableName>vendor_name</tableName>
     // <where></where>
@@ -21,6 +25,14 @@ public class SimpleChildTable {
     private TableDefine tableDefine;
     private TableFieldSet tableFieldSet;
     private TableRelatedFieldSet tableRelatedFieldSet;
+
+    public String getIdentify() {
+        return toString();
+    }
+
+    public DefineRelatedFields getDefineRelatedFields() {
+        return defineRelatedFields;
+    }
 
     public boolean hasTableField() {
         return tableFieldSet != null && tableFieldSet.hasTableField();
@@ -100,7 +112,7 @@ public class SimpleChildTable {
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        builder.append("ChildTable [isConfigCache=").append(isConfigCache);
+        builder.append("SimpleChildTable [isConfigCache=").append(isConfigCache);
         builder.append(", tableDefine=").append(tableDefine);
         builder.append(", fieldSet=").append(tableFieldSet);
         builder.append(", tableRelatedFieldSet=").append(tableRelatedFieldSet);

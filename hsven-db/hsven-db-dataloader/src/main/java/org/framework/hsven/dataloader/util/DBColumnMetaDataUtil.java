@@ -22,7 +22,7 @@ public class DBColumnMetaDataUtil {
     private static final String JAVA_LANG_INTEGER = "java.lang.Integer";
     private static Logger logger = LoggerFactory.getLogger(DBColumnMetaDataUtil.class);
 
-    public static Object getColumnValue(DBColumnMetaData dbColumnMetaData, ResultSet rs) throws SQLException {
+    public static Object getColumnOracleValue(DBColumnMetaData dbColumnMetaData, ResultSet rs) throws SQLException {
         int columnMetDataIndex = dbColumnMetaData.getColumnMetDataIndex();
         EnumDbDataType columnType = dbColumnMetaData.getType();
         if (columnType == null) {
@@ -31,31 +31,31 @@ public class DBColumnMetaDataUtil {
         Object ret = null;
         switch (columnType) {
             case Boolean:
-                ret = rs.getBoolean(columnMetDataIndex);
+                ret = rs.getObject(columnMetDataIndex, java.lang.Boolean.class);
                 break;
             case Short:
-                ret = rs.getShort(columnMetDataIndex);
+                ret = rs.getObject(columnMetDataIndex, java.lang.Short.class);
                 break;
             case Integer:
-                ret = rs.getInt(columnMetDataIndex);
+                ret = rs.getObject(columnMetDataIndex, java.lang.Integer.class);
                 break;
             case Long:
-                ret = rs.getLong(columnMetDataIndex);
+                ret = rs.getObject(columnMetDataIndex, java.lang.Long.class);
                 break;
             case Float:
-                ret = rs.getFloat(columnMetDataIndex);
+                ret = rs.getObject(columnMetDataIndex, java.lang.Float.class);
                 break;
             case Double:
-                ret = rs.getDouble(columnMetDataIndex);
+                ret = rs.getObject(columnMetDataIndex, java.lang.Double.class);
                 break;
             case Date:
-                ret = rs.getTimestamp(columnMetDataIndex);
+                ret = rs.getDate(columnMetDataIndex);
                 break;
             case String:
-                ret = rs.getString(columnMetDataIndex);
+                ret = rs.getObject(columnMetDataIndex, java.lang.String.class);
                 break;
             case Byte:
-                ret = rs.getByte(columnMetDataIndex);
+                ret = rs.getObject(columnMetDataIndex, java.lang.Byte.class);
                 break;
             default:
                 logger.error(String.format("%s type=%s unrecognized", dbColumnMetaData, columnType));
@@ -193,13 +193,8 @@ public class DBColumnMetaDataUtil {
                         return_value = columnValue;
                     } else if (columnValue instanceof java.util.Date) {
                         return_value = columnValue;
-//                    } else if (columnValue instanceof oracle.sql.TIMESTAMP) {
-//                        try {
-//                            return_value = ((oracle.sql.TIMESTAMP) columnValue).dateValue();
-//                        } catch (SQLException e) {
-//                            return_value = null;
-//                            logger.error(String.format("DBColumnMetaDataUtil.getColumnValue columnName=%s,[columnValue=%s,class=%s],can't convert to dataType=%s,Exception:%s", columnName, columnValue, name, columnType, e.getMessage()), e);
-//                        }
+                    } else if (columnValue instanceof java.sql.Timestamp) {
+                        return_value = ((java.util.Date) columnValue);
                     } else {
                         logger.error(String.format("DBColumnMetaDataUtil.getColumnValue columnName=%s,[columnValue=%s,class=%s],can't convert to dataType=%s", columnName, columnValue, name, columnType));
                     }

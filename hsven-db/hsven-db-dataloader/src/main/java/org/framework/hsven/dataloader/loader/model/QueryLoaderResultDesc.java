@@ -10,7 +10,7 @@ public class QueryLoaderResultDesc extends DealFalgDesc implements Serializable 
     private String sqlName;
     private String sql;
     //加载的数据量
-    private long loaderTotal = 0;
+    private long resultIndex = 0;
     private int fetchSize;
     //连接获取查询statement的耗时
     private long usingTimeMS_getJdbcStatement = -1;
@@ -61,12 +61,12 @@ public class QueryLoaderResultDesc extends DealFalgDesc implements Serializable 
         this.usingTimeMS_processData = usingTimeMS_processData;
     }
 
-    public long getLoaderTotal() {
-        return loaderTotal;
+    public long getResultIndex() {
+        return resultIndex;
     }
 
-    public void setLoaderTotal(long loaderTotal) {
-        this.loaderTotal = loaderTotal;
+    public void setResultIndex(long resultIndex) {
+        this.resultIndex = resultIndex;
     }
 
     @Override
@@ -75,7 +75,7 @@ public class QueryLoaderResultDesc extends DealFalgDesc implements Serializable 
         builder.append("\r\n");
         builder.append("QueryLoaderResultDesc [").append(super.toString());
         builder.append(",sqlName=").append(sqlName);
-        builder.append(", loaderTotal=").append(loaderTotal);
+        builder.append(", resultIndex=").append(resultIndex);
         builder.append(", fetchSize=").append(fetchSize).append("\r\n");
         builder.append(", stepUsingTimeMS(");
         builder.append("statement=").append(usingTimeMS_getJdbcStatement);

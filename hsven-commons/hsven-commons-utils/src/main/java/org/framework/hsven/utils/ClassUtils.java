@@ -156,10 +156,10 @@ public class ClassUtils {
         } else if (type == Boolean.class || type == boolean.class) {
             newVal = HsvenStringUtils.isTrue(value);
         } else if (type == Date.class) {
-            newVal = DateTimeUtils.formatUnknownString2Date(value.toString());
+            newVal = DateJodaUtils.formatUnknownString2Date(value.toString());
         } else if (type == String.class) {
             if (value instanceof Date) {
-                newVal = DateTimeUtils.format(((Date) value), DateTimeUtils.YEAR_MONTH_DAY_HOUR_MINUTE_SECOND);
+                newVal = DateJodaUtils.format(((Date) value), DateJodaUtils.YEAR_MONTH_DAY_HOUR_MINUTE_SECOND);
             } else
                 newVal = String.valueOf(value);
         }

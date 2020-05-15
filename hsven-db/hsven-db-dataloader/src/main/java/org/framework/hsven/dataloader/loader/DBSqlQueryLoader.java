@@ -4,6 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.framework.hsven.dataloader.api.IDBSqlQueryLoaderListener;
 import org.framework.hsven.dataloader.api.IDataSourceProvider;
+import org.framework.hsven.dataloader.api.impl.DefaultDataSourceProvider;
 import org.framework.hsven.dataloader.beans.DBColumnMetaData;
 import org.framework.hsven.dataloader.beans.DBColumnMetaDataDefine;
 import org.framework.hsven.dataloader.beans.DBColumnValue;
@@ -127,7 +128,7 @@ public class DBSqlQueryLoader extends Thread {
 
             //第四步:逐行获取查询的数据结果集
             loaderTotal = processResultSetData(resultSet);
-            queryLoaderResultDesc.setLoaderTotal(loaderTotal);
+            queryLoaderResultDesc.setResultIndex(loaderTotal);
 
             long endTimeMS_processData = System.currentTimeMillis();
             usingTimeMS_processData = endTimeMS_processData - endTimeMs_getMetaData;
@@ -201,8 +202,9 @@ public class DBSqlQueryLoader extends Thread {
                 dbColumnMetaData = dbColumnMetaDataDefine.getDBColumnMetaData(columnIndex);
                 try {
                     int columnMetDataIndex = dbColumnMetaData.getColumnMetDataIndex();
+//                    Object ruturn_columnValue = DBColumnMetaDataUtil.getColumnOracleValue(dbColumnMetaData, resultSet);
                     columnValue = resultSet.getObject(columnMetDataIndex);
-                    Object ruturn_columnValue = DBColumnMetaDataUtil.getColumnValue(dbColumnMetaData, resultSet);
+                    Object ruturn_columnValue = DBColumnMetaDataUtil.getColumnValue(dbColumnMetaData, columnValue);
                     DBColumnValue dbColumnValue = new DBColumnValue(dbColumnMetaData, ruturn_columnValue);
                     boolean ok = dbTableRow.addColumnValue(dbColumnMetaDataDefine, dbColumnValue);
                     if (!ok) {

@@ -38,7 +38,7 @@ public class SheetField {
 
     public void addSheetFieldSource(SheetFieldSource sheetFieldSource) {
         if (sheetFieldSource != null && sheetFieldSource.isValid()) {
-            sheetFieldSourceMap.put(sheetFieldSource.getSheetAlias(), sheetFieldSource);
+            sheetFieldSourceMap.put(sheetFieldSource.getSheetTableAlias(), sheetFieldSource);
         }
     }
 

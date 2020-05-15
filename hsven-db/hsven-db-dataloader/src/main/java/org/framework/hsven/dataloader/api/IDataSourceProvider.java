@@ -1,5 +1,6 @@
 package org.framework.hsven.dataloader.api;
 
+import org.framework.hsven.datasource.enums.DataSourceType;
 import org.framework.hsven.datasource.model.DataSourceConfig;
 
 import javax.sql.DataSource;
@@ -10,6 +11,8 @@ import javax.sql.DataSource;
  */
 public interface IDataSourceProvider {
     public String getProviderName();
+
+    public DataSourceType getDataSourceType(String dbName);
 
     public DataSourceConfig getDataSourceConfig(String dbName);
 

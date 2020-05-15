@@ -4,10 +4,19 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class SheetDependency {
+    private EnumTableType tableType;
     private SheetDependency previous = null;
     private SheetDependency next = null;
     //当前层级的信息
     private CurrentInfo currentInfo = null;
+
+    public EnumTableType getTableType() {
+        return tableType;
+    }
+
+    public void setTableType(EnumTableType tableType) {
+        this.tableType = tableType;
+    }
 
     public SheetDependency getPrevious() {
         return previous;
@@ -81,6 +90,18 @@ public class SheetDependency {
     }
 
     /**
+     * 判断当前对象是否有做关联信息
+     *
+     * @return
+     */
+    public boolean hasCurrentLeftSheetAlias() {
+        if (currentInfo != null && currentInfo.getLeftInfoMap() != null && currentInfo.getLeftInfoMap().size() > 0) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * 获取当前对象的左关联表信息
      *
      * @return
@@ -142,6 +163,7 @@ public class SheetDependency {
         next = new SheetDependency();
         next.previous = this;
         next.currentInfo = nextCurrentInfo;
+        next.setTableType(nextCurrentInfo.getTableType());
         next.next = null;
     }
 }

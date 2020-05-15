@@ -29,6 +29,15 @@ public class TableLoadDefineUtil {
         //所有表字段中重复字段
         Set<String> repeatFieldAlias = new HashSet<>();
 
+        //验证分区字段是否在主表的查询字段列表中
+        if (tableLoadDefine.needPartition()) {
+            SimpleMainTable simpleMainTable = tableLoadDefine.getSimpleMainTable();
+            if (simpleMainTable == null || !simpleMainTable.hasTableField() ||
+                    (simpleMainTable.hasTableField() && simpleMainTable.getTableFieldSet().getFieldByName(tableLoadDefine.getPartitionFieldName()) == null)) {
+                validResult.appendAllTipType(TipsMessageUsed.getMessage("tips.valid_partition_must_in_maintable", tableLoadDefine.getPartitionFieldName()));
+            }
+        }
+
         if (!tableLoadDefine.hasSimpleChildTable()) {
             validResult.appendAllTipType(TipsMessageUsed.getMessage("tips.valid_maintable_must_config"));
             return validResult;
@@ -48,6 +57,8 @@ public class TableLoadDefineUtil {
                         allTableFieldMap.put(tableField.getFieldAlias(), tableField);
                         allTableFieldMap.put(tableField.getFieldAlias(), tableField);
                     }
+                    //添加所有查询字段的字段类型
+                    tableLoadDefine.putAllFieldNameAliasDataType(tableField.getFieldAlias(), tableField.getFieldAliasDisplayEnumDbDataType());
                 }
             }
         }
@@ -72,10 +83,12 @@ public class TableLoadDefineUtil {
                             allTableFieldMap.put(tableField.getFieldAlias(), tableField);
                             allTableFieldMap.put(tableField.getFieldAlias(), tableField);
                         }
+                        //添加所有查询字段的字段类型
+                        tableLoadDefine.putAllFieldNameAliasDataType(tableField.getFieldAlias(), tableField.getFieldAliasDisplayEnumDbDataType());
                     }
                 }
             }
-            //验证每个子表的关联字段是否在查询字段中存在
+            //验证每个子表的关联字段(关联中的主字段)是否在查询字段中存在
             Iterator<Map.Entry<String, SimpleChildTable>> it2 = childTables.entryChildTables();
             StringBuffer errorRelatedFieldStringBuffer = new StringBuffer();
             while (it2 != null && it2.hasNext()) {
@@ -109,6 +122,17 @@ public class TableLoadDefineUtil {
         //验证关联的字段是否已经配置完整
         if (repeatFieldAlias.size() > 0) {
             validResult.appendAllTipType(TipsMessageUsed.getMessage("tips.valid_table_field_reapeat", repeatFieldAlias));
+        }
+
+        //生成关联信息
+        if (validResult.isNormal()) {
+            if (childTables.hasSimpleChildTable()) {
+                Iterator<Map.Entry<String, SimpleChildTable>> it = childTables.entryChildTables();
+                while (it.hasNext()) {
+                    SimpleChildTable simpleChildTable = it.next().getValue();
+                    SimpleChildTableUtil.parserTableDefineRelatedFields(tableLoadDefine, simpleChildTable);
+                }
+            }
         }
 
         return validResult;

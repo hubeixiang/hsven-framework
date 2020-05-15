@@ -5,7 +5,7 @@ import org.framework.hsven.dataloader.beans.related.SimpleChildTable;
 import org.framework.hsven.dataloader.beans.related.SimpleMainTable;
 import org.framework.hsven.dataloader.beans.related.TableField;
 import org.framework.hsven.dataloader.loader.model.QueryLoaderResultDesc;
-import org.framework.hsven.dataloader.related.child.ChildTableLoadResult;
+import org.framework.hsven.dataloader.related.TableLoadResult;
 
 import java.util.Collection;
 import java.util.List;
@@ -14,8 +14,16 @@ import java.util.Set;
 
 /**
  * 关联的主表+子表数据加载,固定的复杂加载过程(先加载主表,然后加载子表,并将子表的数据关联到主表上)
+ * 定义的关联流程加载的数据将加到外部定义的存储介质中
  */
 public interface IRelatedTableLoadListener {
+
+    /**
+     * 关联加载监听的标识名字
+     *
+     * @return
+     */
+    public String relatedListenerIdentification();
 
     /**
      * 主表加载开始
@@ -54,9 +62,9 @@ public interface IRelatedTableLoadListener {
      * 整个关联表数据加载完成后的处理
      *
      * @param mainTableQueryLoaderResultDesc
-     * @param childTableLoadResultList
+     * @param tableLoadResultList
      */
-    public void onEnd(QueryLoaderResultDesc mainTableQueryLoaderResultDesc, List<ChildTableLoadResult> childTableLoadResultList);
+    public void onEnd(QueryLoaderResultDesc mainTableQueryLoaderResultDesc, List<TableLoadResult> tableLoadResultList);
 
     /**
      * 加载过程中可能会使用到的,查询已经加载完成后的指定行号,指定列名的值
