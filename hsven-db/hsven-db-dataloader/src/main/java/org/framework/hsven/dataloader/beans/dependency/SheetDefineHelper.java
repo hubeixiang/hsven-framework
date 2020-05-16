@@ -7,18 +7,13 @@ import org.framework.hsven.dataloader.beans.related.TableField;
 import org.framework.hsven.dataloader.beans.related.TableFieldSet;
 import org.framework.hsven.dataloader.beans.related.TableLoadDefine;
 import org.framework.hsven.dataloader.beans.related.TableRelatedField;
-import org.framework.hsven.dataloader.beans.related.TableRelatedFieldSet;
-import org.framework.hsven.dataloader.related.child.CallableTaskDependency;
-import org.framework.hsven.dataloader.related.child.LazyRelatedTableField;
-import org.framework.hsven.dataloader.related.child.RelatedFieldValueSet;
+import org.framework.hsven.dataloader.valid.related.TableDefineUtil;
 import org.framework.hsven.datasource.enums.DataSourceType;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -77,16 +72,6 @@ public class SheetDefineHelper {
             sheetDefine.addLeftInfo(leftInfo);
         }
         return sheetDefine;
-    }
-
-    public static CallableTaskDependency structCallableTaskDependency(SheetDependency sheetDependency, TableLoadDefine tableLoadDefine) {
-        CallableTaskDependency callableTaskDependency = new CallableTaskDependency(true);
-        //因为依赖的第一级是主表的字段,此一级没有左关联表
-        SheetDependency firstLeftSheetDependency = sheetDependency.getNext();
-        if (firstLeftSheetDependency != null && firstLeftSheetDependency.getCurrentSheetAlias() != null && firstLeftSheetDependency.getCurrentSheetAlias().size() > 0) {
-            structCallableTaskDependency(callableTaskDependency, firstLeftSheetDependency, tableLoadDefine);
-        }
-        return callableTaskDependency;
     }
 
     /**
@@ -165,11 +150,11 @@ public class SheetDefineHelper {
         CurrentInfo mainSheetCurrentInfo = new CurrentInfo(EnumTableType.Main);
         mainSheetCurrentInfo.setSheetFieldMap(mainSheetInfo);
         dependency.addCurrentInfo(mainSheetCurrentInfo);
-        parserCurrentDependency(dependency, sheetDefine,EnumTableType.Child);
+        parserCurrentDependency(dependency, sheetDefine, EnumTableType.Child);
         return dependency;
     }
 
-    private static void parserCurrentDependency(SheetDependency previous, SheetDefine sheetDefine,EnumTableType tableType) {
+    private static void parserCurrentDependency(SheetDependency previous, SheetDefine sheetDefine, EnumTableType tableType) {
         if (previous == null || previous.getCurrentInfo() == null) {
             return;
         }
@@ -229,7 +214,7 @@ public class SheetDefineHelper {
         currentInfo.setLeftInfoMap(currentLeftInfo);
         previous.addNextCurrentInfo(currentInfo);
         SheetDependency currentSheetDependency = previous.getNext();
-        parserCurrentDependency(currentSheetDependency, sheetDefine,EnumTableType.Lazy_subtable);
+        parserCurrentDependency(currentSheetDependency, sheetDefine, EnumTableType.Lazy_subtable);
     }
 
 
@@ -258,7 +243,7 @@ public class SheetDefineHelper {
         if (sheetDependency.getPrevious() == null) {
             //表明是第一个主表的查询sql拼接
             String mainSheetAlias = sheetDefine.getMainSheetAlias();
-            String mainSql = String.format("select %s.* from %s %s ", mainSheetAlias, getTableStr(sheetDefine.getMainSheetContext(), null), mainSheetAlias);
+            String mainSql = String.format(" select %s.* from %s ", mainSheetAlias, TableDefineUtil.structQueryTable(null, sheetDefine.getMainSheetContext(), mainSheetAlias));
             wholeSql.setWholeSql(mainSql);
             CurrentInfo currentInfo = sheetDependency.getCurrentInfo();
             for (Map.Entry<String, SheetField> entry : currentInfo.getSheetFieldMap().entrySet()) {
@@ -321,56 +306,6 @@ public class SheetDefineHelper {
         }
         if (sheetDependency.getNext() != null) {
             structRecursionSql(sheetDefine, sheetDependency.getNext(), recursionDepth + 1, wholeSql, alreadyAppearedFieldName);
-        }
-    }
-
-    private static void structCallableTaskDependency(CallableTaskDependency callableTaskDependency, SheetDependency sheetDependency, TableLoadDefine tableLoadDefine) {
-        Set<String> sheetAlias = sheetDependency.getCurrentSheetAlias();
-        if (sheetAlias != null && sheetAlias.size() > 0) {
-            //设置左关联表名称
-            callableTaskDependency.setChildTableAlias(sheetAlias);
-            //对不同的左关联表依据关联字段分组
-            boolean isRelatedMainTable = callableTaskDependency.isRelatedMainTable();
-            Map<String, List<SimpleChildTable>> relatedTableField_childTableList_map = callableTaskDependency.getRelatedTableField_childTableList_map();
-            Map<String, RelatedFieldValueSet> relatedTableFieldName_relatedTableFieldValueSet_map = callableTaskDependency.getRelatedTableFieldName_relatedTableFieldValueSet_map();
-            Map<String, LazyRelatedTableField> relatedTableFieldName_lazyRelatedTableFieldRowIndex_map = callableTaskDependency.getRelatedTableFieldName_lazyRelatedTableFieldRowIndex_map();
-            for (String tableAlias : sheetAlias) {
-                SimpleChildTable simpleChildTable = tableLoadDefine.getChildTables().getChildTable(tableAlias);
-                if (simpleChildTable == null) {
-                    continue;
-                }
-                TableRelatedFieldSet tableRelatedFieldSet = simpleChildTable.getTableRelatedFieldSet();
-                TableRelatedField tableRelatedField = tableRelatedFieldSet.getTableRelatedFieldList().get(0);
-                String relatedFieldName = tableRelatedField.getMainTableField();
-                List<SimpleChildTable> simpleChildTableList = null;
-                if (relatedTableField_childTableList_map.containsKey(relatedFieldName)) {
-                    simpleChildTableList = relatedTableField_childTableList_map.get(relatedFieldName);
-                } else {
-                    simpleChildTableList = new ArrayList<SimpleChildTable>();
-                    relatedTableField_childTableList_map.put(relatedFieldName, simpleChildTableList);
-                }
-                simpleChildTableList.add(simpleChildTable);
-                if (isRelatedMainTable) {
-                    RelatedFieldValueSet relatedFieldValueSet = relatedTableFieldName_relatedTableFieldValueSet_map.get(relatedFieldName);
-                    if (relatedFieldValueSet == null) {
-                        relatedFieldValueSet = new RelatedFieldValueSet(tableRelatedField);
-                        relatedTableFieldName_relatedTableFieldValueSet_map.put(relatedFieldName, relatedFieldValueSet);
-                    }
-                } else {
-                    LazyRelatedTableField lazyRelatedTableField = relatedTableFieldName_lazyRelatedTableFieldRowIndex_map.get(relatedFieldName);
-                    if (lazyRelatedTableField == null) {
-                        lazyRelatedTableField = new LazyRelatedTableField();
-                        lazyRelatedTableField.setFieldName(relatedFieldName);
-//                        lazyRelatedTableField.setDataType(tableLoadConfig.getDataBaseColumnType(relatedFieldName));
-                        relatedTableFieldName_lazyRelatedTableFieldRowIndex_map.put(relatedFieldName, lazyRelatedTableField);
-                    }
-                }
-            }
-            if (sheetDependency.getNext() != null && sheetDependency.getNext().getCurrentSheetAlias().size() > 0) {
-                CallableTaskDependency next = new CallableTaskDependency(false);
-                callableTaskDependency.setNext(next);
-                structCallableTaskDependency(next, sheetDependency.getNext(), tableLoadDefine);
-            }
         }
     }
 

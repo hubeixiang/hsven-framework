@@ -55,7 +55,7 @@ public class TableFieldUtil {
         if (StringUtils.isNotEmpty(tableFieldName) && StringUtils.isEmpty(secondTableFieldName)) {
             queryFieldNames.add(String.format("%s.%s as %s", tableField.getTableAlias(), tableFieldName, fieldNameAlias));
         } else if (StringUtils.isNotEmpty(tableFieldName) && StringUtils.isEmpty(secondTableFieldName)) {
-            queryFieldNames.add(DBDialectSyntaxUtil.structCaseWhenSql(dataSourceType, tableAlias, tableFieldName, secondTableFieldName, fieldNameAlias));
+            queryFieldNames.add(DBDialectSyntaxUtil.structCaseNullWhenSql(dataSourceType, tableAlias, tableFieldName, secondTableFieldName, fieldNameAlias));
         }
     }
 }

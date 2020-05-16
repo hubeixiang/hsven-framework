@@ -8,7 +8,6 @@ import org.framework.hsven.dataloader.beans.related.TableLoadDefine;
 import org.framework.hsven.dataloader.related.ITableLoaderTask;
 import org.framework.hsven.dataloader.related.RelatedLoaderHandlerHolder;
 import org.framework.hsven.dataloader.related.TableLoadResult;
-import org.framework.hsven.dataloader.related.child.CallableTaskDependency;
 import org.framework.hsven.dataloader.related.dependency.SimpleMainTableCallableTaskDependency;
 import org.framework.hsven.dataloader.related.main.MainTableLoadPartitionContext;
 import org.framework.hsven.dataloader.related.main.task.MainTableLoaderTask;
@@ -27,7 +26,6 @@ public class RelatedTableLoaderTask implements ITableLoaderTask<TableLoadResult>
     private final MainTableLoadPartitionContext mainTableLoadPartitionContext;
     private final Object tableModel;
     private TableLoadDefine tableLoadDefine;
-    private CallableTaskDependency callableTaskDependency;
     private SimpleMainTableCallableTaskDependency simpleMainTableCallableTaskDependency;
 
     public RelatedTableLoaderTask(RelatedLoaderHandlerHolder relatedLoaderHandlerHolder, MainTableLoadPartitionContext mainTableLoadPartitionContext, Object tableModel) {
@@ -54,7 +52,6 @@ public class RelatedTableLoaderTask implements ITableLoaderTask<TableLoadResult>
         StringBuffer verifyStringBuffer = SheetDefineHelper.validSheetDefine(sheetDefine);
         if (verifyStringBuffer == null || verifyStringBuffer.length() == 0) {
             SheetDependency sheetDependency = SheetDefineHelper.parserDependency(sheetDefine);
-            this.callableTaskDependency = SheetDefineHelper.structCallableTaskDependency(sheetDependency, this.tableLoadDefine);
             this.simpleMainTableCallableTaskDependency = SheetDependencyHelper.structCallableRelatedTaskDependency(sheetDependency, this.tableLoadDefine);
         } else {
             validResult.appendAllTipType(verifyStringBuffer.toString());

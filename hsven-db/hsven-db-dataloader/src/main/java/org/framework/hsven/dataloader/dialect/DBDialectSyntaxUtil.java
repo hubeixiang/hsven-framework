@@ -6,10 +6,20 @@ import org.framework.hsven.datasource.enums.DataSourceType;
 
 import java.util.Collection;
 
+/**
+ * 不同数据库部分语句方言工具
+ */
 public class DBDialectSyntaxUtil {
-    public final static String structCaseWhenSql(DataSourceType dbType, String tableAlias, String tableFieldName, String secondTableFieldName, String fieldNameAlias) {
-        return String.format("case when %s.%s is null then %s.%s else %s.%s end as %s",
-                tableAlias, tableFieldName, tableAlias, secondTableFieldName, tableAlias, tableFieldName, fieldNameAlias);
+    public final static String structCaseNullWhenSql(DataSourceType dbType, String tableAlias, String tableFieldName, String secondTableFieldName, String fieldNameAlias) {
+        switch (dbType) {
+            case ORACLE:
+            case MYSQL:
+                return String.format("case when %s.%s is null then %s.%s else %s.%s end as %s",
+                        tableAlias, tableFieldName, tableAlias, secondTableFieldName, tableAlias, tableFieldName, fieldNameAlias);
+            default:
+                return String.format("case when %s.%s is null then %s.%s else %s.%s end as %s",
+                        tableAlias, tableFieldName, tableAlias, secondTableFieldName, tableAlias, tableFieldName, fieldNameAlias);
+        }
     }
 
     public final static String structInSql(DataSourceType dbType, String fieldName, EnumDbDataType enumDbDataType, Collection<String> values) {

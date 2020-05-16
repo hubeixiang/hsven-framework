@@ -6,8 +6,6 @@ import org.framework.hsven.dataloader.tips.TipsMessageUsed;
 import org.framework.hsven.datasource.enums.DataSourceType;
 import org.framework.hsven.utils.valid.ValidResult;
 
-import java.util.Set;
-
 public class TableDefineUtil {
     /**
      * 判断查询内容是表,还是查询sql
@@ -16,7 +14,11 @@ public class TableDefineUtil {
      * @return
      */
     public final static boolean isTableName(TableDefine tableDefine) {
-        String upperCase_tableName = tableDefine.getTableName().toUpperCase();
+        return isTableName(tableDefine.getTableAlias());
+    }
+
+    public final static boolean isTableName(String queryContext) {
+        String upperCase_tableName = queryContext.toUpperCase();
         if ((upperCase_tableName.contains("SELECT   ") || upperCase_tableName.contains("SELECT ")) && (upperCase_tableName.contains("FROM   ") || upperCase_tableName.contains("FROM "))) {
             return false;
         } else {
@@ -54,6 +56,14 @@ public class TableDefineUtil {
             return String.format("%s %s", tableDefine.getTableName(), tableDefine.getTableAlias());
         } else {
             return String.format("(%s) %s", tableDefine.getTableName(), tableDefine.getTableAlias());
+        }
+    }
+
+    public final static String structQueryTable(DataSourceType dataSourceType, String queryContext, String tableAlias) {
+        if (TableDefineUtil.isTableName(queryContext)) {
+            return String.format("%s %s", queryContext, tableAlias);
+        } else {
+            return String.format("(%s) %s", queryContext, tableAlias);
         }
     }
 }
