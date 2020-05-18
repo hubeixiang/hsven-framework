@@ -1,6 +1,6 @@
 package org.framework.hsven.dataloader.api;
 
-import org.framework.hsven.dataloader.beans.DBColumnMetaDataDefine;
+import org.framework.hsven.dataloader.beans.db.DBColumnMetaDataDefine;
 import org.framework.hsven.dataloader.beans.data.DBTableRowInfo;
 import org.framework.hsven.dataloader.loader.model.QueryConfig;
 import org.framework.hsven.dataloader.loader.model.QueryLoaderResultDesc;

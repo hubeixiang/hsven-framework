@@ -1,7 +1,7 @@
 package org.framework.hsven.dataloader.listener;
 
 import org.framework.hsven.dataloader.api.IDBSqlQueryLoaderListener;
-import org.framework.hsven.dataloader.beans.DBColumnMetaDataDefine;
+import org.framework.hsven.dataloader.beans.db.DBColumnMetaDataDefine;
 import org.framework.hsven.dataloader.beans.data.DBTableRowInfo;
 import org.framework.hsven.dataloader.beans.dependency.EnumTableType;
 import org.framework.hsven.dataloader.beans.loader.LazyRelatedFieldsAndRowIndex;

@@ -1,4 +1,4 @@
-package org.framework.hsven.dataloader.beans;
+package org.framework.hsven.dataloader.beans.db;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

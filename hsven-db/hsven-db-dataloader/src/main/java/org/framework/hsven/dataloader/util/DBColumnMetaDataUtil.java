@@ -1,7 +1,7 @@
 package org.framework.hsven.dataloader.util;
 
-import org.framework.hsven.dataloader.beans.DBColumnMetaData;
-import org.framework.hsven.dataloader.beans.EnumDbDataType;
+import org.framework.hsven.dataloader.beans.db.DBColumnMetaData;
+import org.framework.hsven.dataloader.beans.db.EnumDbDataType;
 import org.framework.hsven.datasource.enums.DataSourceType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,7 +1,7 @@
 package org.framework.hsven.dataloader.beans.data;
 
-import org.framework.hsven.dataloader.beans.DBColumnMetaDataDefine;
-import org.framework.hsven.dataloader.beans.DBColumnValue;
+import org.framework.hsven.dataloader.beans.db.DBColumnMetaDataDefine;
+import org.framework.hsven.dataloader.beans.db.DBColumnValue;
 
 public class DBTableRowInfo {
     private DBColumnMetaDataDefine dbColumnMetaDataDefine;

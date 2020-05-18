@@ -1,7 +1,7 @@
 package org.framework.hsven.dataloader.beans.related;
 
 import org.apache.commons.lang3.StringUtils;
-import org.framework.hsven.dataloader.beans.EnumDbDataType;
+import org.framework.hsven.dataloader.beans.db.EnumDbDataType;
 
 import java.util.HashMap;
 import java.util.Map;

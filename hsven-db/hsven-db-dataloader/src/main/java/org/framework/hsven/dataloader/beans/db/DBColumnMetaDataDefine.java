@@ -1,4 +1,4 @@
-package org.framework.hsven.dataloader.beans;
+package org.framework.hsven.dataloader.beans.db;
 
 import org.framework.hsven.datasource.enums.DataSourceType;
 import org.slf4j.Logger;

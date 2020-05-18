@@ -32,6 +32,7 @@
         <module>hsven-dispatch</module>
         <module>hsven-zookeeper</module>
         <module>hsven-quartz</module>
+        <module>hsven-dataset</module>
     </modules>
 
     <packaging>pom</packaging>

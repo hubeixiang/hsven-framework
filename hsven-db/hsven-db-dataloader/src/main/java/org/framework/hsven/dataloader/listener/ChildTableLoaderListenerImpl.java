@@ -2,7 +2,7 @@ package org.framework.hsven.dataloader.listener;
 
 import org.framework.hsven.dataloader.api.IDBSqlQueryLoaderListener;
 import org.framework.hsven.dataloader.api.IRelatedTableLoadListener;
-import org.framework.hsven.dataloader.beans.DBColumnMetaDataDefine;
+import org.framework.hsven.dataloader.beans.db.DBColumnMetaDataDefine;
 import org.framework.hsven.dataloader.beans.data.DBTableRowInfo;
 import org.framework.hsven.dataloader.beans.related.TableField;
 import org.framework.hsven.dataloader.beans.related.TableFieldSet;

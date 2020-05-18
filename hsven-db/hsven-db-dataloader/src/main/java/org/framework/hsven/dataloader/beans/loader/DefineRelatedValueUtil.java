@@ -1,6 +1,6 @@
 package org.framework.hsven.dataloader.beans.loader;
 
-import org.framework.hsven.dataloader.beans.DBColumnValue;
+import org.framework.hsven.dataloader.beans.db.DBColumnValue;
 import org.framework.hsven.dataloader.beans.data.DBTableRowInfo;
 
 public class DefineRelatedValueUtil {

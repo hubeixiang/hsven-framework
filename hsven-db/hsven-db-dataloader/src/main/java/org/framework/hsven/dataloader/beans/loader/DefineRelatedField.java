@@ -1,6 +1,6 @@
 package org.framework.hsven.dataloader.beans.loader;
 
-import org.framework.hsven.dataloader.beans.EnumDbDataType;
+import org.framework.hsven.dataloader.beans.db.EnumDbDataType;
 
 /**
  * 定义的字表关联主表的关联方式

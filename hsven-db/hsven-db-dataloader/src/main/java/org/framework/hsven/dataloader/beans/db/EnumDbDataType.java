@@ -1,4 +1,4 @@
-package org.framework.hsven.dataloader.beans;
+package org.framework.hsven.dataloader.beans.db;
 
 public enum EnumDbDataType {
 	// 布尔

@@ -1,6 +1,6 @@
 package org.framework.hsven.dataloader.beans.related;
 
-import org.framework.hsven.dataloader.beans.EnumDbDataType;
+import org.framework.hsven.dataloader.beans.db.EnumDbDataType;
 import org.framework.hsven.dataloader.util.StringFormatUtil;
 
 public class TableField {

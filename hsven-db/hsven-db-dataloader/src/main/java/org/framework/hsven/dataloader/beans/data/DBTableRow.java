@@ -1,9 +1,9 @@
 package org.framework.hsven.dataloader.beans.data;
 
 import org.apache.commons.lang3.StringUtils;
-import org.framework.hsven.dataloader.beans.DBColumnMetaData;
-import org.framework.hsven.dataloader.beans.DBColumnMetaDataDefine;
-import org.framework.hsven.dataloader.beans.DBColumnValue;
+import org.framework.hsven.dataloader.beans.db.DBColumnMetaData;
+import org.framework.hsven.dataloader.beans.db.DBColumnMetaDataDefine;
+import org.framework.hsven.dataloader.beans.db.DBColumnValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;

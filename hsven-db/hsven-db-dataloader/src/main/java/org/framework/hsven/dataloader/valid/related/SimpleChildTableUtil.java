@@ -1,7 +1,7 @@
 package org.framework.hsven.dataloader.valid.related;
 
 import org.apache.commons.lang3.StringUtils;
-import org.framework.hsven.dataloader.beans.EnumDbDataType;
+import org.framework.hsven.dataloader.beans.db.EnumDbDataType;
 import org.framework.hsven.dataloader.beans.dependency.StructSql;
 import org.framework.hsven.dataloader.beans.loader.DefineRelatedField;
 import org.framework.hsven.dataloader.beans.loader.RelatedValuesAndRowIndexEntity;
