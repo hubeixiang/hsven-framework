@@ -8,7 +8,6 @@ import java.util.Arrays;
 
 
 /**
- * @author duhailiang
  *  非线程安全对象，用于存储
  */
 public class QueryResult implements Serializable

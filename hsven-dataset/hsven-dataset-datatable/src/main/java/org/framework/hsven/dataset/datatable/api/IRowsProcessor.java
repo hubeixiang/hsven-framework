@@ -4,7 +4,6 @@ import org.framework.hsven.dataset.datatable.cache.Rows;
 import org.framework.hsven.dataset.datatable.exception.DataSetException;
 
 /**
- * @author duhailiang
  * 行处理器，在执行完查询后进行结果处理时将被调用
  */
 public interface IRowsProcessor

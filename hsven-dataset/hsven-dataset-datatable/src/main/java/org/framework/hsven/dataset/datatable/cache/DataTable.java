@@ -36,57 +36,6 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 /**
  * 用于存放的datatable数据
  *
- * @author duhailiang
- * @author duhailiang
- * @author duhailiang
- * @author duhailiang
- * @author duhailiang
- * @author duhailiang
- * @author duhailiang
- * @author duhailiang
- * @author duhailiang
- * @author duhailiang
- * @author duhailiang
- * @author duhailiang
- * @author duhailiang
- * @author duhailiang
- * @author duhailiang
- * @author duhailiang
- * @author duhailiang
- * @author duhailiang
- * @author duhailiang
- * @author duhailiang
- * @author duhailiang
- * @author duhailiang
- * @author duhailiang
- * @author duhailiang
- * @author duhailiang
- * @author duhailiang
- * @author duhailiang
- * @author duhailiang
- * @author duhailiang
- * @author duhailiang
- * @author duhailiang
- * @author duhailiang
- * @author duhailiang
- * @author duhailiang
- * @author duhailiang
- * @author duhailiang
- * @author duhailiang
- * @author duhailiang
- * @author duhailiang
- * @author duhailiang
- * @author duhailiang
- * @author duhailiang
- */
-/**
- * @author duhailiang
- *
- */
-
-/**
- * @author duhailiang
- *
  */
 public class DataTable {
     private static final String MD5_FIELD = "md5";
