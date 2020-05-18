@@ -16,7 +16,7 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * 关联加载主子表数据时,子表的单条数据的实时处理类
+ * 关联加载主子表数据时,子表的单条数据的实时处理类(需要批量适时关联查询字表时使用)
  */
 public class ChildTableLoaderListenerImpl implements IDBSqlQueryLoaderListener {
     private static Logger logger = LoggerFactory.getLogger(ChildTableLoaderListenerImpl.class);

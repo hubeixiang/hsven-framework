@@ -2,7 +2,10 @@ package org.framework.hsven.dataloader.beans.loader;
 
 import org.framework.hsven.dataloader.beans.EnumDbDataType;
 
-public class DefineRelatedField {
+/**
+ * 定义的字表关联主表的关联方式
+ */
+public class DefineRelatedField extends DefineLocalField {
     private EnumDbDataType dataType;
     private String relatedField;
 
@@ -55,6 +58,6 @@ public class DefineRelatedField {
 
     @Override
     public String toString() {
-        return String.format("DefineRelatedField [dataType=%s,relatedField=%s]", dataType, relatedField);
+        return String.format("DefineRelatedField [dataType=%s,relatedField=%s,localField=%s]", dataType, relatedField, getLocalField());
     }
 }

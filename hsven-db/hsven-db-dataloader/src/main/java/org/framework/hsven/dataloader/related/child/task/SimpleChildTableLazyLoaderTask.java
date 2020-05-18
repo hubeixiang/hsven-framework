@@ -1,15 +1,16 @@
 package org.framework.hsven.dataloader.related.child.task;
 
-import org.framework.hsven.dataloader.api.IDataSourceProvider;
-import org.framework.hsven.dataloader.api.IRelatedTableLoadListener;
+import org.framework.hsven.dataloader.beans.loader.LazyRelatedFieldsAndRowIndex;
+import org.framework.hsven.dataloader.beans.loader.RelatedValuesAndRowIndexEntity;
 import org.framework.hsven.dataloader.beans.related.SimpleChildTable;
 import org.framework.hsven.dataloader.beans.related.TableLoadDefine;
+import org.framework.hsven.dataloader.listener.ChildTableLoaderListenerImpl;
+import org.framework.hsven.dataloader.loader.DBSqlQueryLoader;
+import org.framework.hsven.dataloader.loader.DBSqlQueryLoaderUtil;
+import org.framework.hsven.dataloader.loader.model.QueryConfig;
 import org.framework.hsven.dataloader.loader.model.QueryLoaderResultDesc;
-import org.framework.hsven.dataloader.related.ITableLoaderTask;
-import org.framework.hsven.dataloader.related.TableLoadResult;
+import org.framework.hsven.dataloader.related.RelatedLoaderHandlerHolder;
 import org.framework.hsven.dataloader.related.child.ChildTableConfigCacheEntity;
-import org.framework.hsven.dataloader.related.dependency.SimpleChildTableLazyCallableTaskDependency;
-import org.framework.hsven.dataloader.related.main.MainTableLoadPartitionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,78 +20,38 @@ import org.slf4j.LoggerFactory;
  * 1. 当前子表需要适时从数据库查询
  * 2. 当前子表数据不需要适时查询,从已经完成的缓存中获取
  */
-public class SimpleChildTableLazyLoaderTask implements ITableLoaderTask<TableLoadResult> {
+public class SimpleChildTableLazyLoaderTask extends AbstractChildTableLoaderTask {
     private static Logger logger = LoggerFactory.getLogger(SimpleChildTableLazyLoaderTask.class);
-    private final IRelatedTableLoadListener iRelatedTableLoadListener;
-    private final IDataSourceProvider iDataSourceProvider;
-    private final MainTableLoadPartitionContext mainTableLoadPartitionContext;
-    private final TableLoadDefine tableLoadDefine;
-    private final SimpleChildTable currentsimpleChildTable;
-    private final ChildTableConfigCacheEntity childTableConfigCacheEntity;
-    private final SimpleChildTableLazyCallableTaskDependency callableTaskDependency;
-    private long taskCreateTimeMS = System.currentTimeMillis();
-    private long taskDealBeginTimeMS;
-    private long taskDealEndTimeMS;
+    private final LazyRelatedFieldsAndRowIndex lazyRelatedFieldsAndRowIndex;
 
-    public SimpleChildTableLazyLoaderTask(IRelatedTableLoadListener iRelatedTableLoadListener, IDataSourceProvider iDataSourceProvider, MainTableLoadPartitionContext mainTableLoadPartitionContext, TableLoadDefine tableLoadDefine, SimpleChildTable currentsimpleChildTable, ChildTableConfigCacheEntity childTableConfigCacheEntity, SimpleChildTableLazyCallableTaskDependency callableTaskDependency) {
-        this.iRelatedTableLoadListener = iRelatedTableLoadListener;
-        this.iDataSourceProvider = iDataSourceProvider;
-        this.mainTableLoadPartitionContext = mainTableLoadPartitionContext;
-        this.tableLoadDefine = tableLoadDefine;
-        this.currentsimpleChildTable = currentsimpleChildTable;
-        this.childTableConfigCacheEntity = childTableConfigCacheEntity;
-        this.callableTaskDependency = callableTaskDependency;
-    }
-
-
-    @Override
-    public TableLoadResult call() throws Exception {
-        TableLoadResult tableLoadResult = load();
-        return tableLoadResult;
+    public SimpleChildTableLazyLoaderTask(String taskId, RelatedLoaderHandlerHolder relatedLoaderHandlerHolder, TableLoadDefine tableLoadDefine, SimpleChildTable currentsimpleChildTable, ChildTableConfigCacheEntity childTableConfigCacheEntity, LazyRelatedFieldsAndRowIndex lazyRelatedFieldsAndRowIndex) {
+        super(taskId, relatedLoaderHandlerHolder, tableLoadDefine, currentsimpleChildTable, childTableConfigCacheEntity);
+        this.lazyRelatedFieldsAndRowIndex = lazyRelatedFieldsAndRowIndex;
     }
 
     @Override
     public void destory() {
-
     }
 
-    private TableLoadResult load() {
-        long resultIndex = 0;
-        long dealUsingTimeMS = -1;
-        String sql = null;
-        boolean flag = false;
-        QueryLoaderResultDesc queryLoaderResultDesc = null;
-        try {
-            taskDealBeginTimeMS = System.currentTimeMillis();
-            queryLoaderResultDesc = startChildTableLazyLoader();
-            if (queryLoaderResultDesc != null) {
-                resultIndex = queryLoaderResultDesc.getResultIndex();
-            }
-            flag = true;
-        } catch (Exception e) {
-            logger.error(String.format("%s SimpleChildTableLazyLoaderTask,defineType:%s,Exception:%s,sql:[%s]", iRelatedTableLoadListener.relatedListenerIdentification(), tableLoadDefine.getDefineType(), e.getMessage(), sql), e);
-        } catch (Throwable e) {
-            logger.error(String.format("%s SimpleChildTableLazyLoaderTask,defineType:%s,Throwable:%s,sql:[%s]", iRelatedTableLoadListener.relatedListenerIdentification(), tableLoadDefine.getDefineType(), e.getMessage(), sql), e);
-        } finally {
-            taskDealEndTimeMS = System.currentTimeMillis();
-            dealUsingTimeMS = this.taskDealEndTimeMS - taskDealBeginTimeMS;
-            logger.info(String.format("%s SimpleChildTableLazyLoaderTask,defineType:%s,dealUsingTimeMS:%s,resultIndex:%s,sql:[%s]", iRelatedTableLoadListener.relatedListenerIdentification(), tableLoadDefine.getDefineType(), dealUsingTimeMS, resultIndex, sql));
-        }
 
-        TableLoadResult tableLoadResult = new TableLoadResult();
-        tableLoadResult.setTaskId(getIdentify());
-        tableLoadResult.setTaskCreateTimeMS(this.taskCreateTimeMS);
-        tableLoadResult.setDealResult(flag);
-        tableLoadResult.setQueryLoaderResultDesc(queryLoaderResultDesc);
-        tableLoadResult.setDealUsingTimeMS(dealUsingTimeMS);
-        return tableLoadResult;
+    @Override
+    protected QueryLoaderResultDesc startChildTableLoaderByDatabase() {
+        //1. 不是直接与主表关联的子表,查询数据库前需要先从主表中找出当前批次数据的关联主键
+        RelatedValuesAndRowIndexEntity relatedValuesAndRowIndexEntity = createLazyRelatedValuesAndRowIndexEntity(lazyRelatedFieldsAndRowIndex);
+        //2. 用查找出来的关联主键拼接sql,查询对应主表的数据
+        ChildTableLoaderListenerImpl childTableLoaderListener = new ChildTableLoaderListenerImpl();
+        QueryConfig queryConfig = createQueryConfig(relatedValuesAndRowIndexEntity);
+        DBSqlQueryLoader dbSqlQueryLoader = DBSqlQueryLoaderUtil.createDBSqlQueryLoader(childTableLoaderListener, queryConfig, relatedLoaderHandlerHolder.getiDataSourceProvider());
+        QueryLoaderResultDesc queryLoaderResultDesc = dbSqlQueryLoader.load();
+        return queryLoaderResultDesc;
     }
 
-    private String getIdentify() {
-        return null;
-    }
-
-    private QueryLoaderResultDesc startChildTableLazyLoader() {
-        return new QueryLoaderResultDesc();
+    @Override
+    protected QueryLoaderResultDesc startChildTableLoaderByPrefetchCache() {
+        //1. 不是直接与主表关联的子表,查询数据库前需要先从主表中找出当前批次数据的关联主键
+        RelatedValuesAndRowIndexEntity relatedValuesAndRowIndexEntity = createLazyRelatedValuesAndRowIndexEntity(lazyRelatedFieldsAndRowIndex);
+        //2. 用查找出来的关联主键,从缓存中匹配数据并将匹配上的数据，加载到对应主表行上
+        QueryLoaderResultDesc queryLoaderResultDesc = loadPrefetchCacheDataAppend2MainData(relatedValuesAndRowIndexEntity);
+        return queryLoaderResultDesc;
     }
 }

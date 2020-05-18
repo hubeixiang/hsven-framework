@@ -23,7 +23,7 @@ public class RelatedValuesAndRowIndexGroup {
             return_values = this.relatedValuesAndRowIndexEntity;
             this.relatedValuesAndRowIndexEntity = new RelatedValuesAndRowIndexEntity();
         } catch (Exception e) {
-            logger.error("RelatedValuesAndRowIndexSet readAndClear Exception", e);
+            logger.error("RelatedValuesAndRowIndexGroup readAndClear Exception", e);
         }
 
         return return_values;

@@ -4,21 +4,41 @@ import org.framework.hsven.dataloader.api.IDBSqlQueryLoaderListener;
 import org.framework.hsven.dataloader.beans.DBColumnMetaDataDefine;
 import org.framework.hsven.dataloader.beans.data.DBTableRowInfo;
 import org.framework.hsven.dataloader.beans.dependency.EnumTableType;
+import org.framework.hsven.dataloader.beans.loader.LazyRelatedFieldsAndRowIndex;
+import org.framework.hsven.dataloader.beans.loader.LazyRelatedFieldsAndRowIndexGroup;
+import org.framework.hsven.dataloader.beans.loader.RelatedValuesAndRowIndexEntity;
+import org.framework.hsven.dataloader.beans.loader.RelatedValuesAndRowIndexGroup;
+import org.framework.hsven.dataloader.beans.related.SimpleChildTable;
 import org.framework.hsven.dataloader.beans.related.SimpleMainTable;
 import org.framework.hsven.dataloader.beans.related.TableField;
 import org.framework.hsven.dataloader.beans.related.TableLoadDefine;
 import org.framework.hsven.dataloader.loader.model.QueryConfig;
 import org.framework.hsven.dataloader.loader.model.QueryLoaderResultDesc;
 import org.framework.hsven.dataloader.related.RelatedLoaderHandlerHolder;
+import org.framework.hsven.dataloader.related.TableLoadResult;
+import org.framework.hsven.dataloader.related.child.ChildTableConfigCacheEntity;
+import org.framework.hsven.dataloader.related.child.task.SimpleChildTableBeforeLoaderCacheTask;
+import org.framework.hsven.dataloader.related.child.task.SimpleChildTableLazyLoaderTask;
+import org.framework.hsven.dataloader.related.child.task.SimpleChildTableLoaderTask;
 import org.framework.hsven.dataloader.related.dependency.CallableRelatedTaskDependency;
 import org.framework.hsven.dataloader.related.dependency.SimpleChildTableCallableTaskDependency;
+import org.framework.hsven.dataloader.related.dependency.SimpleChildTableGroup;
 import org.framework.hsven.dataloader.related.dependency.SimpleChildTableLazyCallableTaskDependency;
+import org.framework.hsven.dataloader.related.dependency.SimpleLazyChildTableGroup;
 import org.framework.hsven.dataloader.related.dependency.SimpleMainTableCallableTaskDependency;
 import org.framework.hsven.datasource.model.DataSourceConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.CollectionUtils;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.Callable;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * 关联加载主子表数据时,主表的单条数据的处理类,定义的处理流程
@@ -29,7 +49,11 @@ public class MainTableLoaderListenerImpl implements IDBSqlQueryLoaderListener {
     private final TableLoadDefine tableLoadDefine;
     private final SimpleMainTable currentLoaderTable;
     private final SimpleMainTableCallableTaskDependency simpleMainTableCallableTaskDependency;
+    private final AtomicLong taskId = new AtomicLong(0);
     private DBColumnMetaDataDefine currentLoaderTableDBColumnMetaDataDefine;
+    //预先加载的字表的数据缓存
+    //Map<SimpleChildTable.getIdentify(),ChildTableConfigCacheEntity>
+    private Map<String, ChildTableConfigCacheEntity> loaderPrefetchChildTableDataMap = new HashMap<String, ChildTableConfigCacheEntity>();
     private long mainTableLoadBeginTimeMs = 0;
 
     public MainTableLoaderListenerImpl(RelatedLoaderHandlerHolder relatedLoaderHandlerHolder, TableLoadDefine tableLoadDefine, SimpleMainTableCallableTaskDependency simpleMainTableCallableTaskDependency) {
@@ -167,6 +191,13 @@ public class MainTableLoaderListenerImpl implements IDBSqlQueryLoaderListener {
         if (dbTableRowInfo == null) {
             return;
         }
+        Iterator<Map.Entry<String, SimpleChildTableGroup>> it = simpleChildTableCallableTaskDependency.entryTABLEIterator();
+        while (it != null && it.hasNext()) {
+            Map.Entry<String, SimpleChildTableGroup> entry = it.next();
+            SimpleChildTableGroup simpleChildTableGroup = entry.getValue();
+
+            simpleChildTableGroup.getRelatedValuesAndRowIndexGroup().addDBTableRowInfo(dbTableRowInfo);
+        }
     }
 
     private void addRowData2LaxyTmp(SimpleChildTableLazyCallableTaskDependency simpleChildTableLazyCallableTaskDependency, DBTableRowInfo dbTableRowInfo) {
@@ -174,14 +205,102 @@ public class MainTableLoaderListenerImpl implements IDBSqlQueryLoaderListener {
         if (dbTableRowInfo == null) {
             return;
         }
+        Iterator<Map.Entry<String, SimpleLazyChildTableGroup>> it = simpleChildTableLazyCallableTaskDependency.entryTABLEIterator();
+        while (it != null && it.hasNext()) {
+            Map.Entry<String, SimpleLazyChildTableGroup> entry = it.next();
+            SimpleLazyChildTableGroup simpleLazyChildTableGroup = entry.getValue();
+
+            simpleLazyChildTableGroup.getLazyRelatedFieldsAndRowIndexGroup().addDBTableRowInfo(dbTableRowInfo);
+        }
     }
 
     private void creatBatchChildTableLoadTask(CallableRelatedTaskDependency callableRelatedTaskDependency) {
-
+        EnumTableType enumTableType = callableRelatedTaskDependency.getEnumTableType();
+        switch (enumTableType) {
+            case Child:
+                creatBatchSimpleChildTableLoadTask((SimpleChildTableCallableTaskDependency) callableRelatedTaskDependency);
+                break;
+            case Lazy_subtable:
+                creatBatchSimpleLazyChildTableLoadTask((SimpleChildTableLazyCallableTaskDependency) callableRelatedTaskDependency);
+                break;
+            case Main:
+                break;
+            default:
+                throw new RuntimeException("Error EnumTableType " + enumTableType);
+        }
     }
 
-    private void loaderPrefetchChildTableData() {
+    private void creatBatchSimpleChildTableLoadTask(SimpleChildTableCallableTaskDependency simpleChildTableCallableTaskDependency) {
+        Iterator<Map.Entry<String, SimpleChildTableGroup>> it = simpleChildTableCallableTaskDependency.entryTABLEIterator();
+        while (it != null && it.hasNext()) {
+            Map.Entry<String, SimpleChildTableGroup> entry = it.next();
+            SimpleChildTableGroup simpleChildTableGroup = entry.getValue();
 
+            RelatedValuesAndRowIndexGroup relatedValuesAndRowIndexGroup = simpleChildTableGroup.getRelatedValuesAndRowIndexGroup();
+            RelatedValuesAndRowIndexEntity relatedValuesAndRowIndexEntity = relatedValuesAndRowIndexGroup.readAndClear();
+
+            List<SimpleChildTable> simpleChildTables = simpleChildTableGroup.getSimpleChildTableList();
+            for (SimpleChildTable simpleChildTable : simpleChildTables) {
+                ChildTableConfigCacheEntity childTableConfigCacheEntity = null;
+                if (simpleChildTable.isConfigCache()) {
+                    loaderPrefetchChildTableDataMap.get(simpleChildTable.getIdentify());
+                }
+                String childTaskId = this.tableLoadDefine.getDefineType() + "-" + simpleChildTable.getTableAlias() + "-" + this.taskId.getAndIncrement();
+                SimpleChildTableLoaderTask iTableLoaderTask = new SimpleChildTableLoaderTask(childTaskId, this.relatedLoaderHandlerHolder, this.tableLoadDefine, simpleChildTable, childTableConfigCacheEntity, relatedValuesAndRowIndexEntity);
+                if (iTableLoaderTask != null) {
+                    simpleChildTableCallableTaskDependency.getCurrentCallableRelatedTask().add(iTableLoaderTask);
+                }
+            }
+        }
+    }
+
+    private void creatBatchSimpleLazyChildTableLoadTask(SimpleChildTableLazyCallableTaskDependency simpleChildTableLazyCallableTaskDependency) {
+        Iterator<Map.Entry<String, SimpleLazyChildTableGroup>> it = simpleChildTableLazyCallableTaskDependency.entryTABLEIterator();
+        while (it != null && it.hasNext()) {
+            Map.Entry<String, SimpleLazyChildTableGroup> entry = it.next();
+            SimpleLazyChildTableGroup simpleLazyChildTableGroup = entry.getValue();
+
+            LazyRelatedFieldsAndRowIndexGroup lazyRelatedFieldsAndRowIndexGroup = simpleLazyChildTableGroup.getLazyRelatedFieldsAndRowIndexGroup();
+            LazyRelatedFieldsAndRowIndex lazyRelatedFieldsAndRowIndex = lazyRelatedFieldsAndRowIndexGroup.readAndClear();
+
+            List<SimpleChildTable> simpleChildTables = simpleLazyChildTableGroup.getSimpleChildTableList();
+            for (SimpleChildTable simpleChildTable : simpleChildTables) {
+                ChildTableConfigCacheEntity childTableConfigCacheEntity = null;
+                if (simpleChildTable.isConfigCache()) {
+                    loaderPrefetchChildTableDataMap.get(simpleChildTable.getIdentify());
+                }
+                String childTaskId = this.tableLoadDefine.getDefineType() + "-lazy-" + simpleChildTable.getTableAlias() + "-" + this.taskId.getAndIncrement();
+                SimpleChildTableLazyLoaderTask iTableLoaderTask = new SimpleChildTableLazyLoaderTask(childTaskId, this.relatedLoaderHandlerHolder, this.tableLoadDefine, simpleChildTable, childTableConfigCacheEntity, lazyRelatedFieldsAndRowIndex);
+                if (iTableLoaderTask != null) {
+                    simpleChildTableLazyCallableTaskDependency.getCurrentCallableRelatedTask().add(iTableLoaderTask);
+                }
+            }
+        }
+    }
+
+    /**
+     * 分析子表中需要预先加载的表,并将其数据缓存在内存中
+     */
+    private void loaderPrefetchChildTableData() {
+        List<SimpleChildTable> prefetchChildTableList = simpleMainTableCallableTaskDependency.getPrefetchChildTableList();
+        if (CollectionUtils.isEmpty(prefetchChildTableList)) {
+            return;
+        }
+        List<Callable<TableLoadResult>> prefectCacheTaskList = new ArrayList<>();
+        for (SimpleChildTable simpleChildTable : prefetchChildTableList) {
+            ChildTableConfigCacheEntity childTableConfigCacheEntity = loaderPrefetchChildTableDataMap.get(simpleChildTable.getIdentify());
+            if (childTableConfigCacheEntity == null) {
+                childTableConfigCacheEntity = new ChildTableConfigCacheEntity(this.tableLoadDefine.getDefineType(), this.tableLoadDefine, simpleChildTable);
+                loaderPrefetchChildTableDataMap.put(simpleChildTable.getIdentify(), childTableConfigCacheEntity);
+            }
+
+            SimpleChildTableBeforeLoaderCacheTask prefectCacheTask = new SimpleChildTableBeforeLoaderCacheTask(relatedLoaderHandlerHolder.getiDataSourceProvider(), childTableConfigCacheEntity);
+            prefectCacheTaskList.add(prefectCacheTask);
+        }
+        if (prefectCacheTaskList.size() > 0) {
+            relatedLoaderHandlerHolder.getiThreadPoolProvider().executBySync(null, prefectCacheTaskList);
+        }
+        prefectCacheTaskList.clear();
     }
 
     private void executeRecursionDependencyChildTableLoadTask(CallableRelatedTaskDependency currentCallableRelatedTaskDependency) {
@@ -204,6 +323,17 @@ public class MainTableLoaderListenerImpl implements IDBSqlQueryLoaderListener {
 
 
     private void clearTmp() {
-
+        if (relatedLoaderHandlerHolder.getiThreadPoolProvider() != null) {
+            relatedLoaderHandlerHolder.getiThreadPoolProvider().shutdown(null);
+        }
+        if (loaderPrefetchChildTableDataMap != null) {
+            for (Map.Entry<String, ChildTableConfigCacheEntity> entry : loaderPrefetchChildTableDataMap.entrySet()) {
+                if (entry.getValue() != null) {
+                    entry.getValue().destory();
+                }
+            }
+            loaderPrefetchChildTableDataMap.clear();
+        }
+        loaderPrefetchChildTableDataMap = null;
     }
 }

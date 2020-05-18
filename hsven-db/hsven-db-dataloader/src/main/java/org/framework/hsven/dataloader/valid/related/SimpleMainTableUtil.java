@@ -78,7 +78,7 @@ public class SimpleMainTableUtil {
         return selectFieldSetStr;
     }
 
-    public final static String structQueryTablePartitionWhere(DataSourceType dataSourceType, TableLoadDefine tableLoadDefine, TableDefine tableDefine, Set<String> partitionFieldValueSet) {
+    private final static String structQueryTablePartitionWhere(DataSourceType dataSourceType, TableLoadDefine tableLoadDefine, TableDefine tableDefine, Set<String> partitionFieldValueSet) {
         StringBuffer sb = new StringBuffer();
         if (StringUtils.isNotEmpty(tableDefine.getWhere())) {
             sb.append("(").append(tableDefine.getWhere()).append(")");

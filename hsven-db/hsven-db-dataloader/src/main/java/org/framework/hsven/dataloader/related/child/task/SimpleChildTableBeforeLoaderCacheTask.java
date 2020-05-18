@@ -97,6 +97,7 @@ public class SimpleChildTableBeforeLoaderCacheTask implements ITableLoaderTask<T
             logger.error("ChildTableConfigCacheTask cache load fail,sql is null.taskInfo=" + childTableConfigCacheEntity.getIdentify());
             return null;
         }
+        queryConfig.setDbName(simpleChildTable.getTableDefine().getDbName());
         queryConfig.setSql(structSql.getWholeSql());
         queryConfig.setFetchSize(10000);
         queryConfig.setQueryTimeoutSeconds(simpleChildTable.getTableDefine().getQueryTimeoutSeconds());

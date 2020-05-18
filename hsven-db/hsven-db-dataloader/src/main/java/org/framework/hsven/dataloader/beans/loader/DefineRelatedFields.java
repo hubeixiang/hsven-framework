@@ -32,8 +32,8 @@ public class DefineRelatedFields {
         return defineRelatedFieldList;
     }
 
-    public DefineRelatedField getTableRelatedFieldDefine(TableRelatedField tableRelatedField) {
-        return tableRelatedFieldDefineMap.get(tableRelatedField);
+    public DefineRelatedField getDefineRelatedField(TableRelatedField tableRelatedField) {
+        return tableRelatedFieldDefineMap.get(tableRelatedField.getMainTableField());
     }
 
     public String getRelatedFieldsKeys() {
@@ -46,6 +46,10 @@ public class DefineRelatedFields {
 
     public void setComplete(boolean complete) {
         isComplete = complete;
+    }
+
+    public boolean isSingle() {
+        return defineRelatedFieldList.size() == 1;
     }
 
     @Override

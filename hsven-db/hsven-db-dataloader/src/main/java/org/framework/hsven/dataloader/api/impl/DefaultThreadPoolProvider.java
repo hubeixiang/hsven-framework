@@ -5,7 +5,6 @@ import org.framework.hsven.dataloader.api.IThreadPoolProvider;
 import org.framework.hsven.executor.operation.sync.OperationDecorateSync;
 import org.framework.hsven.executor.operation.sync.SyncTaskResult;
 import org.framework.hsven.executor.support.CommonsExecutors;
-import org.framework.hsven.executor.support.ThreadPoolExecutorManager;
 
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -30,10 +29,11 @@ public class DefaultThreadPoolProvider implements IThreadPoolProvider {
 
     @Override
     public void shutdown(String poolName) {
-        if (StringUtils.isEmpty(poolName)) {
-            poolName = getDefaultPoolName();
-        }
-        ThreadPoolExecutorManager.getInstance().shutdown(poolName);
+//        if (StringUtils.isEmpty(poolName)) {
+//            poolName = getDefaultPoolName();
+//        }
+//        ThreadPoolExecutorManager.getInstance().shutdown(poolName);
+        //在默认的数据关联加载中,都使用一个线程池,因此不能关闭此线程池
     }
 
     @Override

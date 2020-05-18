@@ -2,7 +2,9 @@ package org.framework.hsven.dataloader.related.dependency;
 
 import org.framework.hsven.dataloader.beans.dependency.EnumTableType;
 
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.Callable;
 
@@ -36,6 +38,13 @@ public interface CallableRelatedTaskDependency<TABLE, CALLRESULT> {
     public TABLE getCurrentTable(String key);
 
     public void addCurrentTable(TABLE table);
+
+    /**
+     * 遍历分组信息
+     *
+     * @return
+     */
+    public Iterator<Map.Entry<String, TABLE>> entryTABLEIterator();
 
     /**
      * 当前表是否有需要执行的任务

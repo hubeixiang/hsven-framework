@@ -42,8 +42,8 @@ public class DBDialectValueUtil {
     }
 
     public final static String formatString2QuerySql(DataSourceType dbType, String value) {
-        if (dbType == null) {
-            return String.format("'%s'", value);
+        if (value == null) {
+            return null;
         }
         switch (dbType) {
             case DB2:
@@ -91,7 +91,7 @@ public class DBDialectValueUtil {
     }
 
     public final static String formatString2QuerySql(DataSourceType dbType, EnumDbDataType targetType, String value) {
-        if (StringUtils.isEmpty(value)) {
+        if (value == null) {
             return null;
         }
         switch (targetType) {
