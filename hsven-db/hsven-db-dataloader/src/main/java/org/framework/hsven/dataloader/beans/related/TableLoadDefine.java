@@ -9,7 +9,7 @@ import java.util.Map;
 public class TableLoadDefine {
     //定义加载完成后的所有字段的对应类型,不用外部填写
     //在验证此配置对象是否正确时,填写对应的值
-    private final Map<String, EnumDbDataType> allFieldNameAliasDataType = new HashMap<>();
+    private final Map<String, TableField> allFieldNameTableFieldMaps = new HashMap<>();
     private String defineType;
     private boolean isAutoGeneration;
     //分区字段
@@ -66,16 +66,16 @@ public class TableLoadDefine {
         return this.childTables.addChildTable(simpleChildTable);
     }
 
-    public void putAllFieldNameAliasDataType(String fieldNameAlias, EnumDbDataType enumDbDataType) {
-        allFieldNameAliasDataType.put(fieldNameAlias, enumDbDataType);
+    public void putAllFieldNameTableFieldMaps(TableField tableField) {
+        allFieldNameTableFieldMaps.put(tableField.getFieldAlias(), tableField);
     }
 
-    public EnumDbDataType getAllFieldNameAliasDataType(String fieldNameAlias) {
-        return allFieldNameAliasDataType.get(fieldNameAlias);
+    public TableField getAllFieldNameTableFieldMaps(String fieldNameAlias) {
+        return allFieldNameTableFieldMaps.get(fieldNameAlias);
     }
 
-    public EnumDbDataType getPartitionFieldDataType() {
-        return getAllFieldNameAliasDataType(partitionFieldName);
+    public TableField getPartitionFieldDataType() {
+        return getAllFieldNameTableFieldMaps(partitionFieldName);
     }
 
     @Override

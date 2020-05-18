@@ -1,13 +1,13 @@
 package org.framework.hsven.dataloader.valid.related;
 
 import org.apache.commons.lang3.StringUtils;
-import org.framework.hsven.dataloader.beans.db.EnumDbDataType;
 import org.framework.hsven.dataloader.beans.dependency.StructSql;
 import org.framework.hsven.dataloader.beans.loader.DefineRelatedField;
 import org.framework.hsven.dataloader.beans.loader.RelatedValuesAndRowIndexEntity;
 import org.framework.hsven.dataloader.beans.loader.RelatedValuesAndRowIndexEntityUtil;
 import org.framework.hsven.dataloader.beans.related.SimpleChildTable;
 import org.framework.hsven.dataloader.beans.related.TableDefine;
+import org.framework.hsven.dataloader.beans.related.TableField;
 import org.framework.hsven.dataloader.beans.related.TableFieldSet;
 import org.framework.hsven.dataloader.beans.related.TableLoadDefine;
 import org.framework.hsven.dataloader.beans.related.TableRelatedField;
@@ -60,10 +60,10 @@ public class SimpleChildTableUtil {
                 //没有分析DefineRelatedFields时才做分析
                 for (TableRelatedField tableRelatedField : tableRelatedFieldSet.getTableRelatedFieldList()) {
                     DefineRelatedField defineRelatedField = new DefineRelatedField();
-                    EnumDbDataType dataType = tableLoadDefine.getAllFieldNameAliasDataType(tableRelatedField.getMainTableField());
+                    TableField tableField = tableLoadDefine.getAllFieldNameTableFieldMaps(tableRelatedField.getMainTableField());
                     defineRelatedField.setRelatedField(tableRelatedField.getMainTableField());
                     defineRelatedField.setLocalField(tableRelatedField.getChildTableField());
-                    defineRelatedField.setDataType(dataType);
+                    defineRelatedField.setDataType(tableField.getFieldAliasDisplayEnumDbDataType());
                     simpleChildTable.getDefineRelatedFields().addTableRelatedFieldDefine(defineRelatedField);
                 }
                 simpleChildTable.getDefineRelatedFields().setComplete(true);

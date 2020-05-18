@@ -29,7 +29,7 @@ public class SimpleChildTableLoaderTask extends AbstractChildTableLoaderTask {
 
     @Override
     protected QueryLoaderResultDesc startChildTableLoaderByDatabase() {
-        ChildTableLoaderListenerImpl childTableLoaderListener = new ChildTableLoaderListenerImpl();
+        ChildTableLoaderListenerImpl childTableLoaderListener = new ChildTableLoaderListenerImpl(relatedLoaderHandlerHolder, tableLoadDefine, currentsimpleChildTable, relatedValuesAndRowIndexEntity);
         QueryConfig queryConfig = createQueryConfig(relatedValuesAndRowIndexEntity);
         DBSqlQueryLoader dbSqlQueryLoader = DBSqlQueryLoaderUtil.createDBSqlQueryLoader(childTableLoaderListener, queryConfig, relatedLoaderHandlerHolder.getiDataSourceProvider());
         QueryLoaderResultDesc queryLoaderResultDesc = dbSqlQueryLoader.load();

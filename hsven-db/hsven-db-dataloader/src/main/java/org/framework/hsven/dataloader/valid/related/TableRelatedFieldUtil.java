@@ -13,6 +13,7 @@ public class TableRelatedFieldUtil {
             validResult.appendAllTipType(TipsMessageUsed.getMessage("tips.valid_allchildtable_onerelated_maintable_main_field"));
         } else {
             if (tableFieldSet.getFieldByName(tableRelatedField.getMainTableField()) != null) {
+                //子表关联主表时,关联主表的主表字段名不能在子表查询列表中存在
                 validResult.appendAllTipType(TipsMessageUsed.getMessage("tips.valid_allchildtable_onerelated_maintable_main_field_same_queryfield", tableRelatedField, tableRelatedField.getMainTableField()));
             }
         }

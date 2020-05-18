@@ -1,6 +1,7 @@
 package org.framework.hsven.dataloader.beans.loader;
 
 import org.framework.hsven.dataloader.beans.data.DBTableRowInfo;
+import org.framework.hsven.dataloader.beans.related.TableLoadDefine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,8 +14,8 @@ public class RelatedValuesAndRowIndexGroup {
         this.defineRelatedFields = defineRelatedFields;
     }
 
-    public boolean addDBTableRowInfo(DBTableRowInfo dbTableRowInfo) {
-        return relatedValuesAndRowIndexEntity.addDBTableRowInfo(defineRelatedFields, dbTableRowInfo);
+    public boolean addDBTableRowInfo(TableLoadDefine tableLoadDefine, DBTableRowInfo dbTableRowInfo) {
+        return relatedValuesAndRowIndexEntity.addDBTableRowInfo(tableLoadDefine, defineRelatedFields, dbTableRowInfo);
     }
 
     public RelatedValuesAndRowIndexEntity readAndClear() {

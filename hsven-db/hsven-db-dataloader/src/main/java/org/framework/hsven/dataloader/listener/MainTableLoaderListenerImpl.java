@@ -1,8 +1,8 @@
 package org.framework.hsven.dataloader.listener;
 
 import org.framework.hsven.dataloader.api.IDBSqlQueryLoaderListener;
-import org.framework.hsven.dataloader.beans.db.DBColumnMetaDataDefine;
 import org.framework.hsven.dataloader.beans.data.DBTableRowInfo;
+import org.framework.hsven.dataloader.beans.db.DBColumnMetaDataDefine;
 import org.framework.hsven.dataloader.beans.dependency.EnumTableType;
 import org.framework.hsven.dataloader.beans.loader.LazyRelatedFieldsAndRowIndex;
 import org.framework.hsven.dataloader.beans.loader.LazyRelatedFieldsAndRowIndexGroup;
@@ -54,6 +54,7 @@ public class MainTableLoaderListenerImpl implements IDBSqlQueryLoaderListener {
     //预先加载的字表的数据缓存
     //Map<SimpleChildTable.getIdentify(),ChildTableConfigCacheEntity>
     private Map<String, ChildTableConfigCacheEntity> loaderPrefetchChildTableDataMap = new HashMap<String, ChildTableConfigCacheEntity>();
+    private long mainTableLoadInitBeginTimeMs = 0;
     private long mainTableLoadBeginTimeMs = 0;
 
     public MainTableLoaderListenerImpl(RelatedLoaderHandlerHolder relatedLoaderHandlerHolder, TableLoadDefine tableLoadDefine, SimpleMainTableCallableTaskDependency simpleMainTableCallableTaskDependency) {
@@ -72,6 +73,19 @@ public class MainTableLoaderListenerImpl implements IDBSqlQueryLoaderListener {
     @Override
     public void init(DataSourceConfig dataSourceConfig, QueryConfig queryConfig) {
         logger.info(String.format("%s mainTable load init", logIdentify()));
+        mainTableLoadInitBeginTimeMs = System.currentTimeMillis();
+        //初始化需要预先查询缓存的子表,数据缓存实体
+        List<SimpleChildTable> prefetchChildTableList = simpleMainTableCallableTaskDependency.getPrefetchChildTableList();
+        if (CollectionUtils.isEmpty(prefetchChildTableList)) {
+            return;
+        }
+        for (SimpleChildTable simpleChildTable : prefetchChildTableList) {
+            ChildTableConfigCacheEntity childTableConfigCacheEntity = loaderPrefetchChildTableDataMap.get(simpleChildTable.getIdentify());
+            if (childTableConfigCacheEntity == null) {
+                childTableConfigCacheEntity = new ChildTableConfigCacheEntity(this.tableLoadDefine.getDefineType(), this.tableLoadDefine, simpleChildTable);
+                loaderPrefetchChildTableDataMap.put(simpleChildTable.getIdentify(), childTableConfigCacheEntity);
+            }
+        }
     }
 
     @Override
@@ -99,21 +113,23 @@ public class MainTableLoaderListenerImpl implements IDBSqlQueryLoaderListener {
         try {
             //最后一批次的主表数据加载完毕后,创建对应的子表加载任务
             addLastBatchChildTableLoadTasek();
-            logger.info(String.format("%s mainTable load end.cost=%s,totalResult=%s", logIdentify(), System.currentTimeMillis() - mainTableLoadBeginTimeMs, queryLoaderResultDesc == null ? 0 : queryLoaderResultDesc.getResultIndex()));
+            long end = System.currentTimeMillis();
+            logger.info(String.format("%s mainTable load end.cost-from-init=%sms,cost-from-load-begin=%sms,totalResult=%s", logIdentify(), end - mainTableLoadInitBeginTimeMs, end - mainTableLoadBeginTimeMs, queryLoaderResultDesc == null ? 0 : queryLoaderResultDesc.getResultIndex()));
 
             //加载需要预先缓存的子表数据(如果子表配置了可以预先缓存,需要先将子表的数据预先缓存,以供在关联时直接从缓存获取,而不用每次都从数据库中查询获取)
             long start = System.currentTimeMillis();
             loaderPrefetchChildTableData();
-            logger.info(String.format("%s cache child load end.cost=%s", logIdentify(), System.currentTimeMillis() - start));
+            logger.info(String.format("%s cache child load end.cost=%sms", logIdentify(), System.currentTimeMillis() - start));
 
             //执行前面创建的子表加载任务
             start = System.currentTimeMillis();
             executeRecursionDependencyChildTableLoadTask(simpleMainTableCallableTaskDependency);
-            logger.info(String.format("%s all child load end.cost=%s", logIdentify(), System.currentTimeMillis() - start));
+            logger.info(String.format("%s all child load end.cost=%sms", logIdentify(), System.currentTimeMillis() - start));
         } catch (Throwable e) {
             logger.error(String.format("%s loadEnd %s Throwable:%s ,QueryLoaderResultDesc:", this.getClass().getName(), logIdentify(), e.getMessage(), queryLoaderResultDesc), e);
         } finally {
-            logger.info(String.format("%s allTable load end.cost=%s,totalResult=%s", logIdentify(), System.currentTimeMillis() - mainTableLoadBeginTimeMs, queryLoaderResultDesc == null ? 0 : queryLoaderResultDesc.getResultIndex()));
+            long end = System.currentTimeMillis();
+            logger.info(String.format("%s allTable load end.cost-from-init=%sms,cost-from--load-begin=%sms,totalResult=%s", logIdentify(), end - mainTableLoadInitBeginTimeMs, end - mainTableLoadBeginTimeMs, queryLoaderResultDesc == null ? 0 : queryLoaderResultDesc.getResultIndex()));
             clearTmp();
         }
         this.relatedLoaderHandlerHolder.getiRelatedTableLoadListener().onEnd(queryLoaderResultDesc, null);
@@ -196,7 +212,7 @@ public class MainTableLoaderListenerImpl implements IDBSqlQueryLoaderListener {
             Map.Entry<String, SimpleChildTableGroup> entry = it.next();
             SimpleChildTableGroup simpleChildTableGroup = entry.getValue();
 
-            simpleChildTableGroup.getRelatedValuesAndRowIndexGroup().addDBTableRowInfo(dbTableRowInfo);
+            simpleChildTableGroup.getRelatedValuesAndRowIndexGroup().addDBTableRowInfo(this.tableLoadDefine, dbTableRowInfo);
         }
     }
 
@@ -243,7 +259,7 @@ public class MainTableLoaderListenerImpl implements IDBSqlQueryLoaderListener {
             for (SimpleChildTable simpleChildTable : simpleChildTables) {
                 ChildTableConfigCacheEntity childTableConfigCacheEntity = null;
                 if (simpleChildTable.isConfigCache()) {
-                    loaderPrefetchChildTableDataMap.get(simpleChildTable.getIdentify());
+                    childTableConfigCacheEntity = loaderPrefetchChildTableDataMap.get(simpleChildTable.getIdentify());
                 }
                 String childTaskId = this.tableLoadDefine.getDefineType() + "-" + simpleChildTable.getTableAlias() + "-" + this.taskId.getAndIncrement();
                 SimpleChildTableLoaderTask iTableLoaderTask = new SimpleChildTableLoaderTask(childTaskId, this.relatedLoaderHandlerHolder, this.tableLoadDefine, simpleChildTable, childTableConfigCacheEntity, relatedValuesAndRowIndexEntity);
@@ -267,7 +283,7 @@ public class MainTableLoaderListenerImpl implements IDBSqlQueryLoaderListener {
             for (SimpleChildTable simpleChildTable : simpleChildTables) {
                 ChildTableConfigCacheEntity childTableConfigCacheEntity = null;
                 if (simpleChildTable.isConfigCache()) {
-                    loaderPrefetchChildTableDataMap.get(simpleChildTable.getIdentify());
+                    childTableConfigCacheEntity = loaderPrefetchChildTableDataMap.get(simpleChildTable.getIdentify());
                 }
                 String childTaskId = this.tableLoadDefine.getDefineType() + "-lazy-" + simpleChildTable.getTableAlias() + "-" + this.taskId.getAndIncrement();
                 SimpleChildTableLazyLoaderTask iTableLoaderTask = new SimpleChildTableLazyLoaderTask(childTaskId, this.relatedLoaderHandlerHolder, this.tableLoadDefine, simpleChildTable, childTableConfigCacheEntity, lazyRelatedFieldsAndRowIndex);
@@ -287,13 +303,8 @@ public class MainTableLoaderListenerImpl implements IDBSqlQueryLoaderListener {
             return;
         }
         List<Callable<TableLoadResult>> prefectCacheTaskList = new ArrayList<>();
-        for (SimpleChildTable simpleChildTable : prefetchChildTableList) {
-            ChildTableConfigCacheEntity childTableConfigCacheEntity = loaderPrefetchChildTableDataMap.get(simpleChildTable.getIdentify());
-            if (childTableConfigCacheEntity == null) {
-                childTableConfigCacheEntity = new ChildTableConfigCacheEntity(this.tableLoadDefine.getDefineType(), this.tableLoadDefine, simpleChildTable);
-                loaderPrefetchChildTableDataMap.put(simpleChildTable.getIdentify(), childTableConfigCacheEntity);
-            }
-
+        for (Map.Entry<String, ChildTableConfigCacheEntity> entity : loaderPrefetchChildTableDataMap.entrySet()) {
+            ChildTableConfigCacheEntity childTableConfigCacheEntity = entity.getValue();
             SimpleChildTableBeforeLoaderCacheTask prefectCacheTask = new SimpleChildTableBeforeLoaderCacheTask(relatedLoaderHandlerHolder.getiDataSourceProvider(), childTableConfigCacheEntity);
             prefectCacheTaskList.add(prefectCacheTask);
         }

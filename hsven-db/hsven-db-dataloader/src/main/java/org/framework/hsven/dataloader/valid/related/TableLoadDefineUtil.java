@@ -58,7 +58,7 @@ public class TableLoadDefineUtil {
                         allTableFieldMap.put(tableField.getFieldAlias(), tableField);
                     }
                     //添加所有查询字段的字段类型
-                    tableLoadDefine.putAllFieldNameAliasDataType(tableField.getFieldAlias(), tableField.getFieldAliasDisplayEnumDbDataType());
+                    tableLoadDefine.putAllFieldNameTableFieldMaps(tableField);
                 }
             }
         }
@@ -84,7 +84,7 @@ public class TableLoadDefineUtil {
                             allTableFieldMap.put(tableField.getFieldAlias(), tableField);
                         }
                         //添加所有查询字段的字段类型
-                        tableLoadDefine.putAllFieldNameAliasDataType(tableField.getFieldAlias(), tableField.getFieldAliasDisplayEnumDbDataType());
+                        tableLoadDefine.putAllFieldNameTableFieldMaps(tableField);
                     }
                 }
             }

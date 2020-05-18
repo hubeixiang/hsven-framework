@@ -71,19 +71,20 @@ public abstract class AbstractChildTableLoaderTask implements ITableLoaderTask<T
             queryLoaderResultDesc = startChildTableLoader();
             if (queryLoaderResultDesc != null) {
                 resultIndex = queryLoaderResultDesc.getResultIndex();
+                sql = queryLoaderResultDesc.getSql();
             }
             flag = true;
         } catch (Exception e) {
-            logger.error(String.format("%s AbstractChildTableLoaderTask,defineType:%s,Exception:%s,taskId:[%s],sql:[%s]", relatedLoaderHandlerHolder.getiRelatedTableLoadListener().relatedListenerIdentification(), tableLoadDefine.getDefineType(), e.getMessage(), taskId, sql), e);
+            logger.error(String.format("%s AbstractChildTableLoaderTask,defineType:%s,Exception:%s,taskId:[%s],cache=%s,sql:[%s]", relatedLoaderHandlerHolder.getiRelatedTableLoadListener().relatedListenerIdentification(), tableLoadDefine.getDefineType(), e.getMessage(), taskId, currentsimpleChildTable.isConfigCache(), sql), e);
         } catch (Throwable e) {
-            logger.error(String.format("%s AbstractChildTableLoaderTask,defineType:%s,Throwable:%s,taskId:[%s],sql:[%s]", relatedLoaderHandlerHolder.getiRelatedTableLoadListener().relatedListenerIdentification(), tableLoadDefine.getDefineType(), e.getMessage(), taskId, sql), e);
+            logger.error(String.format("%s AbstractChildTableLoaderTask,defineType:%s,Throwable:%s,taskId:[%s],cache=%s,sql:[%s]", relatedLoaderHandlerHolder.getiRelatedTableLoadListener().relatedListenerIdentification(), tableLoadDefine.getDefineType(), e.getMessage(), taskId, currentsimpleChildTable.isConfigCache(), sql), e);
         } finally {
             taskDealEndTimeMS = System.currentTimeMillis();
             dealUsingTimeMS = this.taskDealEndTimeMS - taskDealBeginTimeMS;
             if (flag) {
-                logger.info(String.format("%s AbstractChildTableLoaderTask dealEnd,defineType:%s,dealUsingTimeMS:%s,resultIndex:%s,taskId:[%s],sql:[%s]", relatedLoaderHandlerHolder.getiRelatedTableLoadListener().relatedListenerIdentification(), tableLoadDefine.getDefineType(), dealUsingTimeMS, resultIndex, taskId, sql));
+                logger.info(String.format("%s AbstractChildTableLoaderTask dealEnd,defineType:%s,dealUsingTimeMS:%s,resultIndex:%s,taskId:[%s],cache=%s,sql:[%s]", relatedLoaderHandlerHolder.getiRelatedTableLoadListener().relatedListenerIdentification(), tableLoadDefine.getDefineType(), dealUsingTimeMS, resultIndex, taskId, currentsimpleChildTable.isConfigCache(), sql));
             } else {
-                logger.error(String.format("%s AbstractChildTableLoaderTask dealFailure,defineType:%s,dealUsingTimeMS:%s,resultIndex:%s,taskId:[%s],sql:[%s]", relatedLoaderHandlerHolder.getiRelatedTableLoadListener().relatedListenerIdentification(), tableLoadDefine.getDefineType(), dealUsingTimeMS, resultIndex, taskId, sql));
+                logger.error(String.format("%s AbstractChildTableLoaderTask dealFailure,defineType:%s,dealUsingTimeMS:%s,resultIndex:%s,taskId:[%s],cache=%s,sql:[%s]", relatedLoaderHandlerHolder.getiRelatedTableLoadListener().relatedListenerIdentification(), tableLoadDefine.getDefineType(), dealUsingTimeMS, resultIndex, taskId, currentsimpleChildTable.isConfigCache(), sql));
             }
         }
 
@@ -168,7 +169,7 @@ public abstract class AbstractChildTableLoaderTask implements ITableLoaderTask<T
     protected QueryLoaderResultDesc loadPrefetchCacheDataAppend2MainData(RelatedValuesAndRowIndexEntity relatedValuesAndRowIndexEntity) {
         QueryLoaderResultDesc queryLoaderResultDesc = new QueryLoaderResultDesc();
         queryLoaderResultDesc.setSqlName("AbstractChildTableLoaderTask.loadPrefetchCacheDataAppend2MainData");
-        queryLoaderResultDesc.setSql(currentsimpleChildTable.getIdentify());
+        queryLoaderResultDesc.setSql(childTableConfigCacheEntity.getCacheSql());
         if (childTableConfigCacheEntity == null) {
             return queryLoaderResultDesc;
         }

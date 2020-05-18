@@ -1,29 +1,42 @@
 package org.framework.hsven.dataset.datatable.api;
 
-import org.framework.hsven.dataset.datatable.api.impl.DefaultDataTypeEnumConvert;
 import org.framework.hsven.dataset.datatable.beans.DataTypeEnum;
 import org.framework.hsven.dataset.datatable.cache.ColInfo;
 import org.framework.hsven.dataset.datatable.cache.DataTable;
 import org.framework.hsven.dataset.datatable.exception.DataSetException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
 /**
- * 对外提供的DataTable创建工具类
+ * 创建DataTable的接口api
+ *
+ * @param <E> 模型对象,获取相关的字段列表以及对应类型等等
+ * @param <T> 字段类型映射到DataTable内部的对象
  */
-public class DataTableGenerate {
-    public final static IDataTypeEnumConvert DefaultDataTypeEnumConvert = new DefaultDataTypeEnumConvert();
-    private static Logger logger = LoggerFactory.getLogger(DataTableGenerate.class);
+public interface IDataTableGenerate<E, T> {
 
-    public final static ColInfo createColInfo(IDataTypeEnumConvert iDataTypeEnumConvert, String name, String title, Enum enumType, String format) {
-        if (iDataTypeEnumConvert == null) {
-            iDataTypeEnumConvert = DefaultDataTypeEnumConvert;
-        }
 
+    /**
+     * 依据外部的模型对象,创建对应的DataTable描述
+     *
+     * @param dataTableName
+     * @param model
+     * @return
+     */
+    public DataTable createDataTable(String dataTableName, E model);
+
+    /**
+     * 类型映射
+     *
+     * @param otherDataTypeEnum 外部的字段类型映射
+     * @return 返回DataTablene内部的对象
+     */
+    public DataTypeEnum convert2DataTypeEnum(T otherDataTypeEnum);
+
+
+    default ColInfo internalCreateColInfo(String name, String title, T enumType, String format) {
         try {
-            DataTypeEnum type = iDataTypeEnumConvert.convert2DataTypeEnum(enumType);
+            DataTypeEnum type = convert2DataTypeEnum(enumType);
             if (type == null) {
                 throw new DataSetException(String.format("DataTypeEnum can't null,origin enumType=[%s]", enumType));
             }
@@ -31,12 +44,11 @@ public class DataTableGenerate {
             ColInfo info = new ColInfo(name, title, type, format);
             return info;
         } catch (Exception e) {
-            logger.error("DataTableGenerate.createColInfo Exception,name:" + name, e);
+            throw new DataSetException("DataTableGenerate.createColInfo Exception,name:" + name, e);
         }
-        return null;
     }
 
-    public final static DataTable createDateTable(String dataTableName, List<ColInfo> colInfos) {
+    default DataTable internalCreateDateTable(String dataTableName, List<ColInfo> colInfos) {
         DataTable dataTable = new DataTable(dataTableName);
         int fieldListSize = 0;
         if (colInfos != null) {

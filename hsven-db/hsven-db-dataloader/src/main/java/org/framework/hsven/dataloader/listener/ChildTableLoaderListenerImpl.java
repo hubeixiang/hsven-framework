@@ -2,12 +2,19 @@ package org.framework.hsven.dataloader.listener;
 
 import org.framework.hsven.dataloader.api.IDBSqlQueryLoaderListener;
 import org.framework.hsven.dataloader.api.IRelatedTableLoadListener;
-import org.framework.hsven.dataloader.beans.db.DBColumnMetaDataDefine;
 import org.framework.hsven.dataloader.beans.data.DBTableRowInfo;
+import org.framework.hsven.dataloader.beans.db.DBColumnMetaDataDefine;
+import org.framework.hsven.dataloader.beans.loader.DefineRelatedValues;
+import org.framework.hsven.dataloader.beans.loader.DefineRelatedValuesUtil;
+import org.framework.hsven.dataloader.beans.loader.RelatedValuesAndRowIndex;
+import org.framework.hsven.dataloader.beans.loader.RelatedValuesAndRowIndexEntity;
+import org.framework.hsven.dataloader.beans.related.SimpleChildTable;
 import org.framework.hsven.dataloader.beans.related.TableField;
 import org.framework.hsven.dataloader.beans.related.TableFieldSet;
+import org.framework.hsven.dataloader.beans.related.TableLoadDefine;
 import org.framework.hsven.dataloader.loader.model.QueryConfig;
 import org.framework.hsven.dataloader.loader.model.QueryLoaderResultDesc;
+import org.framework.hsven.dataloader.related.RelatedLoaderHandlerHolder;
 import org.framework.hsven.datasource.model.DataSourceConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +27,17 @@ import java.util.List;
  */
 public class ChildTableLoaderListenerImpl implements IDBSqlQueryLoaderListener {
     private static Logger logger = LoggerFactory.getLogger(ChildTableLoaderListenerImpl.class);
+    private final RelatedLoaderHandlerHolder relatedLoaderHandlerHolder;
+    private final TableLoadDefine tableLoadDefine;
+    private final SimpleChildTable currentSimpleChildTable;
+    private final RelatedValuesAndRowIndexEntity relatedValuesAndRowIndexEntity;
+
+    public ChildTableLoaderListenerImpl(RelatedLoaderHandlerHolder relatedLoaderHandlerHolder, TableLoadDefine tableLoadDefine, SimpleChildTable currentSimpleChildTable, RelatedValuesAndRowIndexEntity relatedValuesAndRowIndexEntity) {
+        this.relatedLoaderHandlerHolder = relatedLoaderHandlerHolder;
+        this.tableLoadDefine = tableLoadDefine;
+        this.currentSimpleChildTable = currentSimpleChildTable;
+        this.relatedValuesAndRowIndexEntity = relatedValuesAndRowIndexEntity;
+    }
 
     @Override
     public String listenerIdentification() {
@@ -38,7 +56,18 @@ public class ChildTableLoaderListenerImpl implements IDBSqlQueryLoaderListener {
 
     @Override
     public void processRow(DBTableRowInfo dbTableRowInfo) {
-
+        DefineRelatedValues relatedValues = DefineRelatedValuesUtil.createTableDefineRelatedValuesByLocalField(currentSimpleChildTable.getDefineRelatedFields(), dbTableRowInfo);
+        if (relatedValuesAndRowIndexEntity == null || !relatedValuesAndRowIndexEntity.hasRelatedValues()) {
+            return;
+        }
+        if (relatedValues == null || relatedValues.isValuesIsNull()) {
+            return;
+        }
+        RelatedValuesAndRowIndex relatedValuesAndRowIndex = relatedValuesAndRowIndexEntity.getRelatedValuesAndRowIndexByValuesKey(relatedValues.getRelatedFieldsKeyValue());
+        if (relatedValuesAndRowIndex == null || !relatedValuesAndRowIndex.hasRelatedRowIndex()) {
+            return;
+        }
+        appendChildDataTableRow2MainTable(relatedLoaderHandlerHolder.getiRelatedTableLoadListener(), relatedValuesAndRowIndex.getRelatedRowIndexList(), currentSimpleChildTable.getTableFieldSet(), dbTableRowInfo);
     }
 
     @Override

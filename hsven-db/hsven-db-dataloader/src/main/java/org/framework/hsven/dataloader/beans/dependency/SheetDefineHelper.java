@@ -243,7 +243,21 @@ public class SheetDefineHelper {
         if (sheetDependency.getPrevious() == null) {
             //表明是第一个主表的查询sql拼接
             String mainSheetAlias = sheetDefine.getMainSheetAlias();
-            String mainSql = String.format(" select %s.* from %s ", mainSheetAlias, TableDefineUtil.structQueryTable(null, sheetDefine.getMainSheetContext(), mainSheetAlias));
+            //找出主表要查询的字段
+            StringBuffer mainSelectFields = new StringBuffer();
+            Map<String, SheetField> mainSheetFields = sheetDefine.getMainSheetFieldBySheetAlias(mainSheetAlias);
+            for (Map.Entry<String, SheetField> entry : mainSheetFields.entrySet()) {
+                SheetField sheetField = entry.getValue();
+                SheetFieldSource sheetFieldSource = sheetField.getSheetFieldSource(mainSheetAlias);
+                if (sheetFieldSource != null) {
+                    if (mainSelectFields.length() == 0) {
+                        mainSelectFields.append(String.format("%s.%s as %s", mainSheetAlias, sheetFieldSource.getSheetFieldName(), sheetField.getFieldAlias()));
+                    } else {
+                        mainSelectFields.append(",").append(String.format("%s.%s as %s", mainSheetAlias, sheetFieldSource.getSheetFieldName(), sheetField.getFieldAlias()));
+                    }
+                }
+            }
+            String mainSql = String.format(" select %s from %s ", mainSelectFields.toString(), TableDefineUtil.structQueryTable(null, sheetDefine.getMainSheetContext(), mainSheetAlias));
             wholeSql.setWholeSql(mainSql);
             CurrentInfo currentInfo = sheetDependency.getCurrentInfo();
             for (Map.Entry<String, SheetField> entry : currentInfo.getSheetFieldMap().entrySet()) {

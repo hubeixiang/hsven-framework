@@ -39,7 +39,7 @@ public class SimpleChildTableLazyLoaderTask extends AbstractChildTableLoaderTask
         //1. 不是直接与主表关联的子表,查询数据库前需要先从主表中找出当前批次数据的关联主键
         RelatedValuesAndRowIndexEntity relatedValuesAndRowIndexEntity = createLazyRelatedValuesAndRowIndexEntity(lazyRelatedFieldsAndRowIndex);
         //2. 用查找出来的关联主键拼接sql,查询对应主表的数据
-        ChildTableLoaderListenerImpl childTableLoaderListener = new ChildTableLoaderListenerImpl();
+        ChildTableLoaderListenerImpl childTableLoaderListener = new ChildTableLoaderListenerImpl(relatedLoaderHandlerHolder, tableLoadDefine, currentsimpleChildTable, relatedValuesAndRowIndexEntity);
         QueryConfig queryConfig = createQueryConfig(relatedValuesAndRowIndexEntity);
         DBSqlQueryLoader dbSqlQueryLoader = DBSqlQueryLoaderUtil.createDBSqlQueryLoader(childTableLoaderListener, queryConfig, relatedLoaderHandlerHolder.getiDataSourceProvider());
         QueryLoaderResultDesc queryLoaderResultDesc = dbSqlQueryLoader.load();

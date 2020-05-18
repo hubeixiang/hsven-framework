@@ -62,9 +62,9 @@ public class RelatedValuesAndRowIndexEntityUtil {
                     }
                 }
                 if (sb.length() == 0) {
-                    sb.append(vsb.toString());
+                    sb.append(String.format("(%s)", vsb.toString()));
                 } else {
-                    sb.append(" and ").append(String.format("(%s)", vsb.toString()));
+                    sb.append(" or ").append(String.format("(%s)", vsb.toString()));
                 }
             }
         }

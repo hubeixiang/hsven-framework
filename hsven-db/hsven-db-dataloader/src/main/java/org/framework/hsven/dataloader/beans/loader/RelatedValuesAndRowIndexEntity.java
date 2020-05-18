@@ -1,6 +1,7 @@
 package org.framework.hsven.dataloader.beans.loader;
 
 import org.framework.hsven.dataloader.beans.data.DBTableRowInfo;
+import org.framework.hsven.dataloader.beans.related.TableLoadDefine;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -15,8 +16,8 @@ public class RelatedValuesAndRowIndexEntity {
     }
 
 
-    public boolean addDBTableRowInfo(DefineRelatedFields defineRelatedFields, DBTableRowInfo dbTableRowInfo) {
-        DefineRelatedValues defineRelatedValues = DefineRelatedValuesUtil.createTableDefineRelatedValues(defineRelatedFields, dbTableRowInfo);
+    public boolean addDBTableRowInfo(TableLoadDefine tableLoadDefine, DefineRelatedFields defineRelatedFields, DBTableRowInfo dbTableRowInfo) {
+        DefineRelatedValues defineRelatedValues = DefineRelatedValuesUtil.createTableDefineRelatedValuesByRelatedField(tableLoadDefine, defineRelatedFields, dbTableRowInfo);
         return addDefineRelatedValues(defineRelatedFields, defineRelatedValues, dbTableRowInfo.getRowIndex());
     }
 

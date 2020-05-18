@@ -21,7 +21,7 @@ public class DefineRelatedValue {
     }
 
     public String getValueForString() {
-        return String.valueOf(value);
+        return value == null ? null : String.valueOf(value);
     }
 
     @Override

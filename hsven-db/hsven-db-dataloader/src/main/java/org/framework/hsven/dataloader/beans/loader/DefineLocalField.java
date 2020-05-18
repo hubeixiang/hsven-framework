@@ -1,9 +1,10 @@
 package org.framework.hsven.dataloader.beans.loader;
 
 /**
- * 字表的关联字段
+ * 子表的关联字段
  */
 public class DefineLocalField {
+    //子表字段
     private String localField;
 
     public String getLocalField() {

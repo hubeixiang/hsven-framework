@@ -1,10 +1,10 @@
 package org.framework.hsven.dataloader.valid.related;
 
 import org.apache.commons.lang3.StringUtils;
-import org.framework.hsven.dataloader.beans.db.EnumDbDataType;
 import org.framework.hsven.dataloader.beans.dependency.StructSql;
 import org.framework.hsven.dataloader.beans.related.SimpleMainTable;
 import org.framework.hsven.dataloader.beans.related.TableDefine;
+import org.framework.hsven.dataloader.beans.related.TableField;
 import org.framework.hsven.dataloader.beans.related.TableFieldSet;
 import org.framework.hsven.dataloader.beans.related.TableLoadDefine;
 import org.framework.hsven.dataloader.dialect.DBDialectSyntaxUtil;
@@ -85,8 +85,8 @@ public class SimpleMainTableUtil {
         }
         if (!CollectionUtils.isEmpty(partitionFieldValueSet)) {
             String partitionFieldNameAlais = String.format("%s.%s", tableDefine.getTableAlias(), tableLoadDefine.getPartitionFieldName());
-            EnumDbDataType enumDbDataType = tableLoadDefine.getPartitionFieldDataType();
-            String insql = DBDialectSyntaxUtil.structInSql(dataSourceType, partitionFieldNameAlais, enumDbDataType, partitionFieldValueSet);
+            TableField tableField = tableLoadDefine.getPartitionFieldDataType();
+            String insql = DBDialectSyntaxUtil.structInSql(dataSourceType, partitionFieldNameAlais, tableField.getFieldAliasDisplayEnumDbDataType(), partitionFieldValueSet);
             if (StringUtils.isNotEmpty(insql)) {
                 if (sb.length() == 0) {
                     sb.append(insql);

@@ -95,7 +95,10 @@ public class SimpleChildTableBeforeLoaderCacheTask implements ITableLoaderTask<T
         StructSql structSql = SimpleChildTableUtil.toCacheAllDataSql(dbType, tableLoadDefine, simpleChildTable);
         if (structSql == null || !structSql.hasSql()) {
             logger.error("ChildTableConfigCacheTask cache load fail,sql is null.taskInfo=" + childTableConfigCacheEntity.getIdentify());
+            this.childTableConfigCacheEntity.setCacheSql(String.format("defineType=%s,childTableAlias=%s error struct sql", tableLoadDefine.getDefineType(), simpleChildTable.getTableAlias()));
             return null;
+        } else {
+            this.childTableConfigCacheEntity.setCacheSql(structSql.getWholeSql());
         }
         queryConfig.setDbName(simpleChildTable.getTableDefine().getDbName());
         queryConfig.setSql(structSql.getWholeSql());

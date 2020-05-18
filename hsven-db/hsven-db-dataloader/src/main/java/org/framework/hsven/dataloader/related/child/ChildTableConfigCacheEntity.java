@@ -21,6 +21,7 @@ public class ChildTableConfigCacheEntity {
     //配置中配置了可以缓存的时候,缓存加载出来的数据
     //Map<DefineRelatedValues.getRelatedFieldsKeyValue(),DBTableRowInfo>
     private Map<String, DBTableRowInfo> data = new HashMap<String, DBTableRowInfo>();
+    private String cacheSql = null;
 
     public ChildTableConfigCacheEntity(String defineType, TableLoadDefine tableLoadDefine, SimpleChildTable simpleChildTable) {
         this.defineType = defineType;
@@ -59,12 +60,19 @@ public class ChildTableConfigCacheEntity {
             return;
         }
 
-        DefineRelatedValues defineRelatedValues = DefineRelatedValuesUtil.createTableDefineRelatedValues(defineRelatedFields, dbTableRowInfo);
+        DefineRelatedValues defineRelatedValues = DefineRelatedValuesUtil.createTableDefineRelatedValuesByLocalField(defineRelatedFields, dbTableRowInfo);
         if (defineRelatedValues != null) {
             data.put(defineRelatedValues.getRelatedFieldsKeyValue(), dbTableRowInfo);
         }
     }
 
+    public String getCacheSql() {
+        return cacheSql;
+    }
+
+    public void setCacheSql(String cacheSql) {
+        this.cacheSql = cacheSql;
+    }
 
     public void destory() {
         if (data != null) {

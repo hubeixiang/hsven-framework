@@ -59,20 +59,23 @@ public class CommonsExecutors {
     }
 
     public static ExecutorServiceInfo newFixedThreadPool(String poolName, int nThreads, RejectedExecutionHandler rejectedExecutionHandler) {
-        ThreadPoolExecutor threadPoolExecutor = null;
-        if (rejectedExecutionHandler == null) {
-            threadPoolExecutor = new ThreadPoolExecutor(nThreads, nThreads,
-                    0L, TimeUnit.MILLISECONDS,
-                    new LinkedBlockingQueue<Runnable>(), ThreadFactoryUtil.createCustomThreadFactory(poolName));
-        } else {
-            threadPoolExecutor = new ThreadPoolExecutor(nThreads, nThreads,
-                    0L, TimeUnit.MILLISECONDS,
-                    new LinkedBlockingQueue<Runnable>(), ThreadFactoryUtil.createCustomThreadFactory(poolName), rejectedExecutionHandler);
-        }
-        ExecutorServiceInfo executorServiceInfo = new ExecutorServiceInfo();
+        ExecutorServiceInfo executorServiceInfo = ThreadPoolExecutorManager.getInstance().getExecutorService(poolName);
+        if (executorServiceInfo == null) {
+            ThreadPoolExecutor threadPoolExecutor = null;
+            if (rejectedExecutionHandler == null) {
+                threadPoolExecutor = new ThreadPoolExecutor(nThreads, nThreads,
+                        0L, TimeUnit.MILLISECONDS,
+                        new LinkedBlockingQueue<Runnable>(), ThreadFactoryUtil.createCustomThreadFactory(poolName));
+            } else {
+                threadPoolExecutor = new ThreadPoolExecutor(nThreads, nThreads,
+                        0L, TimeUnit.MILLISECONDS,
+                        new LinkedBlockingQueue<Runnable>(), ThreadFactoryUtil.createCustomThreadFactory(poolName), rejectedExecutionHandler);
+            }
+            executorServiceInfo = new ExecutorServiceInfo();
 
-        //初始化完特殊参数后在调用此方法,初始化其它特殊共有的参数
-        configExecutorServiceInfo(poolName, executorServiceInfo, threadPoolExecutor);
+            //初始化完特殊参数后在调用此方法,初始化其它特殊共有的参数
+            configExecutorServiceInfo(poolName, executorServiceInfo, threadPoolExecutor);
+        }
 
         return executorServiceInfo;
     }

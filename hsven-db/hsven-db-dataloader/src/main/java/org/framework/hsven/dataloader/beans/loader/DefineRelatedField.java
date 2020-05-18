@@ -3,10 +3,11 @@ package org.framework.hsven.dataloader.beans.loader;
 import org.framework.hsven.dataloader.beans.db.EnumDbDataType;
 
 /**
- * 定义的字表关联主表的关联方式
+ * 定义的子表关联主表的关联方式
  */
 public class DefineRelatedField extends DefineLocalField {
     private EnumDbDataType dataType;
+    //关联的主表的字段
     private String relatedField;
 
     public EnumDbDataType getDataType() {

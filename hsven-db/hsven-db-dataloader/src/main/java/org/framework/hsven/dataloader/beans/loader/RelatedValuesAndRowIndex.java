@@ -23,6 +23,10 @@ public class RelatedValuesAndRowIndex {
         return relatedRowIndexList;
     }
 
+    public boolean hasRelatedRowIndex() {
+        return relatedRowIndexList != null && relatedRowIndexList.size() > 0;
+    }
+
     public void destory() {
         if (relatedRowIndexList != null) {
             relatedRowIndexList.clear();

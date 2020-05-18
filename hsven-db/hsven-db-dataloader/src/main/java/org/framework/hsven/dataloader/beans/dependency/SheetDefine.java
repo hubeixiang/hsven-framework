@@ -45,6 +45,20 @@ public class SheetDefine {
         return tmpMap;
     }
 
+    public Map<String, SheetField> getMainSheetFieldBySheetAlias(String sheetAlias) {
+        Map<String, SheetField> tmpMap = new HashMap<String, SheetField>();
+        for (Map.Entry<String, SheetField> entry : sheetFieldMap.entrySet()) {
+            String fieldAlias = entry.getKey();
+            SheetField sheetField = entry.getValue();
+            if (sheetField.getSheetFieldSource(sheetAlias) != null) {
+                if (sheetField.isMainSheet()) {
+                    tmpMap.put(fieldAlias, sheetField);
+                }
+            }
+        }
+        return tmpMap;
+    }
+
     public SheetField getSheetField(String fieldAlias) {
         return sheetFieldMap.get(fieldAlias);
     }

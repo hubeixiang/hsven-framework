@@ -1,21 +1,45 @@
 package org.framework.hsven.dataloader.beans.loader;
 
-import org.framework.hsven.dataloader.beans.db.DBColumnValue;
+import org.apache.commons.lang3.StringUtils;
 import org.framework.hsven.dataloader.beans.data.DBTableRowInfo;
+import org.framework.hsven.dataloader.beans.db.DBColumnValue;
+import org.framework.hsven.dataloader.beans.related.TableField;
+import org.framework.hsven.dataloader.beans.related.TableLoadDefine;
 
 public class DefineRelatedValueUtil {
-    public static DefineRelatedValue createDefineRelatedValueByRelatedField(DefineRelatedField defineRelatedField, DBTableRowInfo dbTableRowInfo) {
-        DefineRelatedValue defineRelatedValue = new DefineRelatedValue(defineRelatedField);
-        DBColumnValue dbColumnValue = dbTableRowInfo.getDataBaseColumnValue(defineRelatedField.getRelatedField());
-        defineRelatedValue.setValue(dbColumnValue == null ? null : dbColumnValue.getColumnValue());
-        return defineRelatedValue;
+    /**
+     * 使用关联中的主表字段获取查询行结果中的主键值
+     *
+     * @param tableLoadDefine
+     * @param defineRelatedField
+     * @param dbTableRowInfo
+     * @return
+     */
+    public static DefineRelatedValue createDefineRelatedValueByRelatedField(TableLoadDefine tableLoadDefine, DefineRelatedField defineRelatedField, DBTableRowInfo dbTableRowInfo) {
+        Object target = null;
+        TableField tableField = tableLoadDefine.getAllFieldNameTableFieldMaps(defineRelatedField.getRelatedField());
+        DBColumnValue dbColumnValue = dbTableRowInfo.getDataBaseColumnValue(tableField.getTableFieldName());
+        if (dbColumnValue == null || dbColumnValue.getColumnValue() == null) {
+            if (tableField != null && StringUtils.isNotEmpty(tableField.getSecondTableFieldName())) {
+                dbColumnValue = dbTableRowInfo.getDataBaseColumnValue(tableField.getSecondTableFieldName());
+                target = dbColumnValue == null ? null : dbColumnValue.getColumnValue();
+            }
+        } else {
+            target = dbColumnValue.getColumnValue();
+        }
+        return createDefineRelatedValue(defineRelatedField, target);
     }
 
+    /**
+     * 使用关联中的子表字段获取查询行结果中的主键值
+     *
+     * @param defineRelatedField
+     * @param dbTableRowInfo
+     * @return
+     */
     public static DefineRelatedValue createDefineRelatedValueByLoaclField(DefineRelatedField defineRelatedField, DBTableRowInfo dbTableRowInfo) {
-        DefineRelatedValue defineRelatedValue = new DefineRelatedValue(defineRelatedField);
         DBColumnValue dbColumnValue = dbTableRowInfo.getDataBaseColumnValue(defineRelatedField.getLocalField());
-        defineRelatedValue.setValue(dbColumnValue == null ? null : dbColumnValue.getColumnValue());
-        return defineRelatedValue;
+        return createDefineRelatedValue(defineRelatedField, dbColumnValue == null ? null : dbColumnValue.getColumnValue());
     }
 
     public static DefineRelatedValue createDefineRelatedValue(DefineRelatedField defineRelatedField, Object value) {
