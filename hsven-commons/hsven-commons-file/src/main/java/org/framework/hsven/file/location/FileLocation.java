@@ -9,9 +9,11 @@ import java.io.Serializable;
  */
 public class FileLocation implements Serializable {
     private final static long serialVersionUID = 128L;
+    //最终生成可用生成一个访问文件的唯一定位符
+    // serviceUrl + "/" + fileUuid + fileExtension.extension
     //文件后缀,不能为空
     private FileExtension fileExtension;
-    //文件唯一定位标志,算法生成uuid,不能为空
+    //文件唯一定位标志,使用算法生成的uuid
     private String fileUuid;
     //文件在服务器上存放的目录,不能为空
     private String serviceUrl;
@@ -43,7 +45,7 @@ public class FileLocation implements Serializable {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        return sb.append("FileLocation[extension=").append(fileExtension).append(",fileUuid=").append(fileUuid).append(",service=")
+        return sb.append("FileLocation[extension=").append(fileExtension).append(",fileUuid=").append(fileUuid).append(",serviceUrl=")
                 .append(serviceUrl).append("]").toString();
     }
 

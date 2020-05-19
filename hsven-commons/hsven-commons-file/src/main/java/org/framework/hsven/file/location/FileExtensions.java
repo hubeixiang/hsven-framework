@@ -55,7 +55,7 @@ public class FileExtensions {
             return createFileExtension(extension, fileExtensionMap.get(extension).getExtensionDisplay());
         } else {
             if (extension.startsWith(".")) {
-                return createFileExtension(extension, StringUtils.isEmpty(extensionDisplay) ? "未识别" : extensionDisplay);
+                return createFileExtension(extension, StringUtils.isEmpty(extensionDisplay) ? "Unknow" : extensionDisplay);
             } else {
                 throw new RuntimeException("file extension must starts with char '.'");
             }

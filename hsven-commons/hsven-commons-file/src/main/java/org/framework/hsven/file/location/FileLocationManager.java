@@ -29,7 +29,7 @@ public class FileLocationManager {
     /**
      * 依据传入的文件名称,鉴别其文件扩展信息
      *
-     * @param fileName 传入的文件名
+     * @param fileName 传入的文件名,不包含文件所在的路径
      * @return 返回该文件名是否在, 为null时, 表明未识别出文件后缀
      */
     public FileNameDescribe parserFileNameDescribe(String fileName) {
@@ -77,11 +77,43 @@ public class FileLocationManager {
         return null;
     }
 
+    public File fileUrl2File(FileLocation fileLocation) {
+        String fileUrl = fileUrl(fileLocation);
+        if (StringUtils.isEmpty(fileUrl)) {
+            return null;
+        } else {
+            return new File(fileUrl);
+        }
+    }
+
     public String fileUrl(FileLocation fileLocation) {
         String fileName = getFileName(fileLocation);
         if (StringUtils.isNotEmpty(fileName)) {
             return fileLocation.getServiceUrl() + File.separator + fileName;
         }
         return null;
+    }
+
+    public FileLocation parserFileLocalion(File file) {
+        if (file.isDirectory()) {
+            return null;
+        }
+        FileLocation fileLocation = new FileLocation();
+        String fileName = file.getName();
+        if (fileName == null || fileName.length() == 0) {
+            return null;
+        }
+        int index = fileName.lastIndexOf(".");
+        if (index == -1) {
+            return null;
+        }
+        String extension = fileName.substring(index);
+        String name = fileName.substring(0, index);
+        String dir = file.getParent();
+        FileExtension fileExtension = FileExtensions.getInstance().parserFileExtension(extension, "");
+        fileLocation.setFileExtension(fileExtension);
+        fileLocation.setFileUuid(name);
+        fileLocation.setServiceUrl(dir);
+        return fileLocation;
     }
 }
