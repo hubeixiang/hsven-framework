@@ -1,0 +1,243 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://dxlte.boco.com/service/proxy/eoms/service"
+           targetNamespace="http://dxlte.boco.com/service/proxy/eoms/service" elementFormDefault="qualified">
+
+    <xs:element name="sheetVerifyRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="objectClass" type="tns:neTypeEnum" />
+                <xs:element name="fileUrl" type="xs:string" />
+                <xs:element name="userId" type="xs:string" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="sheetVerifyResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="result" type="tns:result" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="sheetVerifyScheduleRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="fileUrl" type="xs:string" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="sheetVerifyScheduleResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="result" type="tns:result" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="checkImportRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="orderId" type="xs:string" />
+                <xs:element name="orderType" type="tns:orderTypeEnum" />
+                <xs:element name="dispatchType" type="tns:dispatchTypeEnum" />
+                <xs:element name="userId" type="xs:string" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="checkImportResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="result" type="tns:result" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="quitOrderUpdateRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="orderId" type="xs:string" />
+                <xs:element name="orderType" type="tns:orderTypeEnum" />
+                <xs:element name="intId" type="xs:string" />
+                <xs:element name="neType" type="tns:neTypeEnum" />
+                <xs:element name="dispatchType" type="tns:dispatchTypeEnum" />
+                <xs:element name="triggerCondition" type="tns:triggerConditionEnum" />
+                <xs:element name="userId" type="xs:string" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="quitOrderUpdateResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="result" type="tns:result" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="quitOrderRevokeRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="orderId" type="xs:string" />
+                <xs:element name="dispatchType" type="tns:dispatchTypeEnum" />
+                <xs:element name="userId" type="xs:string" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="quitOrderRevokeResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="result" type="tns:result" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="archiveRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="orderId" type="xs:string" />
+                <xs:element name="orderType" type="tns:orderTypeEnum" />
+                <xs:element name="dispatchType" type="tns:dispatchTypeEnum" />
+                <xs:element name="userId" type="xs:string" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="archiveResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="result" type="tns:result" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="queryDictRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="neType" type="tns:neTypeEnum" />
+                <xs:element name="title" type="xs:string" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="queryDictResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="result" type="tns:result" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+	<!-- 人工验收工单操作参数 -->
+	<xs:element name="artificialAcceptanceSheetRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<!-- 网元类型,不能为空 -->
+				<xs:element name="neType" type="tns:neTypeEnum"/>
+				<!-- 验收类型,发起人工验收,撤销人工验收,不能为空 -->
+				<xs:element name="acceptanceType" type="tns:acceptanceTypeEnum"/>
+				<!-- 工单号,不能为空 -->
+				<xs:element name="orderId" type="xs:string"/>
+				<!-- 验收网元号,不能为空 -->
+				<xs:element name="intId" type="xs:long"/>
+				<!-- 验收网元所属省ID,不能为空 -->
+				<xs:element name="provinceId" type="xs:int"/>
+				<!-- 操作用户id,不能为空 -->
+				<xs:element name="userId" type="xs:string" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<!-- 人工验收工单操作结果 -->
+	<xs:element name="artificialAcceptanceSheetResponse">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="result" type="tns:result" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+    <xs:complexType name="result">
+        <xs:sequence>
+            <xs:element name="code" type="tns:resultCodeEnum" />
+            <xs:element name="message" type="xs:string" />
+            <xs:element name="data" type="xs:string" nillable="true" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:simpleType name="resultCodeEnum">
+        <xs:restriction base="xs:int">
+            <!--执行成功-->
+            <xs:enumeration value="0" />
+            <!--执行成功无数据返回-->
+            <xs:enumeration value="1" />
+            <!--服务调用参数传入错误-->
+            <xs:enumeration value="2" />
+            <!--后台服务错误-->
+            <xs:enumeration value="10" />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="dispatchTypeEnum">
+        <xs:restriction base="xs:int">
+            <!--系统派单-->
+            <xs:enumeration value="0" />
+            <!--人工派单-->
+            <xs:enumeration value="1" />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="orderTypeEnum">
+        <xs:restriction base="xs:int">
+            <!--新建站工单-->
+            <xs:enumeration value="1" />
+            <!--修改工单-->
+            <xs:enumeration value="2" />
+            <!--验收工单-->
+            <xs:enumeration value="3" />
+            <!--退网工单-->
+            <xs:enumeration value="4" />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="triggerConditionEnum">
+        <xs:restriction base="xs:int">
+            <!--正常-->
+            <xs:enumeration value="1" />
+            <!--物业逼迁-->
+            <xs:enumeration value="2" />
+            <!--主动搬迁-->
+            <xs:enumeration value="3" />
+            <!--维护关停-->
+            <xs:enumeration value="4" />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="neTypeEnum">
+        <xs:restriction base="xs:int">
+            <!--基站-->
+            <xs:enumeration value="8104" />
+            <!--小区-->
+            <xs:enumeration value="8105" />
+            <!--RRU-->
+            <xs:enumeration value="8111" />
+            <!--天线-->
+            <xs:enumeration value="8112" />
+            <!--站址-->
+            <xs:enumeration value="10007" />
+            <!--室分-->
+            <xs:enumeration value="11001" />
+        </xs:restriction>
+    </xs:simpleType>
+
+	<xs:simpleType name="acceptanceTypeEnum">
+		<xs:restriction base="xs:int">
+			<!-- 应用人工验收工单 -->
+			<xs:enumeration value="10"/>
+			<!-- 撤销人工验收工单 -->
+			<xs:enumeration value="11"/>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

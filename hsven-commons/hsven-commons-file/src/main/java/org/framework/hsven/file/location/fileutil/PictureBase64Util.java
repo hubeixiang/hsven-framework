@@ -1,5 +1,6 @@
 package org.framework.hsven.file.location.fileutil;
 
+import org.apache.commons.codec.binary.Base64;
 import org.framework.hsven.file.location.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +19,7 @@ import java.io.OutputStream;
  */
 public class PictureBase64Util {
     private static Logger logger = LoggerFactory.getLogger(PictureBase64Util.class);
+    private static boolean isJdkBase64 = false;
 
     /**
      * 将指定的图片文件内容转换为base64编码字符串
@@ -50,10 +52,15 @@ public class PictureBase64Util {
                 }
             }
         }
+
         //对字节数组Base64编码
-        BASE64Encoder encoder = new BASE64Encoder();
-        //返回Base64编码过的字节数组字符串
-        return encoder.encode(data);
+        if (isJdkBase64) {
+            //使用jdk自带的base64编码
+            return jdkEncode(data);
+        } else {
+            //使用ommons-codec实现的base64编码
+            return commonsEncode(data);
+        }
     }
 
     /**
@@ -70,11 +77,15 @@ public class PictureBase64Util {
         if (StringUtils.isEmpty(imageBase64Context))
             return null;
 
-        BASE64Decoder decoder = new BASE64Decoder();
         OutputStream out = null;
         try {
             //Base64解码
-            byte[] b = decoder.decodeBuffer(imageBase64Context);
+            byte[] b = null;
+            if (isJdkBase64) {
+                b = jdkDecode(imageBase64Context);
+            } else {
+                b = commonsDecode(imageBase64Context);
+            }
             for (int i = 0; i < b.length; ++i) {
                 if (b[i] < 0) {
                     //调整异常数据
@@ -103,5 +114,25 @@ public class PictureBase64Util {
             }
         }
         return null;
+    }
+
+    private static String jdkEncode(byte[] bytes) {
+        BASE64Encoder encoder = new BASE64Encoder();
+        return encoder.encode(bytes);
+    }
+
+    private static String commonsEncode(byte[] bytes) {
+        Base64 base64 = new Base64();
+        return base64.encodeToString(bytes);
+    }
+
+    private static byte[] jdkDecode(String base64Context) throws IOException {
+        BASE64Decoder decoder = new BASE64Decoder();
+        return decoder.decodeBuffer(base64Context);
+    }
+
+    private static byte[] commonsDecode(String base64Context) {
+        Base64 base64 = new Base64();
+        return base64.decode(base64Context);
     }
 }

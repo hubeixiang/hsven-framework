@@ -33,6 +33,7 @@
         <module>hsven-zookeeper</module>
         <module>hsven-quartz</module>
         <module>hsven-dataset</module>
+        <module>hsven-ws</module>
     </modules>
 
     <packaging>pom</packaging>
@@ -124,7 +125,8 @@
         <commons-lang3.version>3.4</commons-lang3.version>
         <commons-collections4.version>4.0</commons-collections4.version>
         <commons-beanutils.version>1.9.3</commons-beanutils.version>
-        <commons-compress.version>1.9</commons-compress.version>
+        <commons-compress.version>1.20</commons-compress.version>
+        <commons-codec.version>1.14</commons-codec.version>
         <mockito-all.version>1.10.19</mockito-all.version>
     </properties>
 
@@ -204,7 +206,15 @@
         </profile>
     </profiles>
     <build>
-
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <version>${spring.boot.version}</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
         <plugins>
             <plugin>
                 <groupId>org.jacoco</groupId>
@@ -431,6 +441,11 @@
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-compress</artifactId>
                 <version>${commons-compress.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-codec</groupId>
+                <artifactId>commons-codec</artifactId>
+                <version>${commons-codec.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.commons</groupId>
