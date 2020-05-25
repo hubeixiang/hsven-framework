@@ -1,4 +1,4 @@
-package org.framework.hsven.file.location.fileutil;
+package org.framework.hsven.file.fileutil;
 
 import org.junit.Test;
 

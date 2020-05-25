@@ -114,6 +114,12 @@
         <!-- groovy-all -->
         <groovy-all.version>2.4.15</groovy-all.version>
 
+        <!-- office -->
+        <!-- xml -->
+        <office-dom4j.verison>1.6.1</office-dom4j.verison>
+        <!-- excel -->
+        <office-poi.version>3.15</office-poi.version>
+
         <!-- staff artifactId -->
         <io.vavr.verion>0.9.2</io.vavr.verion>
         <projectlombok.version>1.16.18</projectlombok.version>
@@ -536,6 +542,25 @@
                 <groupId>org.mockito</groupId>
                 <artifactId>mockito-all</artifactId>
                 <version>${mockito-all.version}</version>
+            </dependency>
+
+            <!-- office -->
+            <!-- xml -->
+            <dependency>
+                <groupId>dom4j</groupId>
+                <artifactId>dom4j</artifactId>
+                <version>${office-dom4j.verison}</version>
+            </dependency>
+            <!-- excel -->
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi-ooxml</artifactId>
+                <version>${office-poi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi</artifactId>
+                <version>${office-poi.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

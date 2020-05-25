@@ -1,4 +1,4 @@
-package org.framework.hsven.file.location.exception;
+package org.framework.hsven.file.exception;
 
 /**
  * 自定义异常类

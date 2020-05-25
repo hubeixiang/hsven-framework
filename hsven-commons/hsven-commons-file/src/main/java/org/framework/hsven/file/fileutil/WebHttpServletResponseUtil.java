@@ -1,4 +1,6 @@
-package org.framework.hsven.file.location.fileutil;
+package org.framework.hsven.file.fileutil;
+
+import org.framework.hsven.file.FileConstants;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;

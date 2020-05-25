@@ -1,5 +1,6 @@
-package org.framework.hsven.file.location.fileutil;
+package org.framework.hsven.file.fileutil;
 
+import org.framework.hsven.file.FileConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

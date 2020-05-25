@@ -1,5 +1,7 @@
 package org.framework.hsven.file.location;
 
+import org.framework.hsven.file.FileConstants;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,26 +16,15 @@ public class FileExtensions {
     private static FileExtensions instance = null;
 
     private FileExtensions() {
-        add(createFileExtension(".txt", "TEXT"));
-        add(createFileExtension(".log", "LOG"));
-        add(createFileExtension(".xml", "XML"));
-        add(createFileExtension(".csv", "CSV"));
-        add(createFileExtension(".xls", "Excel03"));
-        add(createFileExtension(".xlsx", "Excel07"));
-        add(createFileExtension(".doc", "Word03"));
-        add(createFileExtension(".docx", "Word07"));
-        add(createFileExtension(".zip", "ZIP"));
-    }
-
-    private FileExtension createFileExtension(String extension, String extensionDisplay) {
-        FileExtension fileExtension = new FileExtension();
-        fileExtension.setExtension(extension);
-        fileExtension.setExtensionDisplay(extensionDisplay);
-        return fileExtension;
-    }
-
-    private void add(FileExtension fileExtension) {
-        fileExtensionMap.put(fileExtension.getExtension(), fileExtension);
+        add(createFileExtension(FileConstants.FILE_SUFFIX_TEXT, "TEXT"));
+        add(createFileExtension(FileConstants.FILE_SUFFIX_LOG, "LOG"));
+        add(createFileExtension(FileConstants.FILE_SUFFIX_XML, "XML"));
+        add(createFileExtension(FileConstants.FILE_SUFFIX_CSV, "CSV"));
+        add(createFileExtension(FileConstants.FILE_SUFFIX_XLS, "Excel03"));
+        add(createFileExtension(FileConstants.FILE_SUFFIX_XLSX, "Excel07"));
+        add(createFileExtension(FileConstants.FILE_SUFFIX_DOC, "Word03"));
+        add(createFileExtension(FileConstants.FILE_SUFFIX_DOCX, "Word07"));
+        add(createFileExtension(FileConstants.FILE_SUFFIX_ZIP, "ZIP"));
     }
 
     public static FileExtensions getInstance() {
@@ -48,6 +39,17 @@ public class FileExtensions {
             return;
         }
         instance = new FileExtensions();
+    }
+
+    private FileExtension createFileExtension(String extension, String extensionDisplay) {
+        FileExtension fileExtension = new FileExtension();
+        fileExtension.setExtension(extension);
+        fileExtension.setExtensionDisplay(extensionDisplay);
+        return fileExtension;
+    }
+
+    private void add(FileExtension fileExtension) {
+        fileExtensionMap.put(fileExtension.getExtension(), fileExtension);
     }
 
     public FileExtension parserFileExtension(String extension, String extensionDisplay) {
