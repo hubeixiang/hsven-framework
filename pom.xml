@@ -24,7 +24,7 @@
 
     <groupId>org.framework.hsven</groupId>
     <artifactId>hsven-framework</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>${revision}</version>
     <modules>
         <module>hsven-commons</module>
         <module>hsven-logging</module>
@@ -75,6 +75,7 @@
 
 
     <properties>
+        <revision>1.0.0-SNAPSHOT</revision>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.build.locales>zh_CN</project.build.locales>
 

@@ -3,7 +3,6 @@ package org.framework.hsven.dataset.datatable.cache;
 import bsh.EvalError;
 import bsh.Interpreter;
 import org.framework.hsven.dataset.datatable.DataSetUtil;
-import org.framework.hsven.dataset.datatable.MD5Util;
 import org.framework.hsven.dataset.datatable.api.ICellObject;
 import org.framework.hsven.dataset.datatable.api.IRowsLoader;
 import org.framework.hsven.dataset.datatable.api.IRowsProcessor;
@@ -18,6 +17,7 @@ import org.framework.hsven.dataset.datatable.calcfun.StringCalcFun;
 import org.framework.hsven.dataset.datatable.exception.DataSetException;
 import org.framework.hsven.dataset.datatable.funmanager.FunctionExecuteExpResult;
 import org.framework.hsven.dataset.datatable.funmanager.FunctionRegistery;
+import org.framework.hsven.utils.id.IntIdGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,7 +35,6 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
  * 用于存放的datatable数据
- *
  */
 public class DataTable {
     private static final String MD5_FIELD = "md5";
@@ -68,8 +67,7 @@ public class DataTable {
      * 用指定最大长度构建块
      *
      * @param initSize
-     * @param extendSize
-     *            必须指定最大长度，不能存放超过长度块的数据
+     * @param extendSize 必须指定最大长度，不能存放超过长度块的数据
      */
     public DataTable(int initSize, int extendSize) {
         init();
@@ -84,8 +82,7 @@ public class DataTable {
     /**
      * 使用指定的初始大小来创建DataTable
      *
-     * @param initSize
-     *            初始大小，决定了列式dataTable的初始存储长度
+     * @param initSize 初始大小，决定了列式dataTable的初始存储长度
      */
     public DataTable(int initSize) {
         init();
@@ -107,8 +104,7 @@ public class DataTable {
     /**
      * 用缺省的容量参数构造Datatable对象
      *
-     * @param name
-     *            指定数据表的名称，不指定时为null
+     * @param name 指定数据表的名称，不指定时为null
      */
     public DataTable(String name) {
         this();
@@ -148,8 +144,7 @@ public class DataTable {
     /**
      * 设置数据表名称
      *
-     * @param name
-     *            数据表名
+     * @param name 数据表名
      */
     public void setName(String name) {
         this.name = name;
@@ -167,8 +162,7 @@ public class DataTable {
     /**
      * 设置是否忽略未知列运算错误，true时，在查询表达式中将忽略该错误列参与的单个表达式 不设置时缺省为 true
      *
-     * @param ignoreUnknowColumnException
-     *            true:忽略 false：有错误的字段名称将会报异常
+     * @param ignoreUnknowColumnException true:忽略 false：有错误的字段名称将会报异常
      */
     public void setIgnoreUnknowColumnException(boolean ignoreUnknowColumnException) {
         this.ignoreUnknowColumnException = ignoreUnknowColumnException;
@@ -328,8 +322,7 @@ public class DataTable {
     /**
      * 在当前DataTable对象上执行表达式查询，得到相应的查询结果对象
      *
-     * @param expStr
-     *            表达式
+     * @param expStr 表达式
      * @return 查询结果对象
      */
     public QueryResult query(String expStr) {
@@ -590,11 +583,9 @@ public class DataTable {
     /**
      * 根据表达式从QueryResult进行二次查询，当QueryResult为null时，从dataTable中进行全量查询
      *
-     * @param expStr
-     *            表达式字符串表示
+     * @param expStr 表达式字符串表示
      * @return 得到结果选择查询结果集对象
-     * @throws DataSetException
-     *             取数出错时抛出异常
+     * @throws DataSetException 取数出错时抛出异常
      */
     public QueryResult queryFromQueryResult(String expStr, QueryResult qrObj) throws DataSetException {
         String queryExpStr = null;
@@ -696,13 +687,10 @@ public class DataTable {
     /**
      * 执行表达式,执行表达式时将取得同步读锁操作，再该方法执行完成前写锁将等待完成工作，
      *
-     * @param expStr
-     *            表达式
-     * @param processor
-     *            结果处理器，用户函数不能存在阻塞，否则将导致写线程无法完成工作
-     * @param rowsPageSize
-     *            期望循环分页处理时每次处理（调用IRowsProcessor.process())的的最大行数
-     *            为<=0时，将取得全部行数一次性调用 IRowsProcessor.process()
+     * @param expStr       表达式
+     * @param processor    结果处理器，用户函数不能存在阻塞，否则将导致写线程无法完成工作
+     * @param rowsPageSize 期望循环分页处理时每次处理（调用IRowsProcessor.process())的的最大行数
+     *                     为<=0时，将取得全部行数一次性调用 IRowsProcessor.process()
      */
     public void execute(String expStr, IRowsProcessor processor, int rowsPageSize) {
         int pageSize = rowsPageSize;
@@ -812,8 +800,7 @@ public class DataTable {
     }
 
     /**
-     * @param col
-     *            增加列信息到dataTableBlock中,本方法调用时将会加写锁到datatable
+     * @param col 增加列信息到dataTableBlock中,本方法调用时将会加写锁到datatable
      */
     public void addCol(ColInfo col) {
         if (this.currentSize > 0) {
@@ -869,8 +856,7 @@ public class DataTable {
     /**
      * 增加一行数据到dataTable中,直接调用时线程不安全，在executeBatchLoad 的IRowsLoader 中调用则线程安全
      *
-     * @param row
-     *            待增加的 dataTable行信息，使用 List 数组表示，list的长度必须和数组列的信息长度相同
+     * @param row 待增加的 dataTable行信息，使用 List 数组表示，list的长度必须和数组列的信息长度相同
      */
     public void addRow(List<Object> row) {
         this.latestWriteCounter.incrementAndGet(); // 更新当前的写标志
@@ -902,9 +888,10 @@ public class DataTable {
 
     /**
      * 加载指定行数据,只能在DataTable数据初始化时使用
+     *
      * @param rowIndex  指定加载的行index(<0 表明是新增一行,>=0 表明加载更新的行的index)
-     * @param fieldName  指定行的指定属性名
-     * @param value 指定属性名对应的值
+     * @param fieldName 指定行的指定属性名
+     * @param value     指定属性名对应的值
      * @return
      */
     public int loadRow(int rowIndex, String fieldName, Object value) {
@@ -978,7 +965,7 @@ public class DataTable {
             int fieldIndex = this.getColIndex(md5_fieldName);
             if (fieldIndex < 0 || fieldIndex >= colsInfo.length) {
             } else {
-                ((String[]) (cols[fieldIndex]))[rowIndex] = MD5Util.toMD5(md5Builder.toString());
+                ((String[]) (cols[fieldIndex]))[rowIndex] = IntIdGenerator.getMD5(md5Builder.toString());
             }
         }
     }
@@ -1028,7 +1015,7 @@ public class DataTable {
             if (fieldIndex < 0 || fieldIndex >= colsInfo.length) {
                 return;
             }
-            ((String[]) (cols[fieldIndex]))[this.currentSize] = MD5Util.toMD5(md5Builder.toString());
+            ((String[]) (cols[fieldIndex]))[this.currentSize] = IntIdGenerator.getMD5(md5Builder.toString());
 
             this.currentSize++;
 
@@ -1306,7 +1293,7 @@ public class DataTable {
             if (fieldIndex < 0 || fieldIndex >= colsInfo.length) {
                 return;
             }
-            ((String[]) (cols[fieldIndex]))[rowIndex] = MD5Util.toMD5(md5Builder.toString());
+            ((String[]) (cols[fieldIndex]))[rowIndex] = IntIdGenerator.getMD5(md5Builder.toString());
 
         } catch (Exception ee) {
             String info = "DataTable:" + name;
@@ -1418,8 +1405,7 @@ public class DataTable {
     /**
      * 根据列名得到相应的位置
      *
-     * @param colName
-     *            列名
+     * @param colName 列名
      * @return 列的位置
      */
     public int getColIndex(String colName) throws DataSetException {
@@ -1471,12 +1457,9 @@ public class DataTable {
     /**
      * 按照==条件过滤当前对象
      *
-     * @param colName
-     *            过滤的列
-     * @param value
-     *            待过滤的值
-     * @param qr
-     *            查询结果对象
+     * @param colName 过滤的列
+     * @param value   待过滤的值
+     * @param qr      查询结果对象
      */
     public void queryEqualData(String colName, Object value, QueryResult qr) {
         checkQueryValid(qr);
@@ -1545,12 +1528,9 @@ public class DataTable {
     /**
      * 按照!=条件过滤当前对象
      *
-     * @param colName
-     *            过滤的列
-     * @param value
-     *            待过滤的值
-     * @param qr
-     *            查询结果对象
+     * @param colName 过滤的列
+     * @param value   待过滤的值
+     * @param qr      查询结果对象
      */
     public void queryNotEqualData(String colName, Object value, QueryResult qr) {
         checkQueryValid(qr);
@@ -1618,12 +1598,9 @@ public class DataTable {
     /**
      * 按照==条件过滤当前对象
      *
-     * @param colName
-     *            过滤的列
-     * @param value
-     *            待过滤的值
-     * @param qr
-     *            查询结果对象
+     * @param colName 过滤的列
+     * @param value   待过滤的值
+     * @param qr      查询结果对象
      */
     public void queryInData(String colName, String value, QueryResult qr) {
         checkQueryValid(qr);
@@ -1695,14 +1672,10 @@ public class DataTable {
     /**
      * 选在在范围之内的数据
      *
-     * @param colName
-     *            列名称
-     * @param minVal
-     *            最小值 >=
-     * @param maxVal
-     *            最大值 <
-     * @param qr
-     *            选择集合
+     * @param colName 列名称
+     * @param minVal  最小值 >=
+     * @param maxVal  最大值 <
+     * @param qr      选择集合
      */
     public void queryBetweenData(String colName, double minVal, double maxVal, QueryResult qr) {
         checkQueryValid(qr);
@@ -1764,14 +1737,10 @@ public class DataTable {
     /**
      * 选在在范围之内的数据
      *
-     * @param colName
-     *            列名称
-     * @param minVal
-     *            最小值 >=
-     * @param maxVal
-     *            最大值 <
-     * @param qr
-     *            选择集合
+     * @param colName 列名称
+     * @param minVal  最小值 >=
+     * @param maxVal  最大值 <
+     * @param qr      选择集合
      */
     public void queryBetweenDateData(String colName, Object minVal, Object maxVal, QueryResult qr) {
         checkQueryValid(qr);
@@ -1827,12 +1796,9 @@ public class DataTable {
     /**
      * 对字符串执行 like操作
      *
-     * @param colName
-     *            列名
-     * @param likeStr
-     *            %字符串
-     * @param qr
-     *            查询结果对象
+     * @param colName 列名
+     * @param likeStr %字符串
+     * @param qr      查询结果对象
      */
     public void queryLikeData(String colName, String likeStr, QueryResult qr) {
         checkQueryValid(qr);
@@ -1900,14 +1866,10 @@ public class DataTable {
     /**
      * 过滤 colName value的数据,过滤条件包括 (>,>=,<,<=)
      *
-     * @param colName
-     *            列名
-     * @param value
-     *            值 ,不能为空
-     * @param qr
-     *            待过滤查询结果对象
-     * @param opType
-     *            过滤条件
+     * @param colName 列名
+     * @param value   值 ,不能为空
+     * @param qr      待过滤查询结果对象
+     * @param opType  过滤条件
      */
     public void queryLogicCalcData(String colName, Object value, QueryResult qr, OperatorTypeEnum opType) {
         checkQueryValid(qr);

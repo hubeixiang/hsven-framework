@@ -23,7 +23,7 @@
     <parent>
         <artifactId>hsven-commons</artifactId>
         <groupId>org.framework.hsven</groupId>
-        <version>1.0.0-SNAPSHOT</version>
+        <version>${revision}</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 

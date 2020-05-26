@@ -5,7 +5,9 @@ import org.framework.hsven.dataset.datatable.cache.ColInfo;
 import org.framework.hsven.dataset.datatable.cache.DataTable;
 import org.framework.hsven.dataset.datatable.exception.DataSetException;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.function.Supplier;
 
 /**
  * 创建DataTable的接口api
@@ -33,8 +35,11 @@ public interface IDataTableGenerate<E, T> {
      */
     public DataTypeEnum convert2DataTypeEnum(T otherDataTypeEnum);
 
+    default void internalCreateColInfo(Collection<ColInfo> colInfos, Supplier<String> name, Supplier<String> title, Supplier<T> enumType, Supplier<String> format) {
+        internalCreateColInfo(colInfos, name.get(), title.get(), enumType.get(), format.get());
+    }
 
-    default ColInfo internalCreateColInfo(String name, String title, T enumType, String format) {
+    default void internalCreateColInfo(Collection<ColInfo> colInfos, String name, String title, T enumType, String format) {
         try {
             DataTypeEnum type = convert2DataTypeEnum(enumType);
             if (type == null) {
@@ -42,7 +47,11 @@ public interface IDataTableGenerate<E, T> {
             }
 
             ColInfo info = new ColInfo(name, title, type, format);
-            return info;
+            if (colInfos.contains(info)) {
+                throw new DataSetException("DataTableGenerate.createColInfo Exception,name:" + name + " already exists!");
+            } else {
+                colInfos.add(info);
+            }
         } catch (Exception e) {
             throw new DataSetException("DataTableGenerate.createColInfo Exception,name:" + name, e);
         }
