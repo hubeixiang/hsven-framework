@@ -1,18 +1,28 @@
-package org.framework.hsven.dataloader.api.impl;
+package org.framework.hsven.datasource.provider;
 
-import org.framework.hsven.dataloader.api.IDataSourceProvider;
 import org.framework.hsven.datasource.InternalDBContextHelper;
 import org.framework.hsven.datasource.SpringDataSourceContextUtil;
 import org.framework.hsven.datasource.enums.DataSourceType;
 import org.framework.hsven.datasource.model.DataSourceConfig;
 import org.framework.hsven.datasource.util.DataSourceNameGenerator;
+import org.springframework.stereotype.Service;
 
 import javax.sql.DataSource;
+import java.util.Set;
 
-public class DefaultDataSourceProvider implements IDataSourceProvider {
+/**
+ * 使用本模块进行自动注解加载多数据源的数据库名与数据源对象映射转换服务
+ */
+@Service("defaultMultipleDataSourceProvider")
+public class DefaultMultipleDataSourceProvider implements IDataSourceProvider {
     @Override
     public String getProviderName() {
-        return "default_datasource_autoconfigure";
+        return "default_multiple_datasource_autoconfigure";
+    }
+
+    @Override
+    public Set<String> listProviderDbNames() {
+        return InternalDBContextHelper.getInstance().getDbNames();
     }
 
     @Override
@@ -33,13 +43,18 @@ public class DefaultDataSourceProvider implements IDataSourceProvider {
 
 
     @Override
-    public DataSource dataSourceProvider(String dbName) {
+    public AdapterDataSource dataSourceProvider(String dbName) {
         String dataSourceBeanName = getDataSourceBeanName(dbName);
+        DataSourceConfig dataSourceConfig = getDataSourceConfig(dbName);
         Object object = SpringDataSourceContextUtil.getBean(dataSourceBeanName);
         if (object == null) {
             return null;
         } else {
-            return (DataSource) object;
+            if (object instanceof javax.sql.DataSource) {
+                return createAdapterDataSource(dataSourceBeanName, dataSourceConfig, (DataSource) object);
+            } else {
+                throw new RuntimeException(String.format("dbName=%s,dataSourceBeanName=%s SpringDataSourceContextUtil.getBean result object not instanceof javax.sql.DataSource", dbName, dataSourceBeanName));
+            }
         }
     }
 }

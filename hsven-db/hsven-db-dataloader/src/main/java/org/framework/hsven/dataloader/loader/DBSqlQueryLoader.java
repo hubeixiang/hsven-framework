@@ -3,8 +3,6 @@ package org.framework.hsven.dataloader.loader;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.framework.hsven.dataloader.api.IDBSqlQueryLoaderListener;
-import org.framework.hsven.dataloader.api.IDataSourceProvider;
-import org.framework.hsven.dataloader.api.impl.DefaultDataSourceProvider;
 import org.framework.hsven.dataloader.beans.db.DBColumnMetaData;
 import org.framework.hsven.dataloader.beans.db.DBColumnMetaDataDefine;
 import org.framework.hsven.dataloader.beans.db.DBColumnValue;
@@ -17,11 +15,13 @@ import org.framework.hsven.dataloader.loader.model.QueryConfig;
 import org.framework.hsven.dataloader.loader.model.QueryLoaderResultDesc;
 import org.framework.hsven.dataloader.util.DBColumnMetaDataUtil;
 import org.framework.hsven.datasource.model.DataSourceConfig;
+import org.framework.hsven.datasource.provider.AdapterDataSource;
+import org.framework.hsven.datasource.provider.DefaultMultipleDataSourceProvider;
+import org.framework.hsven.datasource.provider.IDataSourceProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
 
-import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -44,7 +44,7 @@ public class DBSqlQueryLoader extends Thread {
         Assert.isTrue(!StringUtils.isEmpty(this.queryConfig.getDbName()), this.callbackListenerHandler.listenerIdentification() + " Loader Database data QueryConfig'dbName can't empty ");
         Assert.isTrue(!StringUtils.isEmpty(this.queryConfig.getSql()), this.callbackListenerHandler.listenerIdentification() + " Loader Database data QueryConfig'sql can't empty ");
         if (idataSourceProvider == null) {
-            dataSourceProvider = new DefaultDataSourceProvider();
+            dataSourceProvider = new DefaultMultipleDataSourceProvider();
         } else {
             dataSourceProvider = idataSourceProvider;
         }
@@ -328,19 +328,19 @@ public class DBSqlQueryLoader extends Thread {
         }
     }
 
-    private DataSource getDataSource(String dbName) {
-        DataSource dataSource = dataSourceProvider.dataSourceProvider(dbName);
-        if (dataSource == null) {
+    private AdapterDataSource getDataSource(String dbName) {
+        AdapterDataSource adapterDataSource = dataSourceProvider.dataSourceProvider(dbName);
+        if (adapterDataSource == null || !adapterDataSource.isEnable()) {
             String dataSourceBeanName = dataSourceProvider.getDataSourceBeanName(dbName);
             logger.error(String.format("%s dbName=%s[dataSourceBeanName=%s] can't find at IDataSourceProvider bean=%s", this.callbackListenerHandler.listenerIdentification(), dbName, dataSourceBeanName, dataSourceProvider.getProviderName()));
             throw new LoaderException(String.format("dbName=%s[dataSourceBeanName=%s] can't find at IDataSourceProvider bean=%s", dbName, dataSourceBeanName, dataSourceProvider.getProviderName()));
         }
-        return dataSource;
+        return adapterDataSource;
     }
 
     private Connection getConnection(String dbName) throws SQLException {
-        DataSource dataSource = getDataSource(dbName);
-        Connection connection = dataSource.getConnection();
+        AdapterDataSource adapterDataSource = getDataSource(dbName);
+        Connection connection = adapterDataSource.getConnection();
         if (connection == null) {
             logger.error(String.format("%s dbName=%s getConnection() is null", this.callbackListenerHandler.listenerIdentification(), dbName));
             throw new LoaderException(String.format("dbName=%s getConnection() is null", dbName));

@@ -15,6 +15,12 @@ import org.springframework.core.annotation.AnnotationUtils;
 public class DataSourceUtil {
     private static Logger logger = LoggerFactory.getLogger(DataSourceUtil.class);
 
+    /**
+     * 使用驱动判断数据源类型
+     *
+     * @param driverClass
+     * @return
+     */
     public static DataSourceType initDataSourceType(String driverClass) {
         if (isOracle(driverClass)) {
             return DataSourceType.ORACLE;

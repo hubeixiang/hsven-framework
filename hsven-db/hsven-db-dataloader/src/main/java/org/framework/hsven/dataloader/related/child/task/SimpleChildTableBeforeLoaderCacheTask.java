@@ -1,6 +1,5 @@
 package org.framework.hsven.dataloader.related.child.task;
 
-import org.framework.hsven.dataloader.api.IDataSourceProvider;
 import org.framework.hsven.dataloader.beans.dependency.StructSql;
 import org.framework.hsven.dataloader.beans.related.SimpleChildTable;
 import org.framework.hsven.dataloader.beans.related.TableLoadDefine;
@@ -14,6 +13,7 @@ import org.framework.hsven.dataloader.related.TableLoadResult;
 import org.framework.hsven.dataloader.related.child.ChildTableConfigCacheEntity;
 import org.framework.hsven.dataloader.valid.related.SimpleChildTableUtil;
 import org.framework.hsven.datasource.enums.DataSourceType;
+import org.framework.hsven.datasource.provider.IDataSourceProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
