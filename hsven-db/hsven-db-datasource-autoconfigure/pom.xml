@@ -30,7 +30,7 @@
         <dependency>
             <groupId>org.framework.hsven</groupId>
             <artifactId>hsven-db-datasource-util</artifactId>
-            <version>${revision}</version>
+            <version>${project.version}</version>
         </dependency>
 
         <!-- spring & spring boot-->
