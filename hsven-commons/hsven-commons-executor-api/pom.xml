@@ -10,18 +10,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.framework.hsven</groupId>
-    <artifactId>hsven-commons-executor</artifactId>
+    <artifactId>hsven-commons-executor-api</artifactId>
 
     <dependencies>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.framework.hsven</groupId>
-            <artifactId>hsven-commons-executor-api</artifactId>
-            <version>${revision}</version>
-        </dependency>
+
     </dependencies>
 
 </project>

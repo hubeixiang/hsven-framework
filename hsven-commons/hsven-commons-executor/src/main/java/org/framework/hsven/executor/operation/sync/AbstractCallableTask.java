@@ -1,6 +1,7 @@
 package org.framework.hsven.executor.operation.sync;
 
 import org.framework.hsven.executor.operation.TaskInfo;
+import org.framework.hsven.executor.provider.ISyncTaskResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,16 +12,16 @@ import java.util.concurrent.Callable;
  *
  * @param <T>
  */
-public abstract class AbstractCallableTask<T> extends TaskInfo implements Callable<SyncTaskResult<T>> {
+public abstract class AbstractCallableTask<T> extends TaskInfo implements Callable<ISyncTaskResult<T>> {
     private static Logger logger = LoggerFactory.getLogger(AbstractCallableTask.class);
-    private SyncTaskResult<T> syncTaskResult;
+    private ISyncTaskResult<T> syncTaskResult;
 
     public AbstractCallableTask(String taskGroup, String taskId) {
         super(taskGroup, taskId);
         syncTaskResult = new SyncTaskResult<T>(taskGroup, taskId);
     }
 
-    public SyncTaskResult<T> call() throws Exception {
+    public ISyncTaskResult<T> call() throws Exception {
         long taskExecuteBeginTimeMS = System.currentTimeMillis();
         try {
             syncTaskResult.setTaskExecuteBeginTimeMS(taskExecuteBeginTimeMS);
@@ -50,7 +51,7 @@ public abstract class AbstractCallableTask<T> extends TaskInfo implements Callab
         return super.toString();
     }
 
-    public SyncTaskResult<T> getSyncTaskResult() {
+    public ISyncTaskResult<T> getSyncTaskResult() {
         return syncTaskResult;
     }
 }

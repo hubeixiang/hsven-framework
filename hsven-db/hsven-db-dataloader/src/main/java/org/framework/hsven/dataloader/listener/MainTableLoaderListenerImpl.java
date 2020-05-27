@@ -27,6 +27,7 @@ import org.framework.hsven.dataloader.related.dependency.SimpleChildTableLazyCal
 import org.framework.hsven.dataloader.related.dependency.SimpleLazyChildTableGroup;
 import org.framework.hsven.dataloader.related.dependency.SimpleMainTableCallableTaskDependency;
 import org.framework.hsven.datasource.model.DataSourceConfig;
+import org.framework.hsven.executor.exception.PoolExcuteException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.CollectionUtils;
@@ -126,6 +127,9 @@ public class MainTableLoaderListenerImpl implements IDBSqlQueryLoaderListener {
             executeRecursionDependencyChildTableLoadTask(simpleMainTableCallableTaskDependency);
             logger.info(String.format("%s all child load end.cost=%sms", logIdentify(), System.currentTimeMillis() - start));
         } catch (Throwable e) {
+            //执行加载完成步骤错误
+            queryLoaderResultDesc.setDealFlag(false);
+            queryLoaderResultDesc.setDealException(e);
             logger.error(String.format("%s loadEnd %s Throwable:%s ,QueryLoaderResultDesc:", this.getClass().getName(), logIdentify(), e.getMessage(), queryLoaderResultDesc), e);
         } finally {
             long end = System.currentTimeMillis();
@@ -297,7 +301,7 @@ public class MainTableLoaderListenerImpl implements IDBSqlQueryLoaderListener {
     /**
      * 分析子表中需要预先加载的表,并将其数据缓存在内存中
      */
-    private void loaderPrefetchChildTableData() {
+    private void loaderPrefetchChildTableData() throws PoolExcuteException {
         List<SimpleChildTable> prefetchChildTableList = simpleMainTableCallableTaskDependency.getPrefetchChildTableList();
         if (CollectionUtils.isEmpty(prefetchChildTableList)) {
             return;

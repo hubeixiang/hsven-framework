@@ -58,9 +58,17 @@ public class CommonsExecutors {
         return CommonsExecutors.newFixedThreadPool(poolName, CommonsExecutors.getMaximumPoolSizeForCalculation(), new ThreadPoolExecutor.CallerRunsPolicy());
     }
 
+    /**
+     * 先判断指定名称的线程池是否存在,如果已经存在,则直接使用,如果不存在则创建对应线程池
+     *
+     * @param poolName
+     * @param nThreads
+     * @param rejectedExecutionHandler
+     * @return
+     */
     public static ExecutorServiceInfo newFixedThreadPool(String poolName, int nThreads, RejectedExecutionHandler rejectedExecutionHandler) {
         ExecutorServiceInfo executorServiceInfo = ThreadPoolExecutorManager.getInstance().getExecutorService(poolName);
-        if (executorServiceInfo == null) {
+        if (executorServiceInfo == null || !executorServiceInfo.isEnable()) {
             ThreadPoolExecutor threadPoolExecutor = null;
             if (rejectedExecutionHandler == null) {
                 threadPoolExecutor = new ThreadPoolExecutor(nThreads, nThreads,

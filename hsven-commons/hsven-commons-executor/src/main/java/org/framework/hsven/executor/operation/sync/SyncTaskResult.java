@@ -1,8 +1,9 @@
 package org.framework.hsven.executor.operation.sync;
 
 import org.framework.hsven.executor.operation.TaskInfo;
+import org.framework.hsven.executor.provider.ISyncTaskResult;
 
-public class SyncTaskResult<T> extends TaskInfo {
+public class SyncTaskResult<T> extends TaskInfo implements ISyncTaskResult<T> {
     //任务创建时间
     private final long taskCreateTimeMS;
     //任务在线程池中开始执行时间

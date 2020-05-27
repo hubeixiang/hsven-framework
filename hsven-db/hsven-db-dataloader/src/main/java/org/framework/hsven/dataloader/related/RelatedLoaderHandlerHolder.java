@@ -2,12 +2,12 @@ package org.framework.hsven.dataloader.related;
 
 import org.framework.hsven.dataloader.api.IRelatedTableLoadListener;
 import org.framework.hsven.dataloader.api.IRelatedTableParserHandler;
-import org.framework.hsven.dataloader.api.IThreadPoolProvider;
 import org.framework.hsven.dataloader.api.impl.DefaultRelatedTableLoadListener;
 import org.framework.hsven.dataloader.api.impl.DefaultRelatedTableParserHandler;
-import org.framework.hsven.dataloader.api.impl.DefaultThreadPoolProvider;
 import org.framework.hsven.datasource.provider.DefaultMultipleDataSourceProvider;
 import org.framework.hsven.datasource.provider.IDataSourceProvider;
+import org.framework.hsven.executor.provider.DefaultCommonThreadPoolProvider;
+import org.framework.hsven.executor.provider.IThreadPoolProvider;
 
 /**
  * 关联加载中,需要外部提供的处理程序Holder
@@ -26,7 +26,7 @@ public class RelatedLoaderHandlerHolder {
         this.iRelatedTableParserHandler = iRelatedTableParserHandler == null ? new DefaultRelatedTableParserHandler() : iRelatedTableParserHandler;
         this.iDataSourceProvider = iDataSourceProvider == null ? new DefaultMultipleDataSourceProvider() : iDataSourceProvider;
         this.iRelatedTableLoadListener = iRelatedTableLoadListener == null ? new DefaultRelatedTableLoadListener() : iRelatedTableLoadListener;
-        this.iThreadPoolProvider = iThreadPoolProvider == null ? new DefaultThreadPoolProvider() : iThreadPoolProvider;
+        this.iThreadPoolProvider = iThreadPoolProvider == null ? new DefaultCommonThreadPoolProvider() : iThreadPoolProvider;
     }
 
     public IRelatedTableParserHandler getiRelatedTableParserHandler() {

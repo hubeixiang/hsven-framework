@@ -9,6 +9,10 @@ public class ExecutorServiceInfo extends CacheExpire implements Serializable {
     private ExecutorService executorService;
     private ThreadPoolConfig threadPoolConfig;
 
+    public boolean isEnable() {
+        return executorService != null;
+    }
+
     public String getPoolName() {
         return poolName;
     }

@@ -54,11 +54,15 @@ public class MainTableLoaderTask implements ITableLoaderTask<TableLoadResult> {
             if (queryLoaderResultDesc != null) {
                 resultIndex = queryLoaderResultDesc.getResultIndex();
                 sql = queryLoaderResultDesc.getSql();
+                flag = queryLoaderResultDesc.isDealFlag();
+            }else {
+                flag = true;
             }
-            flag = true;
         } catch (Exception e) {
+            flag = false;
             logger.error(String.format("%s MainTableLoaderTask,%s,Exception:%s,sql:[%s]", this.relatedLoaderHandlerHolder.getiRelatedTableLoadListener().relatedListenerIdentification(), logIdentify(), e.getMessage(), sql), e);
         } catch (Throwable e) {
+            flag = false;
             logger.error(String.format("%s MainTableLoaderTask,%s,Throwable:%s,sql:[%s]", this.relatedLoaderHandlerHolder.getiRelatedTableLoadListener().relatedListenerIdentification(), logIdentify(), e.getMessage(), sql), e);
         } finally {
             taskDealEndTimeMS = System.currentTimeMillis();

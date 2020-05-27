@@ -1,3 +1,4 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-org.framework.hsven.executor.autoconfigure.ThreadPoolExecutorAutoConfiguration
+org.framework.hsven.executor.autoconfigure.ThreadPoolExecutorAutoConfiguration,\
+org.framework.hsven.executor.provider.DefaultCommonThreadPoolProvider
 

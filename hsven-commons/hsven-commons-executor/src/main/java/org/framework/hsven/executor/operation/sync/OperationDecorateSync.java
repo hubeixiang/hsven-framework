@@ -1,6 +1,7 @@
 package org.framework.hsven.executor.operation.sync;
 
 import org.framework.hsven.executor.operation.TaskConstansts;
+import org.framework.hsven.executor.provider.ISyncTaskResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,12 +25,12 @@ public class OperationDecorateSync {
      * @param <T>
      * @return
      */
-    public <T> List<T> transformation(List<SyncTaskResult<T>> results) {
+    public <T> List<T> transformation(List<? extends ISyncTaskResult<T>> results) {
         if (results == null) {
             return null;
         }
         List<T> data = new ArrayList<>();
-        for (SyncTaskResult<T> syncTaskResult : results) {
+        for (ISyncTaskResult<T> syncTaskResult : results) {
             if (syncTaskResult.isDealFlag()) {
                 data.add(syncTaskResult.getResult());
             }
@@ -38,16 +39,19 @@ public class OperationDecorateSync {
         return data;
     }
 
-    public <T> SyncTaskResult<T> submit(ExecutorService executorService, Callable<T> task) {
-        try {
-            if (task != null) {
-                InternalSyncCallableTask<T> syncCallableTask =
-                        new InternalSyncCallableTask(TaskConstansts.DEFAULT_TASK_GROUP, TaskConstansts.DEFAULT_TASK_ID, task);
+    public <T> Future<T> submitCallable(ExecutorService executorService, Callable<T> task) {
+        return executorService.submit(task);
+    }
 
-                Future<SyncTaskResult<T>> future = executorService.submit(syncCallableTask);
-                SyncTaskResult<T> result = getSyncFutureResult(future);
-                return result;
-            }
+    public <T> ISyncTaskResult<T> submit(ExecutorService executorService, Callable<T> task) {
+        SyncTaskResult<T> result;
+        try {
+            InternalSyncCallableTask<T> syncCallableTask =
+                    new InternalSyncCallableTask(TaskConstansts.DEFAULT_TASK_GROUP, TaskConstansts.DEFAULT_TASK_ID, task);
+
+            Future<SyncTaskResult<T>> future = executorService.submit(syncCallableTask);
+            result = getSyncFutureResult(future);
+            return result;
         } catch (Exception e) {
             logger.error("SyncOperationDecorate submit Exception.", e);
         } catch (Throwable e) {
@@ -57,22 +61,22 @@ public class OperationDecorateSync {
         return null;
     }
 
-    public <T> List<SyncTaskResult<T>> submit(ExecutorService executorService, List<Callable<T>> taskList) {
+    public <T> List<ISyncTaskResult<T>> submit(ExecutorService executorService, List<Callable<T>> taskList) {
         try {
             if (taskList != null) {
                 int taskListSize = taskList.size();
-                List<Future<SyncTaskResult<T>>> futureList = new ArrayList<>();
+                List<Future<ISyncTaskResult<T>>> futureList = new ArrayList<>();
                 for (int i = 0; i < taskListSize; i++) {
                     Callable<T> task = taskList.get(i);
                     InternalSyncCallableTask<T> syncCallableTask =
                             new InternalSyncCallableTask(TaskConstansts.DEFAULT_TASK_GROUP, TaskConstansts.DEFAULT_TASK_ID + i, task);
-                    Future<SyncTaskResult<T>> future = executorService.submit(syncCallableTask);
+                    Future<ISyncTaskResult<T>> future = executorService.submit(syncCallableTask);
                     if (future != null) {
                         futureList.add(future);
                     }
                 }
 
-                List<SyncTaskResult<T>> return_list = getSyncFutureResult(futureList);
+                List<ISyncTaskResult<T>> return_list = getSyncFutureResult(futureList);
                 return return_list;
             }
         } catch (Exception e) {
@@ -84,11 +88,11 @@ public class OperationDecorateSync {
         return null;
     }
 
-    public <T> SyncTaskResult<T> submitSyncTask(ExecutorService executorService, AbstractCallableTask<T> task) {
+    public <T> ISyncTaskResult<T> submitSyncTask(ExecutorService executorService, AbstractCallableTask<T> task) {
         try {
             if (task != null) {
-                Future<SyncTaskResult<T>> future = executorService.submit(task);
-                SyncTaskResult<T> result = getSyncFutureResult(future);
+                Future<ISyncTaskResult<T>> future = executorService.submit(task);
+                ISyncTaskResult<T> result = getSyncFutureResult(future);
                 return result;
             }
         } catch (Exception e) {
@@ -100,20 +104,20 @@ public class OperationDecorateSync {
         return null;
     }
 
-    public <T> List<SyncTaskResult<T>> submitSyncTasks(ExecutorService executorService, List<AbstractCallableTask<T>> taskList) {
+    public <T> List<ISyncTaskResult<T>> submitSyncTasks(ExecutorService executorService, List<AbstractCallableTask<T>> taskList) {
         try {
             if (taskList != null) {
                 int taskListSize = taskList.size();
-                List<Future<SyncTaskResult<T>>> futureList = new ArrayList<>();
+                List<Future<ISyncTaskResult<T>>> futureList = new ArrayList<>();
                 for (int i = 0; i < taskListSize; i++) {
                     AbstractCallableTask<T> task = taskList.get(i);
-                    Future<SyncTaskResult<T>> future = executorService.submit(task);
+                    Future<ISyncTaskResult<T>> future = executorService.submit(task);
                     if (future != null) {
                         futureList.add(future);
                     }
                 }
 
-                List<SyncTaskResult<T>> return_list = getSyncFutureResult(futureList);
+                List<ISyncTaskResult<T>> return_list = getSyncFutureResult(futureList);
                 return return_list;
             }
         } catch (Exception e) {
