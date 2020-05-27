@@ -24,7 +24,7 @@
 
     <groupId>org.framework.hsven</groupId>
     <artifactId>hsven-framework</artifactId>
-    <version>${revision}</version>
+    <version>1.0.0-SNAPSHOT</version>
     <modules>
         <module>hsven-commons</module>
         <module>hsven-logging</module>
@@ -243,7 +243,7 @@
                         <artifactId>versions-maven-plugin</artifactId>
                         <version>2.7</version>
                         <configuration>
-                            <newVersion>${revision}</newVersion>
+                            <newVersion>1.0.0-SNAPSHOT</newVersion>
                         </configuration>
                     </plugin>
             -->

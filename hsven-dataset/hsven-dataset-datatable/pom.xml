@@ -5,7 +5,7 @@
     <parent>
         <artifactId>hsven-dataset</artifactId>
         <groupId>org.framework.hsven</groupId>
-        <version>${revision}</version>
+        <version>1.0.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -20,7 +20,7 @@
         <dependency>
             <groupId>org.framework.hsven</groupId>
             <artifactId>hsven-commons-utils</artifactId>
-            <version>${revision}</version>
+            <version>1.0.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
 
