@@ -26,6 +26,7 @@
     </environments>
     -->
     <mappers>
+        <mapper resource="mapper/BaseMapper.xml"/>
         <mapper resource="mapper/SimpleGenericMapper.xml"/>
     </mappers>
 </configuration>

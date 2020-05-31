@@ -34,6 +34,40 @@
         </if>
     </sql>
 
+    <sql id="pageCondition">
+        <if test="varableBinds.columnList != null and varableBinds.columnList.size() gt 0">
+            and (
+            <foreach collection="varableBinds.columnList" index="index" item="item" separator=" and ">
+                <include refid="BaseMapper.condition"/>
+            </foreach>
+            )
+        </if>
+    </sql>
+
+    <select id="queryCountByCondition" parameterType="map" resultType="int">
+        select count(*) as cnt from (${queryEntity.sql})
+        <where>
+            <include refid="pageCondition"/>
+        </where>
+    </select>
+
+    <select id="selectOraclePageByCondition" parameterType="map" resultType="org.framework.hsven.mybatis.vo.LowerCaseResultMap">
+        select x.* from ${queryEntity.sql} x
+        where x.rowid in (
+        select t2.rid from (
+        select t1.*, rownum as dsort from (
+        select rowid as rid, ${queryEntity.order}
+        from ${queryEntity.sql} t
+        <where>
+            <include refid="pageCondition"/>
+        </where>
+        order by ${queryEntity.order}
+        ) t1
+        ) t2
+        where t2.dsort &gt;= #{page.rowNumStart} and t2.dsort &lt;= #{page.rowNumEnd}
+        )
+        order by ${queryEntity.order}
+    </select>
     <!--- item.value动态sql中,传入的变量都是对象,而不是String.因此在判断是否为空时,统一判断是否为null,不单独判断''的情况,因此如果类型为字符串,值为''时需要在外部进行格式化值 -->
 
     <select id="executeSql" resultType="org.framework.hsven.mybatis.vo.LowerCaseResultMap" parameterType="java.lang.String">

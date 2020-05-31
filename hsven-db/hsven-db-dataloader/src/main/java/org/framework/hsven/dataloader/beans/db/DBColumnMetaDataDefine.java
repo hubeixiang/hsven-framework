@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -28,6 +29,10 @@ public class DBColumnMetaDataDefine {
 
     public int size() {
         return metaDataList == null ? 0 : metaDataList.size();
+    }
+
+    public Iterator<DBColumnMetaData> iterator() {
+        return metaDataList == null ? null : metaDataList.iterator();
     }
 
     public void addDBColumnMetaData(DBColumnMetaData dbColumnMetaData) {

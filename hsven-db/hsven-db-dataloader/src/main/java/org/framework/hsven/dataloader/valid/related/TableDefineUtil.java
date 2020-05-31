@@ -14,7 +14,7 @@ public class TableDefineUtil {
      * @return
      */
     public final static boolean isTableName(TableDefine tableDefine) {
-        return isTableName(tableDefine.getTableAlias());
+        return isTableName(tableDefine.getTableName());
     }
 
     public final static boolean isTableName(String queryContext) {

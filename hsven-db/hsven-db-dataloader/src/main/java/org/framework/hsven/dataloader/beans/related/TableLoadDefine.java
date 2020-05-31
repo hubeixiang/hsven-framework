@@ -1,7 +1,6 @@
 package org.framework.hsven.dataloader.beans.related;
 
 import org.apache.commons.lang3.StringUtils;
-import org.framework.hsven.dataloader.beans.db.EnumDbDataType;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -56,6 +55,10 @@ public class TableLoadDefine {
 
     public ChildTables getChildTables() {
         return childTables;
+    }
+
+    public boolean hasSimpleMainTable() {
+        return simpleMainTable != null;
     }
 
     public boolean hasSimpleChildTable() {

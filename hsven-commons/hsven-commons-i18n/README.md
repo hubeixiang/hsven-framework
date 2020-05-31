@@ -2,6 +2,7 @@
 
 使用spring-boot实现的国际化资源类集合
 
+#org.springframework.boot.autoconfigure.context.MessageSourceAutoConfiguration
 使用时在application.properties中配置要解析加载的properties文件
 #配置的路径+文件名,必须是完整的,只缺少文件后缀".properties"
 spring.messages.basename=i18n/example_tips

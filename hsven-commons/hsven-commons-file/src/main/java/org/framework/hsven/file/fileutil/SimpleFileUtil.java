@@ -921,4 +921,43 @@ public class SimpleFileUtil {
             }
         }
     }
+
+    /**
+     * 列举指定目录下的文件
+     *
+     * @param absolutePathDir 绝对路径
+     * @param isListChildren  是否列举子目录下的文件
+     * @return
+     */
+    public static List<File> fileList(String absolutePathDir, boolean isListChildren) {
+        if (absolutePathDir == null || absolutePathDir.trim().equals("")) {
+            return null;
+        }
+
+        File root = new File(absolutePathDir);
+        if (!root.exists()) {
+            return null;
+        }
+
+        List<File> list = new ArrayList<File>();
+        if (root.isDirectory() && isListChildren) {
+            File[] files = root.listFiles();
+            if (files == null || files.length == 0) {
+                return null;
+            }
+            for (File file : files) {
+                if (file.isDirectory() && isListChildren) {
+                    List<File> subList = fileList(file.getAbsolutePath(), isListChildren);
+                    if (subList != null && subList.size() > 0) {
+                        list.addAll(subList);
+                    }
+                } else {
+                    list.add(file);
+                }
+            }
+        } else {
+            list.add(root);
+        }
+        return list;
+    }
 }

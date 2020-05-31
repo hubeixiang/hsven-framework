@@ -38,7 +38,7 @@ public class TableLoadDefineUtil {
             }
         }
 
-        if (!tableLoadDefine.hasSimpleChildTable()) {
+        if (!tableLoadDefine.hasSimpleMainTable()) {
             validResult.appendAllTipType(TipsMessageUsed.getMessage("tips.valid_maintable_must_config"));
             return validResult;
         } else {

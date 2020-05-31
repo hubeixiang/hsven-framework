@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="BaseMapper">
+
+    <!-- 查询条件中使用,对象对应的为 org.framework.hsven.mybatis.vo.VarableBind -->
+    <sql id="condition">
+        <choose>
+            <when test="item.bindType != null and item.bindType == 1 ">
+                <![CDATA[ ${item.column} = #{item.value} ]]>
+            </when>
+            <when test="item.bindType != null and item.bindType == 2 ">
+                <choose>
+                    <when test="item.value == null or item.value == ''">
+                        <![CDATA[ ${item.column} = '' ]]>
+                    </when>
+                    <otherwise>
+                        <![CDATA[ ${item.column} is null ]]>
+                    </otherwise>
+                </choose>
+            </when>
+            <when test="item.bindType != null and item.bindType == 3 ">
+                <![CDATA[ ${item.column} like '%${item.value}%' ]]>
+            </when>
+            <when test="item.bindType != null and item.bindType == 4 and item.value != null and item.value.size() > 0">
+                ${item.column} in
+                <foreach collection="item.value" index="idx" item="itemOneValue" open="(" separator="," close=")">
+                    <![CDATA[ #{itemOneValue} ]]>
+                </foreach>
+            </when>
+            <when test="item.bindType != null and item.bindType == 5 ">
+                <![CDATA[ ${item.column} > #{item.value} ]]>
+            </when>
+            <when test="item.bindType != null and item.bindType == 6 ">
+                <![CDATA[ ${item.column} >= #{item.value} ]]>
+            </when>
+            <when test="item.bindType != null and item.bindType == 7 ">
+                <![CDATA[ ${item.column} < #{item.value} ]]>
+            </when>
+            <when test="item.bindType != null and item.bindType == 8 ">
+                <![CDATA[ ${item.column} <= #{item.value} ]]>
+            </when>
+            <when test="item.bindType != null and item.value != null">
+                <![CDATA[ ${item.column} = #{item.value} ]]>
+            </when>
+            <otherwise>
+                <![CDATA[ ${item.column} is null ]]>
+            </otherwise>
+        </choose>
+    </sql>
+
+    <!-- 更新或者插入数据变更是使用-->
+    <sql id="appendValue">
+        <choose>
+            <when test="item.bindType != null and item.bindType == 1 ">
+                <![CDATA[ ${item.column} = #{item.value} ]]>
+            </when>
+            <when test="item.bindType != null and item.bindType == 2 ">
+                <![CDATA[ ${item.column} = ${item.value} ]]>
+            </when>
+            <when test="item.bindType != null and item.bindType == 3 ">
+                <![CDATA[ ${item.column} = #{item.value} ]]>
+            </when>
+            <when test="item.bindType != null and item.value != null">
+                <![CDATA[ ${item.column} = #{item.value} ]]>
+            </when>
+            <otherwise>
+                <![CDATA[ ${item.column} = null ]]>
+            </otherwise>
+        </choose>
+    </sql>
+</mapper>

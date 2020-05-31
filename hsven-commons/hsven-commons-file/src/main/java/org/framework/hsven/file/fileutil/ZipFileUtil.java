@@ -154,7 +154,7 @@ public class ZipFileUtil {
                         // 获取文件名
                         String entryFileName = archiveEntry.getName();
                         // 构造解压出来的文件存放路径
-                        String entryFilePath = saveFileDir + entryFileName;
+                        String entryFilePath = saveFileDir + File.separator + entryFileName;
                         byte[] content = new byte[(int) archiveEntry.getSize()];
                         zais.read(content);
                         OutputStream os = null;
@@ -184,7 +184,6 @@ public class ZipFileUtil {
                             is.close();
                         }
                     } catch (IOException e) {
-                        throw new RuntimeException(e);
                     }
                 }
             }

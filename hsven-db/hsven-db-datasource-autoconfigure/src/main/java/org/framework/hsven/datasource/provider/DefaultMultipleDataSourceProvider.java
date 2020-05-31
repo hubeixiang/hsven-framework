@@ -1,5 +1,6 @@
 package org.framework.hsven.datasource.provider;
 
+import org.apache.commons.lang3.StringUtils;
 import org.framework.hsven.datasource.InternalDBContextHelper;
 import org.framework.hsven.datasource.SpringDataSourceContextUtil;
 import org.framework.hsven.datasource.enums.DataSourceType;
@@ -38,7 +39,7 @@ public class DefaultMultipleDataSourceProvider implements IDataSourceProvider {
 
     @Override
     public String getDataSourceBeanName(String dbName) {
-        return DataSourceNameGenerator.getDataSourceBeanName(dbName);
+        return DataSourceNameGenerator.generatorDataSourceRelevantBeanName(dbName);
     }
 
 
@@ -55,6 +56,16 @@ public class DefaultMultipleDataSourceProvider implements IDataSourceProvider {
             } else {
                 throw new RuntimeException(String.format("dbName=%s,dataSourceBeanName=%s SpringDataSourceContextUtil.getBean result object not instanceof javax.sql.DataSource", dbName, dataSourceBeanName));
             }
+        }
+    }
+
+    @Override
+    public <T> T getDataSourceRelevantBean(String dbName, Class<T> classzz) {
+        String dataSourceBeanName = getDataSourceBeanName(dbName);
+        if (StringUtils.isNotEmpty(dataSourceBeanName)) {
+            return SpringDataSourceContextUtil.getDataSourceRelevant(dbName, classzz);
+        } else {
+            throw new RuntimeException(String.format("dbName=%s,dataSourceBeanName=%s SpringDataSourceContextUtil.getBean result object not instanceof javax.sql.DataSource", dbName, dataSourceBeanName));
         }
     }
 }

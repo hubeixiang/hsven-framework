@@ -56,6 +56,17 @@ public interface IDataSourceProvider {
      */
     public AdapterDataSource dataSourceProvider(String dbName);
 
+    /**
+     * 获取与数据源绑定的各种类的
+     *
+     * @param dbName
+     * @param classzz
+     * @param <T>
+     * @return
+     */
+    public <T> T getDataSourceRelevantBean(String dbName, Class<T> classzz);
+
+
     default AdapterDataSource createAdapterDataSource(String dataSourceBeanName, DataSourceConfig dataSourceConfig, DataSource dataSource) {
         AdapterDataSource adapterDataSource = new AdapterDataSource();
         adapterDataSource.setDataSourceBeanName(dataSourceBeanName);
