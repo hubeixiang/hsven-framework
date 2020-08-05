@@ -35,6 +35,7 @@
         <module>hsven-dataset</module>
         <module>hsven-ws</module>
         <module>generator-mybatis</module>
+        <module>hsven-db-single-demo</module>
     </modules>
 
     <packaging>pom</packaging>
