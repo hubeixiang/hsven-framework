@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+    <properties resource="config/jdbc.properties"/>
+
+    <classPathEntry location="./target/lib/mysql.jar"/>
+
+    <!-- 一个数据库一个context -->
+    <context id="CossTables" targetRuntime="MyBatis3Simple"><!--MyBatis3-->
+        <property name="useActualColumnNames" value="false"/>
+        <!-- 生成的pojo，将implements Serializable -->
+        <plugin type="org.mybatis.generator.plugins.SerializablePlugin"/>
+
+        <jdbcConnection driverClass="${spring.datasource.driver-class-name}"
+                        connectionURL="${spring.datasource.url}"
+                        userId="${spring.datasource.username}"
+                        password="${spring.datasource.password}">
+        </jdbcConnection>
+
+        <javaTypeResolver>
+            <!-- 默认false，把JDBC DECIMAL 和 NUMERIC 类型解析为 Integer true，把JDBC DECIMAL
+                和 NUMERIC 类型解析为java.math.BigDecimal -->
+            <property name="forceBigDecimals" value="false"/>
+        </javaTypeResolver>
+
+        <javaModelGenerator targetPackage="com.generator.db.entity"
+                            targetProject="./src/main/java">
+            <!-- 是否在当前路径下新加一层schem -->
+            <property name="enableSubPackages" value="false"/>
+            <property name="trimStrings" value="true"/>
+<!--            <property name="rootClass" value="java.io.Serializable"/>-->
+            <!-- 是否生成构造函数 默认是false -->
+            <property name="constructorBased" value="false"/>
+        </javaModelGenerator>
+
+        <sqlMapGenerator targetPackage="mapper"
+                         targetProject="./src/main/resources">
+            <property name="enableSubPackages" value="false"/>
+        </sqlMapGenerator>
+
+        <javaClientGenerator type="XMLMAPPER"
+                             targetPackage="com.genrator.db.dao"
+                             targetProject="./src/main/java">
+            <property name="enableSubPackages" value="false"/>
+        </javaClientGenerator>
+
+        <!-- demo-->
+        <!--
+        <table schema="coss" tableName="OM_ANNOUNCEMENT" domainObjectName="coss.om.OmAnnouncement"
+               enableUpdateByPrimaryKey="false">
+            //两种自增组件的生成方式
+            <generatedKey column="INT_ID" sqlStatement="JDBC" type="pre"/>
+            <generatedKey column="ID" sqlStatement="select SEQ_CP_STANDARD_LIB_DETAIL.nextval from dual"/>
+            //插入时生成如下方式的自动生成id的sql
+                <selectKey resultType="java.lang.Long" keyProperty="id" order="BEFORE" >
+                  select SEQ_CP_STANDARD_LIB.nextval from dual
+                </selectKey>
+            <columnOverride column="ANN_CONTENT" javaType="java.lang.String" jdbcType="BLOB" typeHandler="com.boco.dxlte.db.handler.BlobToStringHandler" />
+            <columnOverride column="ANN_ID" javaType="java.lang.Integer" jdbcType="BIGINT"/>
+            <columnOverride column="ANN_TYPE" javaType="java.lang.Integer" jdbcType="BIGINT"/>
+            <columnOverride column="ANN_RANGE" javaType="java.lang.Integer" jdbcType="BIGINT"/>
+        </table>
+        -->
+        <table schema="coss" tableName="sec_user" domainObjectName="SecUser">
+        </table>
+    </context>
+</generatorConfiguration>

@@ -34,6 +34,7 @@
         <module>hsven-quartz</module>
         <module>hsven-dataset</module>
         <module>hsven-ws</module>
+        <module>generator-mybatis</module>
     </modules>
 
     <packaging>pom</packaging>
