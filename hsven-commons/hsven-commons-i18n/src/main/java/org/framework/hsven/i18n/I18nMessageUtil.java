@@ -3,6 +3,7 @@ package org.framework.hsven.i18n;
 import org.framework.hsven.i18n.message.I18nMessageSource;
 import org.springframework.context.MessageSourceResolvable;
 import org.springframework.context.NoSuchMessageException;
+import org.springframework.context.i18n.LocaleContextHolder;
 
 import java.util.Locale;
 
@@ -30,6 +31,15 @@ public class I18nMessageUtil {
 
     public void initI18nMessageSource(I18nMessageSource i18nMessageSource) {
         this.i18nMessageSource = i18nMessageSource;
+    }
+
+    public String getRequestMessage(String key, Object... params) {
+        Locale locale = LocaleContextHolder.getLocale();
+        if (locale == null) {
+            return this.i18nMessageSource.getMessage(key, params);
+        } else {
+            return this.i18nMessageSource.getMessage(key, params, locale);
+        }
     }
 
     public String getMessage(String key, Object... params) {
