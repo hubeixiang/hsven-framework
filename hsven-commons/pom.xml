@@ -38,6 +38,7 @@
         <module>hsven-commons-executor</module>
         <module>hsven-commons-i18n</module>
         <module>hsven-commons-executor-api</module>
+        <module>hsven-commons-swagger2</module>
     </modules>
 
 </project>

@@ -1,0 +1,2 @@
+org.springframework.context.ApplicationListener=\
+org.framework.hsven.quartz.core.helper.SpringBeanHelperListener

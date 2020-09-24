@@ -17,6 +17,24 @@
 
     <modules>
 
+        <module>hsven-quartz-core</module>
+        <module>hsven-quartz-standalone</module>
+        <module>hsven-quartz-cluster</module>
+        <module>hsven-quartz-cluster-app</module>
+        <module>hsven-quzrtz-standlone-app</module>
     </modules>
+
+<!--    <dependencyManagement>-->
+<!--        <dependencies>-->
+<!--            <dependency>-->
+<!--                <groupId>org.quartz-scheduler</groupId>-->
+<!--                <artifactId>quartz</artifactId>-->
+<!--            </dependency>-->
+<!--            <dependency>-->
+<!--                <groupId>org.quartz-scheduler</groupId>-->
+<!--                <artifactId>quartz-jobs</artifactId>-->
+<!--            </dependency>-->
+<!--        </dependencies>-->
+<!--    </dependencyManagement>-->
 
 </project>

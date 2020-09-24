@@ -1,0 +1,2 @@
+1. 使用maven package时,将nexus上的对应的数据库驱动下载输出到此目录
+2. generatorConfig.xml中配置了classPathEntry中驱动的路径,映射到当前目录下对应数据库的驱动

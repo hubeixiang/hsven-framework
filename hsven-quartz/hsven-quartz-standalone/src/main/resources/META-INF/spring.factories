@@ -1,0 +1,4 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+org.framework.hsven.quartz.standalone.autoconfigure.StdQuartzScheduleAutoconfigure,\
+org.framework.hsven.quartz.standalone.service.StandaloneSchedulerOperatorService,\
+org.framework.hsven.quartz.standalone.controller.StandaloneSchedulerController

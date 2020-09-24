@@ -72,13 +72,13 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <outputDirectory>target/lib</outputDirectory>
+                    <outputDirectory>src/driver/lib</outputDirectory>
                     <artifactItems>
                         <artifactItem>
-<!--                            <groupId>com.oracle</groupId>-->
-<!--                            <artifactId>ojdbc6</artifactId>-->
-<!--                            <version>${ojdbc6.version}</version>-->
-<!--                            <destFileName>ojdbc6.jar</destFileName>-->
+                            <!--                            <groupId>com.oracle</groupId>-->
+                            <!--                            <artifactId>ojdbc6</artifactId>-->
+                            <!--                            <version>${ojdbc6.version}</version>-->
+                            <!--                            <destFileName>ojdbc6.jar</destFileName>-->
                             <groupId>mysql</groupId>
                             <artifactId>mysql-connector-java</artifactId>
                             <version>${mysql.version}</version>

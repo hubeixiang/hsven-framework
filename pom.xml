@@ -34,7 +34,7 @@
         <module>hsven-quartz</module>
         <module>hsven-dataset</module>
         <module>hsven-ws</module>
-        <module>generator-mybatis</module>
+<!--        <module>generator-mybatis</module>-->
         <module>hsven-db-single-demo</module>
     </modules>
 
@@ -95,9 +95,10 @@
         <javassist.version>3.20.0-GA</javassist.version>
         <activiti.version>5.19.0.2</activiti.version>
 
-        <swagger.version>2.7.0</swagger.version>
-        <swagger-annotations.version>1.5.10</swagger-annotations.version>
-        <guava.version>19.0</guava.version>
+        <swagger.version>2.9.2</swagger.version>
+<!--        <swagger-annotations.version>1.5.10</swagger-annotations.version>-->
+        <xiaoymin.swagger-bootstrap-ui.version>1.9.3</xiaoymin.swagger-bootstrap-ui.version>
+        <guava.version>28.1-jre</guava.version>
 
         <fastjson.version>1.2.47</fastjson.version>
 
@@ -458,9 +459,9 @@
                 <version>${swagger.version}</version>
             </dependency>
             <dependency>
-                <groupId>io.swagger</groupId>
-                <artifactId>swagger-annotations</artifactId>
-                <version>${swagger-annotations.version}</version>
+                <groupId>com.github.xiaoymin</groupId>
+                <artifactId>swagger-bootstrap-ui</artifactId>
+                <version>${xiaoymin.swagger-bootstrap-ui.version}</version>
             </dependency>
             <!-- slf4j-api & logback-->
             <dependency>
@@ -617,6 +618,24 @@
                 <groupId>org.apache.poi</groupId>
                 <artifactId>poi</artifactId>
                 <version>${office-poi.version}</version>
+            </dependency>
+
+            <!-- quartz -->
+            <dependency>
+                <groupId>org.quartz-scheduler</groupId>
+                <artifactId>quartz</artifactId>
+                <version>2.3.2</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>c3p0</groupId>
+                        <artifactId>c3p0</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.quartz-scheduler</groupId>
+                <artifactId>quartz-jobs</artifactId>
+                <version>2.3.2</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

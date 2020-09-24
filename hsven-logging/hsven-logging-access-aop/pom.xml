@@ -25,6 +25,11 @@
             <artifactId>hsven-commons-aop</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.framework.hsven</groupId>
+            <artifactId>hsven-commons-swagger2</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
         <!-- spring -->
         <dependency>
@@ -37,10 +42,6 @@
         </dependency>
 
         <!-- other -->
-        <dependency>
-            <groupId>io.swagger</groupId>
-            <artifactId>swagger-annotations</artifactId>
-        </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
