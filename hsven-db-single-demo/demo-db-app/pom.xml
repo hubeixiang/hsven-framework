@@ -3,20 +3,14 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>hsven-framework</artifactId>
+        <artifactId>hsven-db-single-demo</artifactId>
         <groupId>org.framework.hsven</groupId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.framework.hsven</groupId>
-    <artifactId>hsven-db-single-demo</artifactId>
-    <packaging>pom</packaging>
+    <artifactId>demo-db-app</artifactId>
 
-    <modules>
-        <module>demo-db-entity</module>
-        <module>demo-db</module>
-        <module>demo-db-app</module>
-    </modules>
 
 </project>

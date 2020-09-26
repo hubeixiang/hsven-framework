@@ -64,11 +64,15 @@
             <columnOverride column="ANN_RANGE" javaType="java.lang.Integer" jdbcType="BIGINT"/>
         </table>
         -->
-        <table schema="coss" tableName="sec_user" domainObjectName="SecUser">
+<!--        <table schema="coss" tableName="sec_user" domainObjectName="SecUser">-->
+<!--        </table>-->
+<!--        <table schema="coss" tableName="sec_user_sso_log" domainObjectName="SecUserSsoLog">-->
+<!--        </table>-->
+<!--        <table schema="coss" tableName="sec_user_role" domainObjectName="SecUserRole">-->
+<!--        </table>-->
+        <table schema="coss" tableName="log_maintain_record" domainObjectName="LogMaintainRecord">
         </table>
-        <table schema="coss" tableName="sec_user_sso_log" domainObjectName="SecUserSsoLog">
-        </table>
-        <table schema="coss" tableName="sec_user_role" domainObjectName="SecUserRole">
+        <table schema="coss" tableName="log_maintain_tasks" domainObjectName="LogMaintainTasks">
         </table>
     </context>
 </generatorConfiguration>
