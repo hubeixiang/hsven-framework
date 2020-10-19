@@ -55,5 +55,12 @@
             <artifactId>poi</artifactId>
             <optional>true</optional>
         </dependency>
+
+        <!-- Browser file upload -->
+        <dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+            <optional>true</optional>
+        </dependency>
     </dependencies>
 </project>
