@@ -1,4 +1,4 @@
-package org.framework.hsven.quartz.standalone.task;
+package org.framework.hsven.quartz.standalone.app.task;
 
 import org.springframework.stereotype.Service;
 

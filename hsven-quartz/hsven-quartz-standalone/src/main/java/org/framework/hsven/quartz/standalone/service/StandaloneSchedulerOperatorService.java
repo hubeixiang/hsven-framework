@@ -207,11 +207,11 @@ public class StandaloneSchedulerOperatorService implements ISchedulerOperatorSer
                 }
             }
             responseScheduler = new ResponseScheduler(ResponseScheduler.CODE_OK);
-        } catch (SchedulerException e) {
+        } catch (Throwable e) {
             String jobId = String.format("job(name=%s,group=%s)", quartzJob.getJobName(), quartzJob.getJobGroup());
             String triggerId = String.format("trigger(name=%s,group=%s)", quartzTrigger.getTriggerName(), quartzTrigger.getTriggerGroup());
             String jobIdentity = String.format("%s,%s", jobId, triggerId);
-            logger.error(String.format("%s %s %s exception:%s", operator, jobIdentity, e.getMessage()), e);
+            logger.error(String.format("%s %s exception:%s", operator, jobIdentity, e.getMessage()), e);
             responseScheduler = new ResponseScheduler(ResponseScheduler.CODE_INTERNAL_ERROR);
             responseScheduler.setError(String.format("%s %s exception:%s", operator, jobIdentity, e.getMessage()));
         }
