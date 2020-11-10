@@ -6,7 +6,7 @@
 <generatorConfiguration>
     <properties resource="config/jdbc.properties"/>
 
-    <classPathEntry location="./src/driver/lib/mysql.jar"/>
+    <classPathEntry location="./src/driver/lib/database-driver.jar"/>
 
     <!-- 一个数据库一个context -->
     <context id="CossTables" targetRuntime="MyBatis3Simple"><!--MyBatis3-->
@@ -31,7 +31,7 @@
             <!-- 是否在当前路径下新加一层schem -->
             <property name="enableSubPackages" value="false"/>
             <property name="trimStrings" value="true"/>
-<!--            <property name="rootClass" value="java.io.Serializable"/>-->
+            <!--            <property name="rootClass" value="java.io.Serializable"/>-->
             <!-- 是否生成构造函数 默认是false -->
             <property name="constructorBased" value="false"/>
         </javaModelGenerator>
@@ -64,15 +64,17 @@
             <columnOverride column="ANN_RANGE" javaType="java.lang.Integer" jdbcType="BIGINT"/>
         </table>
         -->
-<!--        <table schema="coss" tableName="sec_user" domainObjectName="SecUser">-->
+        <!--        <table schema="coss" tableName="sec_user" domainObjectName="SecUser">-->
+        <!--        </table>-->
+        <!--        <table schema="coss" tableName="sec_user_sso_log" domainObjectName="SecUserSsoLog">-->
+        <!--        </table>-->
+        <!--        <table schema="coss" tableName="sec_user_role" domainObjectName="SecUserRole">-->
+        <!--        </table>-->
+                <table schema="irdb" tableName="c_maintain_record_log" domainObjectName="MaintainRecordLog">
+                </table>
+                <table schema="irdb" tableName="c_maintain_tasks_log" domainObjectName="MaintainTasksLog">
+                </table>
+<!--        <table schema="coss" tableName="sec_ologrec" domainObjectName="SecOlogrec">-->
 <!--        </table>-->
-<!--        <table schema="coss" tableName="sec_user_sso_log" domainObjectName="SecUserSsoLog">-->
-<!--        </table>-->
-<!--        <table schema="coss" tableName="sec_user_role" domainObjectName="SecUserRole">-->
-<!--        </table>-->
-        <table schema="coss" tableName="log_maintain_record" domainObjectName="LogMaintainRecord">
-        </table>
-        <table schema="coss" tableName="log_maintain_tasks" domainObjectName="LogMaintainTasks">
-        </table>
     </context>
 </generatorConfiguration>
