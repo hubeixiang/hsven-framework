@@ -20,6 +20,7 @@ import org.springframework.xml.xsd.XsdSchema;
 public class WServiceServerConfigure {
 
     //定义的不同的xsd服务文件中的命名空间
+    //要与xsd文件中的命名空间一致
     public static final String NAMESPACE_URI = "http://wservice.hios.com/proxy/eoms/service";
 
     @Bean

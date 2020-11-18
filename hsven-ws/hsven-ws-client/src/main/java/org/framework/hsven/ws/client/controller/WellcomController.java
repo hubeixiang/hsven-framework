@@ -1,5 +1,6 @@
 package org.framework.hsven.ws.client.controller;
 
+import org.framework.hsven.ws.client.service.client.WsClientBussinessEoms;
 import org.framework.hsven.ws.client.service.client.WsClientBussinessOne;
 import org.framework.hsven.ws.client.service.client.WsClientBussinessSecond;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,9 @@ public class WellcomController {
     @Autowired
     WsClientBussinessSecond wsClientBussinessSecond;
 
+    @Autowired
+    WsClientBussinessEoms wsClientBussinessEoms;
+
     @RequestMapping("one")
     @ResponseBody
     public Object requestOne() {
@@ -35,5 +39,17 @@ public class WellcomController {
     @ResponseBody
     public Object requestSecondSend() {
         return wsClientBussinessSecond.createWsObject();
+    }
+
+    @RequestMapping("checkImport")
+    @ResponseBody
+    public Object checkImport() {
+        return wsClientBussinessEoms.checkImport();
+    }
+
+    @RequestMapping("quitOrderUpdate")
+    @ResponseBody
+    public Object quitOrderUpdate() {
+        return wsClientBussinessEoms.quitOrderUpdate();
     }
 }

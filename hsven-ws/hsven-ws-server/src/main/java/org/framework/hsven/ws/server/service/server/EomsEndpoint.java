@@ -1,6 +1,6 @@
 package org.framework.hsven.ws.server.service.server;
 
-import com.boco.dxlte.service.proxy.eoms.service.*;
+import com.hios.wservice.proxy.eoms.service.*;
 import org.framework.hsven.ws.server.autoconfigure.WServiceServerConfigure;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
@@ -19,6 +19,9 @@ public class EomsEndpoint {
     public CheckImportResponse checkImport(@RequestPayload CheckImportRequest request) {
         CheckImportResponse response = new CheckImportResponse();
         Result result = new Result();
+        result.setCode(200);
+        result.setMessage(request.getOrderId());
+        result.setData("checkImport");
         response.setResult(result);
         return response;
     }
@@ -28,6 +31,9 @@ public class EomsEndpoint {
     public QuitOrderUpdateResponse quitOrderUpdate(@RequestPayload QuitOrderUpdateRequest request) {
         QuitOrderUpdateResponse response = new QuitOrderUpdateResponse();
         Result result = new Result();
+        result.setCode(200);
+        result.setMessage(request.getOrderId());
+        result.setData("quitOrderUpdate");
         response.setResult(result);
         return response;
     }
@@ -37,6 +43,8 @@ public class EomsEndpoint {
     public QuitOrderRevokeResponse quitOrderRevoke(@RequestPayload QuitOrderRevokeRequest request) {
         QuitOrderRevokeResponse response = new QuitOrderRevokeResponse();
         Result result = new Result();
+        result.setCode(200);
+        result.setData("quitOrderRevoke");
         response.setResult(result);
         return response;
     }
@@ -46,6 +54,8 @@ public class EomsEndpoint {
     public ArchiveResponse archive(@RequestPayload ArchiveRequest request) {
         ArchiveResponse response = new ArchiveResponse();
         Result result = new Result();
+        result.setCode(200);
+        result.setData("archive");
         response.setResult(result);
         return response;
     }
@@ -55,6 +65,8 @@ public class EomsEndpoint {
     public QueryDictResponse queryDict(@RequestPayload QueryDictRequest request) {
         QueryDictResponse response = new QueryDictResponse();
         Result result = new Result();
+        result.setCode(200);
+        result.setData("queryDict");
         response.setResult(result);
         return response;
     }
@@ -64,6 +76,8 @@ public class EomsEndpoint {
     public SheetVerifyResponse sheetVerify(@RequestPayload SheetVerifyRequest request) {
         SheetVerifyResponse response = new SheetVerifyResponse();
         Result result = new Result();
+        result.setCode(200);
+        result.setData("sheetVerify");
         response.setResult(result);
         return response;
     }
@@ -73,6 +87,8 @@ public class EomsEndpoint {
     public SheetVerifyScheduleResponse sheetVerifySchedule(@RequestPayload SheetVerifyScheduleRequest request) {
         SheetVerifyScheduleResponse response = new SheetVerifyScheduleResponse();
         Result result = new Result();
+        result.setCode(200);
+        result.setData("sheetVerifySchedule");
         response.setResult(result);
         return response;
     }
@@ -83,6 +99,8 @@ public class EomsEndpoint {
             @RequestPayload ArtificialAcceptanceSheetRequest request) {
         ArtificialAcceptanceSheetResponse response = new ArtificialAcceptanceSheetResponse();
         Result result = new Result();
+        result.setCode(200);
+        result.setData("artificialAcceptanceSheet");
         response.setResult(result);
         return response;
     }

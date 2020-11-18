@@ -1,5 +1,6 @@
 package org.framework.hsven.ws.client.autoconfigure;
 
+import org.framework.hsven.ws.client.service.client.WsClientBussinessEoms;
 import org.framework.hsven.ws.client.service.client.WsClientBussinessOne;
 import org.framework.hsven.ws.client.service.client.WsClientBussinessSecond;
 import org.springframework.context.annotation.Bean;
@@ -11,9 +12,11 @@ import org.springframework.oxm.jaxb.Jaxb2Marshaller;
  */
 @Configuration
 public class WServiceClientConfigure {
+    //必须与wsdl文件中的namespace一致
     private static String[] marshallerContextPaths = new String[]{
             "com.boco.eoms.sheet.base.util",
-            "com.boco.webservice"
+            "com.boco.webservice",
+            "com.hios.wservice.proxy.eoms.service"
     };
 
     /**
@@ -49,6 +52,15 @@ public class WServiceClientConfigure {
     public WsClientBussinessSecond wsClientBussinessSecond(Jaxb2Marshaller jaxb2Marshaller, SoapClientUriProperties soapClientUriProperties) {
         WsClientBussinessSecond client = new WsClientBussinessSecond();
         client.setDefaultUri(soapClientUriProperties.getWsUri2());
+        client.setMarshaller(jaxb2Marshaller);
+        client.setUnmarshaller(jaxb2Marshaller);
+        return client;
+    }
+
+    @Bean
+    public WsClientBussinessEoms wsClientBussinessEoms(Jaxb2Marshaller jaxb2Marshaller, SoapClientUriProperties soapClientUriProperties) {
+        WsClientBussinessEoms client = new WsClientBussinessEoms();
+        client.setDefaultUri(soapClientUriProperties.getWsEoms());
         client.setMarshaller(jaxb2Marshaller);
         client.setUnmarshaller(jaxb2Marshaller);
         return client;
