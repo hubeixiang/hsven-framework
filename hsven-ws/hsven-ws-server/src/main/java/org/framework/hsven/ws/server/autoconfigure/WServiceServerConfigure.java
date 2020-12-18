@@ -46,6 +46,7 @@ public class WServiceServerConfigure {
         //最终组成的路径是以下两种方式都可以对外访问
         //http://127.0.0.1:38620/${本Web服务的名称}/ws(此处设置的setLocationUri地址)/
         //http://127.0.0.1:38620/${本Web服务的名称}/ws(此处设置的setLocationUri地址)/PortTypeName(上面设置的portTypeName值)
+        //http://127.0.0.1:38620/proxy-ws-server/ws/eoms.wsdl
         wsdl11Definition.setLocationUri("/ws");
         wsdl11Definition.setTargetNamespace(NAMESPACE_URI);
         wsdl11Definition.setSchema(xsdSchema);

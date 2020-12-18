@@ -1,5 +1,6 @@
 package org.framework.hsven.ws.client.autoconfigure;
 
+import org.framework.hsven.ws.client.service.client.WsClientBussiness4A;
 import org.framework.hsven.ws.client.service.client.WsClientBussinessEoms;
 import org.framework.hsven.ws.client.service.client.WsClientBussinessOne;
 import org.framework.hsven.ws.client.service.client.WsClientBussinessSecond;
@@ -16,7 +17,8 @@ public class WServiceClientConfigure {
     private static String[] marshallerContextPaths = new String[]{
             "com.boco.eoms.sheet.base.util",
             "com.boco.webservice",
-            "com.hios.wservice.proxy.eoms.service"
+            "com.hios.wservice.proxy.eoms.service",
+            "com.hios.sichuan4a.wsservice"
     };
 
     /**
@@ -61,6 +63,15 @@ public class WServiceClientConfigure {
     public WsClientBussinessEoms wsClientBussinessEoms(Jaxb2Marshaller jaxb2Marshaller, SoapClientUriProperties soapClientUriProperties) {
         WsClientBussinessEoms client = new WsClientBussinessEoms();
         client.setDefaultUri(soapClientUriProperties.getWsEoms());
+        client.setMarshaller(jaxb2Marshaller);
+        client.setUnmarshaller(jaxb2Marshaller);
+        return client;
+    }
+
+    @Bean
+    public WsClientBussiness4A WsClientBussiness4A(Jaxb2Marshaller jaxb2Marshaller, SoapClientUriProperties soapClientUriProperties) {
+        WsClientBussiness4A client = new WsClientBussiness4A();
+        client.setDefaultUri(soapClientUriProperties.getWs4a());
         client.setMarshaller(jaxb2Marshaller);
         client.setUnmarshaller(jaxb2Marshaller);
         return client;
