@@ -16,6 +16,12 @@ public class SoapClientUriProperties {
     //要访问的ws地址2
     private String wsUri2;
 
+    //要访问的ws-eoms的地址
+    private String wsEoms;
+
+    //要访问的ws-4a
+    private String ws4a;
+
     public String getWsUri1() {
         return wsUri1;
     }
@@ -30,5 +36,21 @@ public class SoapClientUriProperties {
 
     public void setWsUri2(String wsUri2) {
         this.wsUri2 = wsUri2;
+    }
+
+    public String getWsEoms() {
+        return wsEoms;
+    }
+
+    public void setWsEoms(String wsEoms) {
+        this.wsEoms = wsEoms;
+    }
+
+    public String getWs4a() {
+        return ws4a;
+    }
+
+    public void setWs4a(String ws4a) {
+        this.ws4a = ws4a;
     }
 }

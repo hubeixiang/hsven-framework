@@ -1,0 +1,140 @@
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://sichuan4a.hios.com/wsservice"
+                  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+                  name="Sichuan4aUserManagerImplService" targetNamespace="http://sichuan4a.hios.com/wsservice">
+    <wsdl:types>
+        <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://sichuan4a.hios.com/wsservice"
+                   elementFormDefault="unqualified" targetNamespace="http://sichuan4a.hios.com/wsservice" version="1.0">
+            <xs:element name="findUser" type="tns:findUser"/>
+            <xs:element name="findUserResponse" type="tns:findUserResponse"/>
+            <xs:element name="getUserAmount" type="tns:getUserAmount"/>
+            <xs:element name="getUserAmountResponse" type="tns:getUserAmountResponse"/>
+            <xs:element name="queryUsers" type="tns:queryUsers"/>
+            <xs:element name="queryUsersByPage" type="tns:queryUsersByPage"/>
+            <xs:element name="queryUsersByPageResponse" type="tns:queryUsersByPageResponse"/>
+            <xs:element name="queryUsersResponse" type="tns:queryUsersResponse"/>
+            <xs:complexType name="queryUsersByPage">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="pageSize" type="xs:string"/>
+                    <xs:element minOccurs="0" name="pageNum" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="queryUsersByPageResponse">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="return" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="queryUsers">
+                <xs:sequence/>
+            </xs:complexType>
+            <xs:complexType name="queryUsersResponse">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="return" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="getUserAmount">
+                <xs:sequence/>
+            </xs:complexType>
+            <xs:complexType name="getUserAmountResponse">
+                <xs:sequence>
+                    <xs:element name="return" type="xs:int"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="findUser">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="userId" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="findUserResponse">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="return" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+        </xs:schema>
+    </wsdl:types>
+    <wsdl:message name="queryUsersByPageResponse">
+        <wsdl:part element="tns:queryUsersByPageResponse" name="parameters"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getUserAmount">
+        <wsdl:part element="tns:getUserAmount" name="parameters"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="findUser">
+        <wsdl:part element="tns:findUser" name="parameters"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="findUserResponse">
+        <wsdl:part element="tns:findUserResponse" name="parameters"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="queryUsersByPage">
+        <wsdl:part element="tns:queryUsersByPage" name="parameters"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="queryUsers">
+        <wsdl:part element="tns:queryUsers" name="parameters"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="queryUsersResponse">
+        <wsdl:part element="tns:queryUsersResponse" name="parameters"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getUserAmountResponse">
+        <wsdl:part element="tns:getUserAmountResponse" name="parameters"></wsdl:part>
+    </wsdl:message>
+    <wsdl:portType name="ISichuan4aUserManager">
+        <wsdl:operation name="queryUsersByPage">
+            <wsdl:input message="tns:queryUsersByPage" name="queryUsersByPage"></wsdl:input>
+            <wsdl:output message="tns:queryUsersByPageResponse" name="queryUsersByPageResponse"></wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="queryUsers">
+            <wsdl:input message="tns:queryUsers" name="queryUsers"></wsdl:input>
+            <wsdl:output message="tns:queryUsersResponse" name="queryUsersResponse"></wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getUserAmount">
+            <wsdl:input message="tns:getUserAmount" name="getUserAmount"></wsdl:input>
+            <wsdl:output message="tns:getUserAmountResponse" name="getUserAmountResponse"></wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="findUser">
+            <wsdl:input message="tns:findUser" name="findUser"></wsdl:input>
+            <wsdl:output message="tns:findUserResponse" name="findUserResponse"></wsdl:output>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="Sichuan4aUserManagerImplServiceSoapBinding" type="tns:ISichuan4aUserManager">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="queryUsersByPage">
+            <soap:operation soapAction="" style="document"/>
+            <wsdl:input name="queryUsersByPage">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="queryUsersByPageResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="queryUsers">
+            <soap:operation soapAction="" style="document"/>
+            <wsdl:input name="queryUsers">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="queryUsersResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getUserAmount">
+            <soap:operation soapAction="" style="document"/>
+            <wsdl:input name="getUserAmount">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="getUserAmountResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="findUser">
+            <soap:operation soapAction="" style="document"/>
+            <wsdl:input name="findUser">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="findUserResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="Sichuan4aUserManagerImplService">
+        <wsdl:port binding="tns:Sichuan4aUserManagerImplServiceSoapBinding" name="Sichuan4aUserManagerImplPort">
+            <soap:address location="http://127.0.0.1:17027/ws/userManager"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

@@ -16,6 +16,7 @@
         <mybatis.generator.overwrite>true</mybatis.generator.overwrite>
         <mysql.version>8.0.18</mysql.version>
         <ojdbc6.version>11.2.0.4.0</ojdbc6.version>
+        <dm.version>8.1.1.126</dm.version>
     </properties>
 
     <dependencies>
@@ -41,6 +42,11 @@
                     <groupId>com.google.protobuf</groupId>
                 </exclusion>
             </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>dm</groupId>
+            <artifactId>DmJdbcDriver18</artifactId>
+            <version>${dm.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -75,15 +81,22 @@
                     <outputDirectory>src/driver/lib</outputDirectory>
                     <artifactItems>
                         <artifactItem>
-                            <!--                            <groupId>com.oracle</groupId>-->
-                            <!--                            <artifactId>ojdbc6</artifactId>-->
-                            <!--                            <version>${ojdbc6.version}</version>-->
-                            <!--                            <destFileName>ojdbc6.jar</destFileName>-->
+                            <!-- generatorConfig 文件中classPathEntry属性配置-->
+                            <destFileName>database-driver.jar</destFileName>
+                            <!-- 下面是不同数据库类型配置不同的依赖驱动 -->
+                            <!--
                             <groupId>mysql</groupId>
                             <artifactId>mysql-connector-java</artifactId>
                             <version>${mysql.version}</version>
-                            <!-- generatorConfig 文件中classPathEntry属性配置-->
-                            <destFileName>mysql.jar</destFileName>
+                            -->
+                            <!--
+                            <groupId>com.oracle</groupId>
+                            <artifactId>ojdbc6</artifactId>
+                            <version>${ojdbc6.version}</version>
+                            -->
+                            <groupId>dm</groupId>
+                            <artifactId>DmJdbcDriver18</artifactId>
+                            <version>${dm.version}</version>
                         </artifactItem>
                     </artifactItems>
                 </configuration>

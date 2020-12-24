@@ -20,6 +20,7 @@ import org.springframework.xml.xsd.XsdSchema;
 public class WServiceServerConfigure {
 
     //定义的不同的xsd服务文件中的命名空间
+    //要与xsd文件中的命名空间一致
     public static final String NAMESPACE_URI = "http://wservice.hios.com/proxy/eoms/service";
 
     @Bean
@@ -42,7 +43,10 @@ public class WServiceServerConfigure {
         //设置具体的bean名称
         wsdl11Definition.setPortTypeName("EomsPort");
         //对外访问的Web Service服务的路径
-        //最终组成的路径是   http://127.0.0.1:38620/${本Web服务的名称}/ws(此处设置的setLocationUri地址)/
+        //最终组成的路径是以下两种方式都可以对外访问
+        //http://127.0.0.1:38620/${本Web服务的名称}/ws(此处设置的setLocationUri地址)/
+        //http://127.0.0.1:38620/${本Web服务的名称}/ws(此处设置的setLocationUri地址)/PortTypeName(上面设置的portTypeName值)
+        //http://127.0.0.1:38620/proxy-ws-server/ws/eoms.wsdl
         wsdl11Definition.setLocationUri("/ws");
         wsdl11Definition.setTargetNamespace(NAMESPACE_URI);
         wsdl11Definition.setSchema(xsdSchema);

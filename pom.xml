@@ -34,7 +34,7 @@
         <module>hsven-quartz</module>
         <module>hsven-dataset</module>
         <module>hsven-ws</module>
-<!--        <module>generator-mybatis</module>-->
+        <!--        <module>generator-mybatis</module>-->
         <module>hsven-db-single-demo</module>
         <module>hsven-configuration-center</module>
     </modules>
@@ -97,7 +97,7 @@
         <activiti.version>5.19.0.2</activiti.version>
 
         <swagger.version>2.9.2</swagger.version>
-<!--        <swagger-annotations.version>1.5.10</swagger-annotations.version>-->
+        <!--        <swagger-annotations.version>1.5.10</swagger-annotations.version>-->
         <xiaoymin.swagger-bootstrap-ui.version>1.9.3</xiaoymin.swagger-bootstrap-ui.version>
         <guava.version>28.1-jre</guava.version>
 
@@ -145,6 +145,7 @@
         <commons-compress.version>1.20</commons-compress.version>
         <commons-codec.version>1.14</commons-codec.version>
         <mockito-all.version>1.10.19</mockito-all.version>
+        <commons-fileupload.version>1.4</commons-fileupload.version>
     </properties>
 
     <profiles>
@@ -539,6 +540,11 @@
                         <artifactId>joda-time</artifactId>
                     </exclusion>
                 </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>commons-fileupload</groupId>
+                <artifactId>commons-fileupload</artifactId>
+                <version>${commons-fileupload.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.google.guava</groupId>

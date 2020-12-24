@@ -1,0 +1,390 @@
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+                  xmlns:tns="http://wservice.hios.com/proxy/eoms/service"
+                  targetNamespace="http://wservice.hios.com/proxy/eoms/service">
+    <wsdl:types>
+        <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
+                   targetNamespace="http://wservice.hios.com/proxy/eoms/service">
+            <xs:element name="sheetVerifyRequest">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="objectClass" type="tns:neTypeEnum"/>
+                        <xs:element name="fileUrl" type="xs:string"/>
+                        <xs:element name="userId" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="sheetVerifyResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="result" type="tns:result"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="sheetVerifyScheduleRequest">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="fileUrl" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="sheetVerifyScheduleResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="result" type="tns:result"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="checkImportRequest">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="orderId" type="xs:string"/>
+                        <xs:element name="orderType" type="tns:orderTypeEnum"/>
+                        <xs:element name="dispatchType" type="tns:dispatchTypeEnum"/>
+                        <xs:element name="userId" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="checkImportResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="result" type="tns:result"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="quitOrderUpdateRequest">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="orderId" type="xs:string"/>
+                        <xs:element name="orderType" type="tns:orderTypeEnum"/>
+                        <xs:element name="intId" type="xs:string"/>
+                        <xs:element name="neType" type="tns:neTypeEnum"/>
+                        <xs:element name="dispatchType" type="tns:dispatchTypeEnum"/>
+                        <xs:element name="triggerCondition" type="tns:triggerConditionEnum"/>
+                        <xs:element name="userId" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="quitOrderUpdateResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="result" type="tns:result"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="quitOrderRevokeRequest">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="orderId" type="xs:string"/>
+                        <xs:element name="dispatchType" type="tns:dispatchTypeEnum"/>
+                        <xs:element name="userId" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="quitOrderRevokeResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="result" type="tns:result"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="archiveRequest">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="orderId" type="xs:string"/>
+                        <xs:element name="orderType" type="tns:orderTypeEnum"/>
+                        <xs:element name="dispatchType" type="tns:dispatchTypeEnum"/>
+                        <xs:element name="userId" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="archiveResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="result" type="tns:result"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="queryDictRequest">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="neType" type="tns:neTypeEnum"/>
+                        <xs:element name="title" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="queryDictResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="result" type="tns:result"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <!--  人工验收工单操作参数  -->
+            <xs:element name="artificialAcceptanceSheetRequest">
+                <xs:complexType>
+                    <xs:sequence>
+                        <!--  网元类型,不能为空  -->
+                        <xs:element name="neType" type="tns:neTypeEnum"/>
+                        <!--  验收类型,发起人工验收,撤销人工验收,不能为空  -->
+                        <xs:element name="acceptanceType" type="tns:acceptanceTypeEnum"/>
+                        <!--  工单号,不能为空  -->
+                        <xs:element name="orderId" type="xs:string"/>
+                        <!--  验收网元号,不能为空  -->
+                        <xs:element name="intId" type="xs:long"/>
+                        <!--  验收网元所属省ID,不能为空  -->
+                        <xs:element name="provinceId" type="xs:int"/>
+                        <!--  操作用户id,不能为空  -->
+                        <xs:element name="userId" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <!--  人工验收工单操作结果  -->
+            <xs:element name="artificialAcceptanceSheetResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="result" type="tns:result"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:complexType name="result">
+                <xs:sequence>
+                    <xs:element name="code" type="tns:resultCodeEnum"/>
+                    <xs:element name="message" type="xs:string"/>
+                    <xs:element name="data" nillable="true" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:simpleType name="resultCodeEnum">
+                <xs:restriction base="xs:int">
+                    <!-- 执行成功 -->
+                    <xs:enumeration value="0"/>
+                    <!-- 执行成功无数据返回 -->
+                    <xs:enumeration value="1"/>
+                    <!-- 服务调用参数传入错误 -->
+                    <xs:enumeration value="2"/>
+                    <!-- 后台服务错误 -->
+                    <xs:enumeration value="10"/>
+                </xs:restriction>
+            </xs:simpleType>
+            <xs:simpleType name="dispatchTypeEnum">
+                <xs:restriction base="xs:int">
+                    <!-- 系统派单 -->
+                    <xs:enumeration value="0"/>
+                    <!-- 人工派单 -->
+                    <xs:enumeration value="1"/>
+                </xs:restriction>
+            </xs:simpleType>
+            <xs:simpleType name="orderTypeEnum">
+                <xs:restriction base="xs:int">
+                    <!-- 新建站工单 -->
+                    <xs:enumeration value="1"/>
+                    <!-- 修改工单 -->
+                    <xs:enumeration value="2"/>
+                    <!-- 验收工单 -->
+                    <xs:enumeration value="3"/>
+                    <!-- 退网工单 -->
+                    <xs:enumeration value="4"/>
+                </xs:restriction>
+            </xs:simpleType>
+            <xs:simpleType name="triggerConditionEnum">
+                <xs:restriction base="xs:int">
+                    <!-- 正常 -->
+                    <xs:enumeration value="1"/>
+                    <!-- 物业逼迁 -->
+                    <xs:enumeration value="2"/>
+                    <!-- 主动搬迁 -->
+                    <xs:enumeration value="3"/>
+                    <!-- 维护关停 -->
+                    <xs:enumeration value="4"/>
+                </xs:restriction>
+            </xs:simpleType>
+            <xs:simpleType name="neTypeEnum">
+                <xs:restriction base="xs:int">
+                    <!-- 基站 -->
+                    <xs:enumeration value="8104"/>
+                    <!-- 小区 -->
+                    <xs:enumeration value="8105"/>
+                    <!-- RRU -->
+                    <xs:enumeration value="8111"/>
+                    <!-- 天线 -->
+                    <xs:enumeration value="8112"/>
+                    <!-- 站址 -->
+                    <xs:enumeration value="10007"/>
+                    <!-- 室分 -->
+                    <xs:enumeration value="11001"/>
+                </xs:restriction>
+            </xs:simpleType>
+            <xs:simpleType name="acceptanceTypeEnum">
+                <xs:restriction base="xs:int">
+                    <!--  应用人工验收工单  -->
+                    <xs:enumeration value="10"/>
+                    <!--  撤销人工验收工单  -->
+                    <xs:enumeration value="11"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:schema>
+    </wsdl:types>
+    <wsdl:message name="artificialAcceptanceSheetResponse">
+        <wsdl:part element="tns:artificialAcceptanceSheetResponse" name="artificialAcceptanceSheetResponse"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="artificialAcceptanceSheetRequest">
+        <wsdl:part element="tns:artificialAcceptanceSheetRequest" name="artificialAcceptanceSheetRequest"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="quitOrderUpdateResponse">
+        <wsdl:part element="tns:quitOrderUpdateResponse" name="quitOrderUpdateResponse"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="queryDictRequest">
+        <wsdl:part element="tns:queryDictRequest" name="queryDictRequest"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="checkImportResponse">
+        <wsdl:part element="tns:checkImportResponse" name="checkImportResponse"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="sheetVerifyScheduleRequest">
+        <wsdl:part element="tns:sheetVerifyScheduleRequest" name="sheetVerifyScheduleRequest"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="archiveResponse">
+        <wsdl:part element="tns:archiveResponse" name="archiveResponse"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="sheetVerifyScheduleResponse">
+        <wsdl:part element="tns:sheetVerifyScheduleResponse" name="sheetVerifyScheduleResponse"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="checkImportRequest">
+        <wsdl:part element="tns:checkImportRequest" name="checkImportRequest"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="archiveRequest">
+        <wsdl:part element="tns:archiveRequest" name="archiveRequest"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="sheetVerifyResponse">
+        <wsdl:part element="tns:sheetVerifyResponse" name="sheetVerifyResponse"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="quitOrderRevokeRequest">
+        <wsdl:part element="tns:quitOrderRevokeRequest" name="quitOrderRevokeRequest"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="quitOrderRevokeResponse">
+        <wsdl:part element="tns:quitOrderRevokeResponse" name="quitOrderRevokeResponse"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="queryDictResponse">
+        <wsdl:part element="tns:queryDictResponse" name="queryDictResponse"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="sheetVerifyRequest">
+        <wsdl:part element="tns:sheetVerifyRequest" name="sheetVerifyRequest"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="quitOrderUpdateRequest">
+        <wsdl:part element="tns:quitOrderUpdateRequest" name="quitOrderUpdateRequest"></wsdl:part>
+    </wsdl:message>
+    <wsdl:portType name="EomsPort">
+        <wsdl:operation name="artificialAcceptanceSheet">
+            <wsdl:input message="tns:artificialAcceptanceSheetRequest"
+                        name="artificialAcceptanceSheetRequest"></wsdl:input>
+            <wsdl:output message="tns:artificialAcceptanceSheetResponse"
+                         name="artificialAcceptanceSheetResponse"></wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="quitOrderUpdate">
+            <wsdl:input message="tns:quitOrderUpdateRequest" name="quitOrderUpdateRequest"></wsdl:input>
+            <wsdl:output message="tns:quitOrderUpdateResponse" name="quitOrderUpdateResponse"></wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="queryDict">
+            <wsdl:input message="tns:queryDictRequest" name="queryDictRequest"></wsdl:input>
+            <wsdl:output message="tns:queryDictResponse" name="queryDictResponse"></wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="checkImport">
+            <wsdl:input message="tns:checkImportRequest" name="checkImportRequest"></wsdl:input>
+            <wsdl:output message="tns:checkImportResponse" name="checkImportResponse"></wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="sheetVerifySchedule">
+            <wsdl:input message="tns:sheetVerifyScheduleRequest" name="sheetVerifyScheduleRequest"></wsdl:input>
+            <wsdl:output message="tns:sheetVerifyScheduleResponse" name="sheetVerifyScheduleResponse"></wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="archive">
+            <wsdl:input message="tns:archiveRequest" name="archiveRequest"></wsdl:input>
+            <wsdl:output message="tns:archiveResponse" name="archiveResponse"></wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="sheetVerify">
+            <wsdl:input message="tns:sheetVerifyRequest" name="sheetVerifyRequest"></wsdl:input>
+            <wsdl:output message="tns:sheetVerifyResponse" name="sheetVerifyResponse"></wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="quitOrderRevoke">
+            <wsdl:input message="tns:quitOrderRevokeRequest" name="quitOrderRevokeRequest"></wsdl:input>
+            <wsdl:output message="tns:quitOrderRevokeResponse" name="quitOrderRevokeResponse"></wsdl:output>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="EomsPortSoap11" type="tns:EomsPort">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="artificialAcceptanceSheet">
+            <soap:operation soapAction=""/>
+            <wsdl:input name="artificialAcceptanceSheetRequest">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="artificialAcceptanceSheetResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="quitOrderUpdate">
+            <soap:operation soapAction=""/>
+            <wsdl:input name="quitOrderUpdateRequest">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="quitOrderUpdateResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="queryDict">
+            <soap:operation soapAction=""/>
+            <wsdl:input name="queryDictRequest">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="queryDictResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="checkImport">
+            <soap:operation soapAction=""/>
+            <wsdl:input name="checkImportRequest">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="checkImportResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="sheetVerifySchedule">
+            <soap:operation soapAction=""/>
+            <wsdl:input name="sheetVerifyScheduleRequest">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="sheetVerifyScheduleResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="archive">
+            <soap:operation soapAction=""/>
+            <wsdl:input name="archiveRequest">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="archiveResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="sheetVerify">
+            <soap:operation soapAction=""/>
+            <wsdl:input name="sheetVerifyRequest">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="sheetVerifyResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="quitOrderRevoke">
+            <soap:operation soapAction=""/>
+            <wsdl:input name="quitOrderRevokeRequest">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="quitOrderRevokeResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="EomsPortService">
+        <wsdl:port binding="tns:EomsPortSoap11" name="EomsPortSoap11">
+            <soap:address location="http://127.0.0.1:38620/proxy-ws-server/ws"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

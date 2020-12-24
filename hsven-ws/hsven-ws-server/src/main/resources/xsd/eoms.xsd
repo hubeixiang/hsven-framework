@@ -1,5 +1,5 @@
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://dxlte.boco.com/service/proxy/eoms/service"
-           targetNamespace="http://dxlte.boco.com/service/proxy/eoms/service" elementFormDefault="qualified">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://wservice.hios.com/proxy/eoms/service"
+           targetNamespace="http://wservice.hios.com/proxy/eoms/service" elementFormDefault="qualified">
 
     <xs:element name="sheetVerifyRequest">
         <xs:complexType>
