@@ -39,6 +39,7 @@
         <module>hsven-commons-i18n</module>
         <module>hsven-commons-executor-api</module>
         <module>hsven-commons-swagger2</module>
+        <module>hsven-commons-web-core</module>
     </modules>
 
 </project>
