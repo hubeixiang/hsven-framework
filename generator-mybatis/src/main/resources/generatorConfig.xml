@@ -20,13 +20,13 @@
                         password="${spring.datasource.password}">
         </jdbcConnection>
 
-        <javaTypeResolver>
+        <javaTypeResolver type="org.mybatis.generator.internal.types.MyJavaTypeResolver">
             <!-- 默认false，把JDBC DECIMAL 和 NUMERIC 类型解析为 Integer true，把JDBC DECIMAL
                 和 NUMERIC 类型解析为java.math.BigDecimal -->
             <property name="forceBigDecimals" value="false"/>
         </javaTypeResolver>
 
-        <javaModelGenerator targetPackage="com.hios.platform.security.common.db.entity"
+        <javaModelGenerator targetPackage="com.sct.service.database.entity"
                             targetProject="./src/main/java">
             <!-- 是否在当前路径下新加一层schem -->
             <property name="enableSubPackages" value="false"/>
@@ -42,7 +42,7 @@
         </sqlMapGenerator>
 
         <javaClientGenerator type="XMLMAPPER"
-                             targetPackage="com.hios.platform.security.common.db.mapper"
+                             targetPackage="com.sct.service.database.mapper"
                              targetProject="./src/main/java">
             <property name="enableSubPackages" value="false"/>
         </javaClientGenerator>
@@ -70,11 +70,31 @@
         <!--        </table>-->
         <!--        <table schema="coss" tableName="sec_user_role" domainObjectName="SecUserRole">-->
         <!--        </table>-->
-                <table schema="irdb" tableName="c_maintain_record_log" domainObjectName="MaintainRecordLog">
-                </table>
-                <table schema="irdb" tableName="c_maintain_tasks_log" domainObjectName="MaintainTasksLog">
-                </table>
-<!--        <table schema="coss" tableName="sec_ologrec" domainObjectName="SecOlogrec">-->
-<!--        </table>-->
+        <table schema="scdb" tableName="sc_building" domainObjectName="ScBuilding"/>
+        <table schema="scdb" tableName="sc_community" domainObjectName="ScCommunity"/>
+        <table schema="scdb" tableName="sc_community_dpt" domainObjectName="ScCommunityDpt"/>
+        <table schema="scdb" tableName="sc_community_leader" domainObjectName="ScCommunityLeader"/>
+        <table schema="scdb" tableName="sc_department" domainObjectName="ScDepartment"/>
+        <table schema="scdb" tableName="sc_dict" domainObjectName="ScDict"/>
+        <table schema="scdb" tableName="sc_estate" domainObjectName="ScEstate"/>
+        <table schema="scdb" tableName="sc_grid" domainObjectName="ScGrid"/>
+        <table schema="scdb" tableName="sc_grid_manager" domainObjectName="ScGridManager"/>
+        <table schema="scdb" tableName="sc_grid_range" domainObjectName="ScGridRange"/>
+        <table schema="scdb" tableName="sc_house" domainObjectName="ScHouse"/>
+        <table schema="scdb" tableName="sc_log" domainObjectName="ScLog"/>
+        <table schema="scdb" tableName="sc_organization" domainObjectName="ScOrganization"/>
+        <table schema="scdb" tableName="sc_property" domainObjectName="ScProperty"/>
+        <table schema="scdb" tableName="sc_property_staff" domainObjectName="ScPropertyStaff"/>
+        <table schema="scdb" tableName="sc_resident" domainObjectName="ScResident"/>
+        <table schema="scdb" tableName="sc_role" domainObjectName="ScRole"/>
+        <table schema="scdb" tableName="sc_role_datas" domainObjectName="ScRoleDatas"/>
+        <table schema="scdb" tableName="sc_role_operations" domainObjectName="ScRoleOperations"/>
+        <table schema="scdb" tableName="sc_user" domainObjectName="ScUser"/>
+        <table schema="scdb" tableName="sc_user_house_rel" domainObjectName="ScUserHouseRel"/>
+        <table schema="scdb" tableName="sc_user_house_rel_his" domainObjectName="ScUserHouseRelHis"/>
+        <table schema="scdb" tableName="sc_user_role_rel" domainObjectName="ScUserRoleRel"/>
+        <table schema="scdb" tableName="sc_zone" domainObjectName="ScZone"/>
+        <!--        <table schema="coss" tableName="sec_ologrec" domainObjectName="SecOlogrec">-->
+        <!--        </table>-->
     </context>
 </generatorConfiguration>

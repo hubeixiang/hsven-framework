@@ -17,6 +17,8 @@
         <mysql.version>8.0.18</mysql.version>
         <ojdbc6.version>11.2.0.4.0</ojdbc6.version>
         <dm.version>8.1.1.126</dm.version>
+        <mybatis.version>3.5.6</mybatis.version>
+        <mybatis-typehandlers.version>1.0.2</mybatis-typehandlers.version>
     </properties>
 
     <dependencies>
@@ -31,6 +33,12 @@
         <dependency>
             <groupId>org.mybatis</groupId>
             <artifactId>mybatis</artifactId>
+            <version>${mybatis.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis-typehandlers-jsr310</artifactId>
+            <version>${mybatis-typehandlers.version}</version>
         </dependency>
         <dependency>
             <groupId>mysql</groupId>
@@ -119,13 +127,21 @@
                     </execution>
                 </executions>
                 <dependencies>
-                    <!--
                     <dependency>
                         <groupId>org.mybatis</groupId>
                         <artifactId>mybatis</artifactId>
-                        <version>3.2.8</version>
+                        <version>${mybatis.version}</version>
                     </dependency>
-                    -->
+                    <dependency>
+                        <groupId>org.mybatis</groupId>
+                        <artifactId>mybatis-typehandlers-jsr310</artifactId>
+                        <version>${mybatis-typehandlers.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.framework.hsven</groupId>
+                        <artifactId>generator-mybatis-plugin</artifactId>
+                        <version>${project.version}</version>
+                    </dependency>
                 </dependencies>
             </plugin>
         </plugins>
