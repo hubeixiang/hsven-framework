@@ -5,6 +5,7 @@ import com.hios.sichuan4a.wsservice.FindUserResponse;
 import com.hios.sichuan4a.wsservice.GetUserAmount;
 import com.hios.sichuan4a.wsservice.GetUserAmountResponse;
 import org.springframework.ws.client.core.support.WebServiceGatewaySupport;
+import org.springframework.ws.soap.client.core.SoapActionCallback;
 
 /**
  * 第一个ws客户端访问处理
@@ -24,7 +25,9 @@ public class WsClientBussiness4A extends WebServiceGatewaySupport {
 
     public Object getUserAmount() {
         GetUserAmount getUserAmount = new GetUserAmount();
-        GetUserAmountResponse getUserAmountResponse = (GetUserAmountResponse) getWebServiceTemplate().marshalSendAndReceive(getUserAmount);
+//        GetUserAmountResponse getUserAmountResponse = (GetUserAmountResponse) getWebServiceTemplate().marshalSendAndReceive(getUserAmount);
+//        return getUserAmountResponse.getReturn();
+        GetUserAmountResponse getUserAmountResponse = (GetUserAmountResponse) getWebServiceTemplate().marshalSendAndReceive(getUserAmount,new SoapActionCallback("getUserAmount"));
         return getUserAmountResponse.getReturn();
     }
 

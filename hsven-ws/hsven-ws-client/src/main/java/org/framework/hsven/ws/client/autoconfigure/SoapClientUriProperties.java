@@ -22,6 +22,9 @@ public class SoapClientUriProperties {
     //要访问的ws-4a
     private String ws4a;
 
+    //要访问的jaxb发布的本地服务
+    private String wsJaxb;
+
     public String getWsUri1() {
         return wsUri1;
     }
@@ -52,5 +55,13 @@ public class SoapClientUriProperties {
 
     public void setWs4a(String ws4a) {
         this.ws4a = ws4a;
+    }
+
+    public String getWsJaxb() {
+        return wsJaxb;
+    }
+
+    public void setWsJaxb(String wsJaxb) {
+        this.wsJaxb = wsJaxb;
     }
 }

@@ -1,0 +1,79 @@
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+                  xmlns:tns="http://nms.hios.com/jaxbwsservice" targetNamespace="http://nms.hios.com/jaxbwsservice">
+    <wsdl:types>
+        <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
+                   targetNamespace="http://nms.hios.com/jaxbwsservice">
+            <xs:element name="sheetVerifyRequest">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="objectClass" type="xs:string"/>
+                        <xs:element name="fileUrl" type="xs:string"/>
+                        <xs:element name="userId" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="sheetVerifyResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element default="xxx" id="result" name="result" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="syncSheetState">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element maxOccurs="1" minOccurs="1" name="serSupplier" type="xs:string"/>
+                        <xs:element maxOccurs="1" minOccurs="1" name="serCaller" type="xs:string"/>
+                        <xs:element maxOccurs="1" minOccurs="1" name="callerPwd" type="xs:string"/>
+                        <xs:element maxOccurs="1" minOccurs="1" name="callTime" type="xs:string"/>
+                        <xs:element maxOccurs="1" minOccurs="1" name="eventDetail" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="serSupplier" type="xs:string"></xs:element>
+            <xs:element name="serCaller" type="xs:string"></xs:element>
+            <xs:element name="callerPwd" type="xs:string"></xs:element>
+            <xs:element name="callTime" type="xs:string"></xs:element>
+            <xs:element name="eventDetail" type="xs:string"></xs:element>
+            <xs:element name="eventStatus" type="tns:eventStatusEnum"></xs:element>
+            <xs:element name="result" type="xs:string"></xs:element>
+            <xs:simpleType name="eventStatusEnum">
+                <xs:restriction base="xs:int">
+                    <!--  自动恢复  -->
+                    <xs:enumeration value="1"/>
+                    <!--  手动恢复  -->
+                    <xs:enumeration value="2"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:schema>
+    </wsdl:types>
+    <wsdl:message name="sheetVerifyRequest">
+        <wsdl:part element="tns:sheetVerifyRequest" name="sheetVerifyRequest"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="sheetVerifyResponse">
+        <wsdl:part element="tns:sheetVerifyResponse" name="sheetVerifyResponse"></wsdl:part>
+    </wsdl:message>
+    <wsdl:portType name="SheetStateSync">
+        <wsdl:operation name="sheetVerify">
+            <wsdl:input message="tns:sheetVerifyRequest" name="sheetVerifyRequest"></wsdl:input>
+            <wsdl:output message="tns:sheetVerifyResponse" name="sheetVerifyResponse"></wsdl:output>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="SheetStateSyncSoap11" type="tns:SheetStateSync">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="sheetVerify">
+            <soap:operation soapAction=""/>
+            <wsdl:input name="sheetVerifyRequest">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="sheetVerifyResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="SheetStateSyncService">
+        <wsdl:port binding="tns:SheetStateSyncSoap11" name="SheetStateSyncSoap11">
+            <soap:address location="http://127.0.0.1:38623/proxy-jaxb-server/ws"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

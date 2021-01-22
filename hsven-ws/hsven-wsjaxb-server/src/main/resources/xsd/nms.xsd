@@ -1,0 +1,60 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:tns="http://nms.hios.com/jaxbwsservice"
+           targetNamespace="http://nms.hios.com/jaxbwsservice" elementFormDefault="qualified">
+    <xs:element name="sheetVerifyRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="objectClass" type="xs:string"/>
+                <xs:element name="fileUrl" type="xs:string"/>
+                <xs:element name="userId" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="sheetVerifyResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element default="xxx" id="result" name="result" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="syncSheetState">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="1" maxOccurs="1" name="serSupplier" type="xs:string"/>
+                <xs:element minOccurs="1" maxOccurs="1" name="serCaller" type="xs:string"/>
+                <xs:element minOccurs="1" maxOccurs="1" name="callerPwd" type="xs:string"/>
+                <xs:element minOccurs="1" maxOccurs="1" name="callTime" type="xs:string"/>
+                <xs:element minOccurs="1" maxOccurs="1" name="eventDetail" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="serSupplier" type="xs:string">
+    </xs:element>
+    <xs:element name="serCaller" type="xs:string">
+    </xs:element>
+    <xs:element name="callerPwd" type="xs:string">
+    </xs:element>
+    <xs:element name="callTime" type="xs:string">
+    </xs:element>
+    <xs:element name="eventDetail" type="xs:string">
+    </xs:element>
+    <xs:element name="eventStatus" type="tns:eventStatusEnum">
+    </xs:element>
+
+    <xs:element name="result" type="xs:string">
+    </xs:element>
+
+
+    <xs:simpleType name="eventStatusEnum">
+        <xs:restriction base="xs:int">
+            <!-- 自动恢复 -->
+            <xs:enumeration value="1"/>
+            <!-- 手动恢复 -->
+            <xs:enumeration value="2"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+</xs:schema>

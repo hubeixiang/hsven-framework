@@ -2,6 +2,7 @@ package org.framework.hsven.ws.client.autoconfigure;
 
 import org.framework.hsven.ws.client.service.client.WsClientBussiness4A;
 import org.framework.hsven.ws.client.service.client.WsClientBussinessEoms;
+import org.framework.hsven.ws.client.service.client.WsClientBussinessJaxb;
 import org.framework.hsven.ws.client.service.client.WsClientBussinessOne;
 import org.framework.hsven.ws.client.service.client.WsClientBussinessSecond;
 import org.springframework.context.annotation.Bean;
@@ -18,7 +19,8 @@ public class WServiceClientConfigure {
             "com.boco.eoms.sheet.base.util",
             "com.boco.webservice",
             "com.hios.wservice.proxy.eoms.service",
-            "com.hios.sichuan4a.wsservice"
+            "com.hios.sichuan4a.wsservice",
+            "com.hios.nms.jaxbwsservice"
     };
 
     /**
@@ -72,6 +74,15 @@ public class WServiceClientConfigure {
     public WsClientBussiness4A WsClientBussiness4A(Jaxb2Marshaller jaxb2Marshaller, SoapClientUriProperties soapClientUriProperties) {
         WsClientBussiness4A client = new WsClientBussiness4A();
         client.setDefaultUri(soapClientUriProperties.getWs4a());
+        client.setMarshaller(jaxb2Marshaller);
+        client.setUnmarshaller(jaxb2Marshaller);
+        return client;
+    }
+
+    @Bean
+    public WsClientBussinessJaxb WsClientBussinessJaxb(Jaxb2Marshaller jaxb2Marshaller, SoapClientUriProperties soapClientUriProperties) {
+        WsClientBussinessJaxb client = new WsClientBussinessJaxb();
+        client.setDefaultUri(soapClientUriProperties.getWsJaxb());
         client.setMarshaller(jaxb2Marshaller);
         client.setUnmarshaller(jaxb2Marshaller);
         return client;
