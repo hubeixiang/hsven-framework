@@ -114,6 +114,8 @@
 
         <!-- c3p0 -->
         <c3p0.version>0.9.5.4</c3p0.version>
+        <!-- druid -->
+        <druid.version>1.1.10</druid.version>
 
         <!-- mybatis -->
         <mybatis.version>3.5.6</mybatis.version>
@@ -577,6 +579,13 @@
                 <groupId>com.mchange</groupId>
                 <artifactId>c3p0</artifactId>
                 <version>${c3p0.version}</version>
+            </dependency>
+
+            <!-- durid -->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid</artifactId>
+                <version>${druid.version}</version>
             </dependency>
 
             <!-- mybatis -->

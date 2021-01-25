@@ -12,6 +12,7 @@ import org.framework.hsven.datasource.pool.atomikos.AtomikosXADataSourceFactoryB
 import org.framework.hsven.datasource.pool.c3p0.C3p0DataSourceFactoryBean;
 import org.framework.hsven.datasource.pool.c3p0.C3p0JdbcPoolConfig;
 import org.framework.hsven.datasource.pool.druid.DruidJdbcPoolConfig;
+import org.framework.hsven.datasource.pool.druid.DruidXADataSourceFactoryBean;
 import org.framework.hsven.datasource.util.DataSourceNameGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -93,6 +94,7 @@ public class DataSourcesBeanRegistryFactoryPostProcessor implements BeanDefiniti
                                     jdbcPoolConfig == null ? null : ((DruidJdbcPoolConfig) jdbcPoolConfig));
                             primary = false;
                             ok = true;
+                            break;
                         default:
                             logger.error(String.format("custom data source pool type=%s not implements", poolType));
                             break;
@@ -132,7 +134,7 @@ public class DataSourcesBeanRegistryFactoryPostProcessor implements BeanDefiniti
                                            C3p0JdbcPoolConfig jdbcPoolConfig) {
         final BeanDefinitionBuilder builder = BeanDefinitionBuilder.genericBeanDefinition(C3p0DataSourceFactoryBean.class);
         builder.addPropertyValue("dataSourceConfig", dataSourceConfig);
-        builder.addPropertyValue("atomikosJdbcPoolConfig", jdbcPoolConfig);
+        builder.addPropertyValue("c3p0JdbcPoolConfig", jdbcPoolConfig);
 
         final BeanDefinition definition = builder.getBeanDefinition();
         definition.setPrimary(primary);
@@ -141,9 +143,9 @@ public class DataSourcesBeanRegistryFactoryPostProcessor implements BeanDefiniti
 
     private void createDruidDataSourceBeans(boolean primary, String dbName, DataSourceConfig dataSourceConfig,
                                             DruidJdbcPoolConfig jdbcPoolConfig) {
-        final BeanDefinitionBuilder builder = BeanDefinitionBuilder.genericBeanDefinition(AtomikosXADataSourceFactoryBean.class);
+        final BeanDefinitionBuilder builder = BeanDefinitionBuilder.genericBeanDefinition(DruidXADataSourceFactoryBean.class);
         builder.addPropertyValue("dataSourceConfig", dataSourceConfig);
-        builder.addPropertyValue("atomikosJdbcPoolConfig", jdbcPoolConfig);
+        builder.addPropertyValue("druidJdbcPoolConfig", jdbcPoolConfig);
 
         final BeanDefinition definition = builder.getBeanDefinition();
         definition.setPrimary(primary);

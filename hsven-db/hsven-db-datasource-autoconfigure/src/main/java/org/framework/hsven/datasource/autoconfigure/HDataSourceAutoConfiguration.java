@@ -25,44 +25,53 @@ import org.springframework.core.env.ConfigurableEnvironment;
 @ConditionalOnClass(AtomikosNonXADataSourceBean.class)
 @Configuration
 public class HDataSourceAutoConfiguration {
-	private static Logger logger = LoggerFactory.getLogger(HDataSourceAutoConfiguration.class);
+    private static Logger logger = LoggerFactory.getLogger(HDataSourceAutoConfiguration.class);
 
-	@Bean
-	public static DataSourcesBeanRegistryFactoryPostProcessor dataSourcesBeanRegistryFactoryPostProcessor(
-			ConfigurableEnvironment environment) {
-		Iterable<ConfigurationPropertySource> sources = ConfigurationPropertySources.get(environment);// 设置Binder
-		Binder binder = new Binder(sources);
-		// 属性绑定
-		ApplicationDataSource applicationDataSource = null;
-		DatasourceLoaderNames datasourceLoaderNames = DataSourceUtil.binderOfProperties(binder, DatasourceLoaderNames.class);
-		if (datasourceLoaderNames != null) {
-			if (datasourceLoaderNames.getPoolType() == null) {
-				//未填写数据库连接池默认使用druid
-				datasourceLoaderNames.setPoolType(JdbcPoolTypeEnum.druid);
-			}
-			HDataSourceProperties hDataSourceProperties = DataSourceUtil.binderOfProperties(binder, HDataSourceProperties.class);
-			JdbcPoolTypeEnum typeEnum = datasourceLoaderNames.getPoolType();
-			switch (typeEnum) {
-			case atomikos:
-				AtomikosJdbcPoolConfig atomikosNonXaJdbcPoolConfig = DataSourceUtil
-						.binderOfProperties(binder, AtomikosJdbcPoolConfig.class);
-				applicationDataSource = new ApplicationDataSource(datasourceLoaderNames, hDataSourceProperties,
-						atomikosNonXaJdbcPoolConfig);
-				break;
-			case c3p0:
-				C3p0JdbcPoolConfig c3p0JdbcPoolConfig = DataSourceUtil.binderOfProperties(binder, C3p0JdbcPoolConfig.class);
-				applicationDataSource = new ApplicationDataSource(datasourceLoaderNames, hDataSourceProperties, c3p0JdbcPoolConfig);
-				break;
-			case druid:
-				DruidJdbcPoolConfig druidJdbcPoolConfig = DataSourceUtil.binderOfProperties(binder, DruidJdbcPoolConfig.class);
-				applicationDataSource = new ApplicationDataSource(datasourceLoaderNames, hDataSourceProperties, druidJdbcPoolConfig);
-				break;
-			default:
-				logger.error(String.format("custom data source pool type=%s not implements", datasourceLoaderNames.getPoolType()));
-				applicationDataSource = null;
-				break;
-			}
-		}
-		return new DataSourcesBeanRegistryFactoryPostProcessor(environment, applicationDataSource);
-	}
+    @Bean
+    public static DataSourcesBeanRegistryFactoryPostProcessor dataSourcesBeanRegistryFactoryPostProcessor(
+            ConfigurableEnvironment environment) {
+        Iterable<ConfigurationPropertySource> sources = ConfigurationPropertySources.get(environment);// 设置Binder
+        Binder binder = new Binder(sources);
+        // 属性绑定
+        ApplicationDataSource applicationDataSource = null;
+        DatasourceLoaderNames datasourceLoaderNames = DataSourceUtil.binderOfProperties(binder, DatasourceLoaderNames.class);
+        if (datasourceLoaderNames != null) {
+            if (datasourceLoaderNames.getPoolType() == null) {
+                //未填写数据库连接池默认使用druid
+                datasourceLoaderNames.setPoolType(JdbcPoolTypeEnum.druid);
+            }
+            HDataSourceProperties hDataSourceProperties = DataSourceUtil.binderOfProperties(binder, HDataSourceProperties.class);
+            JdbcPoolTypeEnum typeEnum = datasourceLoaderNames.getPoolType();
+            switch (typeEnum) {
+                case atomikos:
+                    AtomikosJdbcPoolConfig atomikosNonXaJdbcPoolConfig = DataSourceUtil
+                            .binderOfProperties(binder, AtomikosJdbcPoolConfig.class);
+                    if (atomikosNonXaJdbcPoolConfig == null) {
+                        atomikosNonXaJdbcPoolConfig = new AtomikosJdbcPoolConfig();
+                    }
+                    applicationDataSource = new ApplicationDataSource(datasourceLoaderNames, hDataSourceProperties,
+                            atomikosNonXaJdbcPoolConfig);
+                    break;
+                case c3p0:
+                    C3p0JdbcPoolConfig c3p0JdbcPoolConfig = DataSourceUtil.binderOfProperties(binder, C3p0JdbcPoolConfig.class);
+                    if (c3p0JdbcPoolConfig == null) {
+                        c3p0JdbcPoolConfig = new C3p0JdbcPoolConfig();
+                    }
+                    applicationDataSource = new ApplicationDataSource(datasourceLoaderNames, hDataSourceProperties, c3p0JdbcPoolConfig);
+                    break;
+                case druid:
+                    DruidJdbcPoolConfig druidJdbcPoolConfig = DataSourceUtil.binderOfProperties(binder, DruidJdbcPoolConfig.class);
+                    if (druidJdbcPoolConfig == null) {
+                        druidJdbcPoolConfig = new DruidJdbcPoolConfig();
+                    }
+                    applicationDataSource = new ApplicationDataSource(datasourceLoaderNames, hDataSourceProperties, druidJdbcPoolConfig);
+                    break;
+                default:
+                    logger.error(String.format("custom data source pool type=%s not implements", datasourceLoaderNames.getPoolType()));
+                    applicationDataSource = null;
+                    break;
+            }
+        }
+        return new DataSourcesBeanRegistryFactoryPostProcessor(environment, applicationDataSource);
+    }
 }
