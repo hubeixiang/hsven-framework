@@ -22,6 +22,7 @@ public class CxfClientController {
         if (cxfClient == null) {
             JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
             cxfClient = dcf.createClient("http://127.0.0.1:38622/proxy-cxfws-server/ws/SheetStateSync?wsdl");
+            cxfClient.getOutInterceptors().add(new ESBHeaderIntercepter());
         }
     }
 
