@@ -38,6 +38,10 @@ public class CxfConfig implements WebMvcConfigurer {
     public Endpoint eomsEndpoint() {
         EndpointImpl endpoint = new EndpointImpl(bus, iWebServiceEomsManager);
         endpoint.publish("/" + Constants.EOMS_MANAGER_PORT_TYPE_NAME);
+        //设置服务端的请求头验证
+        endpoint.getHandlers().add(new WSAuthHandler());
+        //设置请求请忽略命名空间
+        endpoint.getInInterceptors().add(new ServerNameSpaceInterceptor());
         return endpoint;
     }
 
