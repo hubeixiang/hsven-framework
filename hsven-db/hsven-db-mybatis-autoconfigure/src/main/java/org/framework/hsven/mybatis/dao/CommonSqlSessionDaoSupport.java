@@ -8,6 +8,8 @@ import org.mybatis.spring.support.SqlSessionDaoSupport;
 
 /**
  * 自己定义的mybatis实现的SqlSession
+ * 使用方式说明:
+ * https://www.cnblogs.com/gxyandwmm/p/9565002.html
  */
 public class CommonSqlSessionDaoSupport extends SqlSessionDaoSupport {
     private SqlSession sqlSessionBatch = null;
