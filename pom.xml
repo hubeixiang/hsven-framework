@@ -38,6 +38,8 @@
         <module>hsven-db-single-demo</module>
         <module>hsven-configuration-center</module>
         <module>generator-mybatis-plugin</module>
+        <module>hsven-service-core</module>
+        <module>hsven-service-dao</module>
     </modules>
 
     <packaging>pom</packaging>
