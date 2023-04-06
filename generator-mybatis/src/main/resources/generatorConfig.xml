@@ -26,7 +26,7 @@
             <property name="forceBigDecimals" value="false"/>
         </javaTypeResolver>
 
-        <javaModelGenerator targetPackage="com.sct.service.database.entity"
+        <javaModelGenerator targetPackage="com.hios.event.backend.database.entity"
                             targetProject="./src/main/java">
             <!-- 是否在当前路径下新加一层schem -->
             <property name="enableSubPackages" value="false"/>
@@ -42,7 +42,7 @@
         </sqlMapGenerator>
 
         <javaClientGenerator type="XMLMAPPER"
-                             targetPackage="com.sct.service.database.mapper"
+                             targetPackage="com.hios.event.backend.database.mapper"
                              targetProject="./src/main/java">
             <property name="enableSubPackages" value="false"/>
         </javaClientGenerator>
@@ -70,31 +70,131 @@
         <!--        </table>-->
         <!--        <table schema="coss" tableName="sec_user_role" domainObjectName="SecUserRole">-->
         <!--        </table>-->
-        <table schema="scdb" tableName="sc_building" domainObjectName="ScBuilding"/>
-        <table schema="scdb" tableName="sc_community" domainObjectName="ScCommunity"/>
-        <table schema="scdb" tableName="sc_community_dpt" domainObjectName="ScCommunityDpt"/>
-        <table schema="scdb" tableName="sc_community_leader" domainObjectName="ScCommunityLeader"/>
-        <table schema="scdb" tableName="sc_department" domainObjectName="ScDepartment"/>
-        <table schema="scdb" tableName="sc_dict" domainObjectName="ScDict"/>
-        <table schema="scdb" tableName="sc_estate" domainObjectName="ScEstate"/>
-        <table schema="scdb" tableName="sc_grid" domainObjectName="ScGrid"/>
-        <table schema="scdb" tableName="sc_grid_manager" domainObjectName="ScGridManager"/>
-        <table schema="scdb" tableName="sc_grid_range" domainObjectName="ScGridRange"/>
-        <table schema="scdb" tableName="sc_house" domainObjectName="ScHouse"/>
-        <table schema="scdb" tableName="sc_log" domainObjectName="ScLog"/>
-        <table schema="scdb" tableName="sc_organization" domainObjectName="ScOrganization"/>
-        <table schema="scdb" tableName="sc_property" domainObjectName="ScProperty"/>
-        <table schema="scdb" tableName="sc_property_staff" domainObjectName="ScPropertyStaff"/>
-        <table schema="scdb" tableName="sc_resident" domainObjectName="ScResident"/>
-        <table schema="scdb" tableName="sc_role" domainObjectName="ScRole"/>
-        <table schema="scdb" tableName="sc_role_datas" domainObjectName="ScRoleDatas"/>
-        <table schema="scdb" tableName="sc_role_operations" domainObjectName="ScRoleOperations"/>
+        <!--
         <table schema="scdb" tableName="sc_user" domainObjectName="ScUser"/>
+        <table schema="scdb" tableName="sc_resident" domainObjectName="ScResident"/>
+        <table schema="scdb" tableName="sc_community" domainObjectName="ScCommunity"/>
+        <table schema="scdb" tableName="sc_community_party" domainObjectName="ScCommunityParty"/>
+        <table schema="scdb" tableName="sc_community_leader" domainObjectName="ScCommunityLeader"/>
+        <table schema="scdb" tableName="sc_community_dpt" domainObjectName="ScCommunityDpt"/>
+        <table schema="scdb" tableName="sc_party_member" domainObjectName="ScPartyMember"/>
+        <table schema="scdb" tableName="sc_party_member_record" domainObjectName="ScPartyMemberRecord"/>
+        <table schema="scdb" tableName="sc_party_dues" domainObjectName="ScPartyDues"/>
+        <table schema="scdb" tableName="sc_party_special_dues" domainObjectName="ScPartySpecialDues"/>
+        <table schema="scdb" tableName="sc_party_activities" domainObjectName="ScPartyActivities"/>
+        <table schema="scdb" tableName="sc_party_topic" domainObjectName="ScPartyTopic"/>
+        <table schema="scdb" tableName="sc_party_course" domainObjectName="ScPartyCourse"/>
+        <table schema="scdb" tableName="sc_party_learn_files" domainObjectName="ScPartyLearnFiles"/>
+        <table schema="scdb" tableName="sc_party_activity_files_rel" domainObjectName="ScPartyActivityFilesRel"/>
+        <table schema="scdb" tableName="sc_party_learn_record" domainObjectName="ScPartyLearnRecord"/>
+        <table schema="scdb" tableName="sc_estate" domainObjectName="ScEstate"/>
+        <table schema="scdb" tableName="sc_estate_staff_rel" domainObjectName="ScEstateStaffRel"/>
+        <table schema="scdb" tableName="sc_property_staff" domainObjectName="ScPropertyStaff"/>
+        <table schema="scdb" tableName="sc_building" domainObjectName="ScBuilding"/>
+        <table schema="scdb" tableName="sc_house" domainObjectName="ScHouse"/>
         <table schema="scdb" tableName="sc_user_house_rel" domainObjectName="ScUserHouseRel"/>
         <table schema="scdb" tableName="sc_user_house_rel_his" domainObjectName="ScUserHouseRelHis"/>
+        <table schema="scdb" tableName="sc_grid" domainObjectName="ScGrid"/>
+        <table schema="scdb" tableName="sc_grid_range" domainObjectName="ScGridRange"/>
+        <table schema="scdb" tableName="sc_grid_manager" domainObjectName="ScGridManager"/>
+        <table schema="scdb" tableName="sc_grid_evaluation" domainObjectName="ScGridEvaluation"/>
+        <table schema="scdb" tableName="sc_organization" domainObjectName="ScOrganization"/>
+        <table schema="scdb" tableName="sc_department" domainObjectName="ScDepartment"/>
+        <table schema="scdb" tableName="sc_role" domainObjectName="ScRole"/>
         <table schema="scdb" tableName="sc_user_role_rel" domainObjectName="ScUserRoleRel"/>
+        <table schema="scdb" tableName="sc_role_operations" domainObjectName="ScRoleOperations"/>
+        <table schema="scdb" tableName="sc_role_datas" domainObjectName="ScRoleDatas"/>
+        <table schema="scdb" tableName="sc_log" domainObjectName="ScLog"/>
         <table schema="scdb" tableName="sc_zone" domainObjectName="ScZone"/>
-        <!--        <table schema="coss" tableName="sec_ologrec" domainObjectName="SecOlogrec">-->
-        <!--        </table>-->
+        <table schema="scdb" tableName="sc_dict" domainObjectName="ScDict"/>
+        -->
+        <!--
+        <table schema="scdb" tableName="sc_volunteer_activities" domainObjectName="ScVolunteerActivities"/>
+        <table schema="scdb" tableName="sc_volunteer_activities_detail" domainObjectName="ScVolunteerActivitiesDetail"/>
+        <table schema="scdb" tableName="sc_resident_risk" domainObjectName="ScResidentRisk"/>
+        <table schema="scdb" tableName="sc_resident_risk_visit" domainObjectName="ScResidentRiskVisit"/>
+        <table schema="scdb" tableName="sc_emergency_leader" domainObjectName="ScEmergencyLeader"/>
+        <table schema="scdb" tableName="sc_emergency_team" domainObjectName="ScEmergencyTeam"/>
+        <table schema="scdb" tableName="sc_emergency_place" domainObjectName="ScEmergencyPlace"/>
+        <table schema="scdb" tableName="sc_conflict" domainObjectName="ScConflict"/>
+        <table schema="scdb" tableName="sc_conflict_deal" domainObjectName="ScConflictDeal"/>
+        <table schema="scdb" tableName="sc_event" domainObjectName="ScEvent"/>
+        <table schema="scdb" tableName="sc_event_accept" domainObjectName="ScEventAccept"/>
+        <table schema="scdb" tableName="sc_files" domainObjectName="ScFiles"/>
+        <table schema="scdb" tableName="sc_resident_agg" domainObjectName="ScResidentAgg"/>
+        <table schema="scdb" tableName="c_kpi_kpis" domainObjectName="CKpiKpis"/>
+        <table schema="scdb" tableName="c_kpi_indgroup" domainObjectName="CKpiIndgroup"/>
+        <table schema="scdb" tableName="c_std_event_pm" domainObjectName="CStdEventPm"/>
+        -->
+        <!--
+        <table schema="scdb" tableName="sc_mediator" domainObjectName="ScMediator"/>
+        <table schema="scdb" tableName="sc_legal_aid" domainObjectName="ScLegalAid"/>
+        <table schema="scdb" tableName="sc_police" domainObjectName="ScPolice"/>
+        <table schema="scdb" tableName="sc_counselor" domainObjectName="ScCounselor"/>
+        <table schema="scdb" tableName="sc_payinfo" domainObjectName="ScPayinfo"/>
+        <table schema="scdb" tableName="sc_convenient_service" domainObjectName="ScConvenientService"/>
+        <table schema="scdb" tableName="sc_convenient_service_staff" domainObjectName="ScConvenientServiceStaff"/>
+        <table schema="scdb" tableName="sc_social_facts" domainObjectName="ScSocialFacts"/>
+        <table schema="scdb" tableName="sc_questionnaire" domainObjectName="ScQuestionnaire"/>
+        <table schema="scdb" tableName="sc_question_bank" domainObjectName="ScQuestionBank"/>
+        <table schema="scdb" tableName="sc_question_option" domainObjectName="ScQuestionOption"/>
+        <table schema="scdb" tableName="sc_questionnaire_rel" domainObjectName="ScQuestionnaireRel"/>
+        <table schema="scdb" tableName="sc_questionnaire_answer" domainObjectName="ScQuestionnaireAnswer"/>
+        <table schema="scdb" tableName="sc_market" domainObjectName="ScMarket"/>
+        <table schema="scdb" tableName="sc_party_notice" domainObjectName="ScPartyNotice"/>
+        <table schema="scdb" tableName="sc_notice" domainObjectName="ScNotice"/>
+        <table schema="scdb" tableName="sc_guide" domainObjectName="ScGuide"/>
+        <table schema="scdb" tableName="sc_business_online" domainObjectName="ScBusinessOnline"/>
+        -->
+        <!--        <table schema="irdb" tableName="c_dic_zone" domainObjectName="CDicZone"/>-->
+        <!--        <table schema="scdb" tableName="sc_service_staff" domainObjectName="ScServiceStaff"/>-->
+        <!--        <table schema="scdb" tableName="sc_party_activities_record" domainObjectName="ScPartyActivitiesRecord"/>-->
+<!--        <table schema="scdb" tableName="se_thd_function_type" domainObjectName="SeThdFunctionType"/>-->
+<!--        <table schema="scdb" tableName="se_thd_function" domainObjectName="SeThdFunction"/>-->
+<!--        <table schema="scdb" tableName="se_thd_dataset" domainObjectName="SeThdDataset"/>-->
+<!--        <table schema="scdb" tableName="se_thd_dataset_detail" domainObjectName="SeThdDatasetDetail"/>-->
+<!--        <table schema="scdb" tableName="se_thd_role" domainObjectName="SeThdRole"/>-->
+<!--        <table schema="scdb" tableName="se_thd_role_function" domainObjectName="SeThdRoleFunction"/>-->
+<!--        <table schema="scdb" tableName="se_thd_user_role_rela" domainObjectName="SeThdUserRoleRela"/>-->
+<!--        <table schema="scdb" tableName="se_thd_user_data_rela" domainObjectName="SeThdUserDataRela"/>-->
+<!--        <table schema="scdb" tableName="se_thd_user_function_rela" domainObjectName="SeThdUserFunctionRela"/>-->
+        <table schema="irdb" tableName="c_dic_id2string" domainObjectName="CDicId2String"/>
+        <table schema="irdb" tableName="c_std_event" domainObjectName="CStdEvent"/>
+        <table schema="irdb" tableName="c_std_event_alarm" domainObjectName="CStdEventAlarm"/>
+        <table schema="irdb" tableName="c_std_event_complain" domainObjectName="CStdEventComplain"/>
+        <table schema="irdb" tableName="c_std_event_complainttkt" domainObjectName="CStdEventComplainttkt"/>
+        <table schema="irdb" tableName="c_std_event_doc" domainObjectName="CStdEventDoc"/>
+        <table schema="irdb" tableName="c_std_event_engineer" domainObjectName="CStdEventEngineer"/>
+        <table schema="irdb" tableName="c_std_event_pm" domainObjectName="CStdEventPm"/>
+        <table schema="irdb" tableName="c_std_event_pm_grp" domainObjectName="CStdEventPmGrp"/>
+        <table schema="irdb" tableName="c_std_event_severity" domainObjectName="CStdEventSeverity"/>
+        <table schema="irdb" tableName="c_std_event_treatment" domainObjectName="CStdEventTreatment"/>
+        <table schema="irdb" tableName="c_std_event_var" domainObjectName="CStdEventVar"/>
+        <!-- -->
+        <table schema="irdb" tableName="c_pre_task" domainObjectName="CPreTask"/>
+<!--        <table schema="irdb" tableName="c_pre_task_step" domainObjectName="CPreTaskStep"/>-->
+        <table schema="irdb" tableName="c_std_event_alarm_count" domainObjectName="CStdEventAlarmCount"/>
+        <table schema="irdb" tableName="c_std_event_last" domainObjectName="CStdEventLast"/>
+        <table schema="irdb" tableName="c_std_event_topo" domainObjectName="CStdEventTopo"/>
+        <table schema="irdb" tableName="c_kpi_group" domainObjectName="CKpiGroup"/>
+        <table schema="irdb" tableName="c_kpi_kpis" domainObjectName="CKpiKpis"/>
+        <table schema="irdb" tableName="c_sp_operation" domainObjectName="CSpOperation"/>
+        <table schema="irdb" tableName="c_std_doc" domainObjectName="CStdDoc"/>
+        <table schema="irdb" tableName="c_std_event_doc" domainObjectName="CStdEventDoc"/>
+        <table schema="irdb" tableName="c_stat_dim" domainObjectName="CStatDim"/>
+        <table schema="irdb" tableName="c_stat_item" domainObjectName="CStatItem"/>
+        <table schema="irdb" tableName="c_stat_item_relation" domainObjectName="CStatItemRelation"/>
+        <table schema="irdb" tableName="c_stat_condition" domainObjectName="CStatCondition"/>
+        <table schema="irdb" tableName="c_topo_info" domainObjectName="CTopoInfo"/>
+        <table schema="irdb" tableName="e_tkt_complaint_count" domainObjectName="ETktComplaintCount"/>
+        <table schema="irdb" tableName="se_role" domainObjectName="SeRole"/>
+        <table schema="irdb" tableName="se_title" domainObjectName="SeTitle"/>
+        <table schema="irdb" tableName="se_user_role" domainObjectName="SeUserRole"/>
+        <table schema="irdb" tableName="c_dic_zone" domainObjectName="CDicZone"/>
+        <table schema="irdb" tableName="c_std_event_pm_kpis" domainObjectName="CStdEventPmKpis"/>
+        <table schema="irdb" tableName="c_std_event_pm_nes" domainObjectName="CStdEventPmNes"/>
+        <table schema="irdb" tableName="c_std_event_scheduled" domainObjectName="CStdEventScheduled"/>
+        <table schema="irdb" tableName="c_std_event_scheduled_def" domainObjectName="CStdEventScheduledDef"/>
+        <table schema="irdb" tableName="se_user_role" domainObjectName="SeUserRole"/>
     </context>
 </generatorConfiguration>

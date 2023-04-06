@@ -17,7 +17,7 @@
         <mysql.version>8.0.18</mysql.version>
         <ojdbc6.version>11.2.0.4.0</ojdbc6.version>
         <dm.version>8.1.1.126</dm.version>
-        <mybatis.version>3.5.6</mybatis.version>
+        <mybatis.version>3.5.7</mybatis.version>
         <mybatis-typehandlers.version>1.0.2</mybatis-typehandlers.version>
     </properties>
 
@@ -92,19 +92,19 @@
                             <!-- generatorConfig 文件中classPathEntry属性配置-->
                             <destFileName>database-driver.jar</destFileName>
                             <!-- 下面是不同数据库类型配置不同的依赖驱动 -->
-                            <!--
                             <groupId>mysql</groupId>
                             <artifactId>mysql-connector-java</artifactId>
                             <version>${mysql.version}</version>
-                            -->
                             <!--
                             <groupId>com.oracle</groupId>
                             <artifactId>ojdbc6</artifactId>
                             <version>${ojdbc6.version}</version>
                             -->
+                            <!--
                             <groupId>dm</groupId>
                             <artifactId>DmJdbcDriver18</artifactId>
                             <version>${dm.version}</version>
+                            -->
                         </artifactItem>
                     </artifactItems>
                 </configuration>
