@@ -25,8 +25,13 @@
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
         </dependency>
+        <!--
         <dependency>
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger2</artifactId>
@@ -34,6 +39,11 @@
         <dependency>
             <groupId>com.github.xiaoymin</groupId>
             <artifactId>swagger-bootstrap-ui</artifactId>
+        </dependency>
+        -->
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-boot-starter</artifactId>
         </dependency>
     </dependencies>
 </project>

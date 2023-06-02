@@ -94,11 +94,12 @@
         <!-- 配合插件 maven-resources-plugin 使用-->
         <resource.delimiter>@</resource.delimiter>
 
-        <spring.boot.version>2.2.0.RELEASE</spring.boot.version>
+        <spring.boot.version>2.7.10</spring.boot.version>
 
         <javassist.version>3.20.0-GA</javassist.version>
         <activiti.version>5.19.0.2</activiti.version>
 
+        <springfox-boot-starter.version>3.0.0</springfox-boot-starter.version>
         <swagger.version>2.9.2</swagger.version>
         <!--        <swagger-annotations.version>1.5.10</swagger-annotations.version>-->
         <xiaoymin.swagger-bootstrap-ui.version>1.9.3</xiaoymin.swagger-bootstrap-ui.version>
@@ -456,6 +457,8 @@
                 <version>${fastjson.version}</version>
             </dependency>
 
+            <!-- springfox-swagger2 -->
+            <!--
             <dependency>
                 <groupId>io.springfox</groupId>
                 <artifactId>springfox-swagger2</artifactId>
@@ -471,6 +474,12 @@
                 <groupId>com.github.xiaoymin</groupId>
                 <artifactId>swagger-bootstrap-ui</artifactId>
                 <version>${xiaoymin.swagger-bootstrap-ui.version}</version>
+            </dependency>
+            -->
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-boot-starter</artifactId>
+                <version>${springfox-boot-starter.version}</version>
             </dependency>
             <!-- slf4j-api & logback-->
             <dependency>
