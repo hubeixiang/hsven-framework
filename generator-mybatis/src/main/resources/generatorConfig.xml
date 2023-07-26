@@ -9,10 +9,17 @@
     <classPathEntry location="./src/driver/lib/database-driver.jar"/>
 
     <!-- 一个数据库一个context -->
-    <context id="CossTables" targetRuntime="MyBatis3Simple"><!--MyBatis3-->
-        <property name="useActualColumnNames" value="false"/>
+    <!-- defaultModelType:flat 大数据字段,不分表 -->
+    <context id="CossTables" targetRuntime="MyBatis3Simple" defaultModelType="flat"><!--MyBatis3-->
+        <property name="useActualColumnNames" value="${extend.table.useActualColumnNames}"/>
+        <property name="autoDelimitKeywords" value="true"/>
         <!-- 生成的pojo，将implements Serializable -->
         <plugin type="org.mybatis.generator.plugins.SerializablePlugin"/>
+        <!-- 旨在创建class时对注释进行控制 -->
+        <commentGenerator>
+            <property name="suppressDate" value="true"/>
+            <property name="suppressAllComments" value="true"/>
+        </commentGenerator>
 
         <jdbcConnection driverClass="${spring.datasource.driver-class-name}"
                         connectionURL="${spring.datasource.url}"
@@ -26,7 +33,7 @@
             <property name="forceBigDecimals" value="false"/>
         </javaTypeResolver>
 
-        <javaModelGenerator targetPackage="com.hios.event.backend.database.entity"
+        <javaModelGenerator targetPackage="com.hios.platform.security.database.entity"
                             targetProject="./src/main/java">
             <!-- 是否在当前路径下新加一层schem -->
             <property name="enableSubPackages" value="false"/>
@@ -42,7 +49,7 @@
         </sqlMapGenerator>
 
         <javaClientGenerator type="XMLMAPPER"
-                             targetPackage="com.hios.event.backend.database.mapper"
+                             targetPackage="com.hios.platform.security.database.mapper"
                              targetProject="./src/main/java">
             <property name="enableSubPackages" value="false"/>
         </javaClientGenerator>
@@ -149,52 +156,139 @@
         <!--        <table schema="irdb" tableName="c_dic_zone" domainObjectName="CDicZone"/>-->
         <!--        <table schema="scdb" tableName="sc_service_staff" domainObjectName="ScServiceStaff"/>-->
         <!--        <table schema="scdb" tableName="sc_party_activities_record" domainObjectName="ScPartyActivitiesRecord"/>-->
-<!--        <table schema="scdb" tableName="se_thd_function_type" domainObjectName="SeThdFunctionType"/>-->
-<!--        <table schema="scdb" tableName="se_thd_function" domainObjectName="SeThdFunction"/>-->
-<!--        <table schema="scdb" tableName="se_thd_dataset" domainObjectName="SeThdDataset"/>-->
-<!--        <table schema="scdb" tableName="se_thd_dataset_detail" domainObjectName="SeThdDatasetDetail"/>-->
-<!--        <table schema="scdb" tableName="se_thd_role" domainObjectName="SeThdRole"/>-->
-<!--        <table schema="scdb" tableName="se_thd_role_function" domainObjectName="SeThdRoleFunction"/>-->
-<!--        <table schema="scdb" tableName="se_thd_user_role_rela" domainObjectName="SeThdUserRoleRela"/>-->
-<!--        <table schema="scdb" tableName="se_thd_user_data_rela" domainObjectName="SeThdUserDataRela"/>-->
-<!--        <table schema="scdb" tableName="se_thd_user_function_rela" domainObjectName="SeThdUserFunctionRela"/>-->
-        <table schema="irdb" tableName="c_dic_id2string" domainObjectName="CDicId2String"/>
-        <table schema="irdb" tableName="c_std_event" domainObjectName="CStdEvent"/>
-        <table schema="irdb" tableName="c_std_event_alarm" domainObjectName="CStdEventAlarm"/>
-        <table schema="irdb" tableName="c_std_event_complain" domainObjectName="CStdEventComplain"/>
-        <table schema="irdb" tableName="c_std_event_complainttkt" domainObjectName="CStdEventComplainttkt"/>
-        <table schema="irdb" tableName="c_std_event_doc" domainObjectName="CStdEventDoc"/>
-        <table schema="irdb" tableName="c_std_event_engineer" domainObjectName="CStdEventEngineer"/>
-        <table schema="irdb" tableName="c_std_event_pm" domainObjectName="CStdEventPm"/>
-        <table schema="irdb" tableName="c_std_event_pm_grp" domainObjectName="CStdEventPmGrp"/>
-        <table schema="irdb" tableName="c_std_event_severity" domainObjectName="CStdEventSeverity"/>
-        <table schema="irdb" tableName="c_std_event_treatment" domainObjectName="CStdEventTreatment"/>
-        <table schema="irdb" tableName="c_std_event_var" domainObjectName="CStdEventVar"/>
-        <!-- -->
-        <table schema="irdb" tableName="c_pre_task" domainObjectName="CPreTask"/>
-<!--        <table schema="irdb" tableName="c_pre_task_step" domainObjectName="CPreTaskStep"/>-->
-        <table schema="irdb" tableName="c_std_event_alarm_count" domainObjectName="CStdEventAlarmCount"/>
-        <table schema="irdb" tableName="c_std_event_last" domainObjectName="CStdEventLast"/>
-        <table schema="irdb" tableName="c_std_event_topo" domainObjectName="CStdEventTopo"/>
-        <table schema="irdb" tableName="c_kpi_group" domainObjectName="CKpiGroup"/>
-        <table schema="irdb" tableName="c_kpi_kpis" domainObjectName="CKpiKpis"/>
-        <table schema="irdb" tableName="c_sp_operation" domainObjectName="CSpOperation"/>
-        <table schema="irdb" tableName="c_std_doc" domainObjectName="CStdDoc"/>
-        <table schema="irdb" tableName="c_std_event_doc" domainObjectName="CStdEventDoc"/>
-        <table schema="irdb" tableName="c_stat_dim" domainObjectName="CStatDim"/>
-        <table schema="irdb" tableName="c_stat_item" domainObjectName="CStatItem"/>
-        <table schema="irdb" tableName="c_stat_item_relation" domainObjectName="CStatItemRelation"/>
-        <table schema="irdb" tableName="c_stat_condition" domainObjectName="CStatCondition"/>
-        <table schema="irdb" tableName="c_topo_info" domainObjectName="CTopoInfo"/>
-        <table schema="irdb" tableName="e_tkt_complaint_count" domainObjectName="ETktComplaintCount"/>
-        <table schema="irdb" tableName="se_role" domainObjectName="SeRole"/>
-        <table schema="irdb" tableName="se_title" domainObjectName="SeTitle"/>
-        <table schema="irdb" tableName="se_user_role" domainObjectName="SeUserRole"/>
-        <table schema="irdb" tableName="c_dic_zone" domainObjectName="CDicZone"/>
-        <table schema="irdb" tableName="c_std_event_pm_kpis" domainObjectName="CStdEventPmKpis"/>
-        <table schema="irdb" tableName="c_std_event_pm_nes" domainObjectName="CStdEventPmNes"/>
-        <table schema="irdb" tableName="c_std_event_scheduled" domainObjectName="CStdEventScheduled"/>
-        <table schema="irdb" tableName="c_std_event_scheduled_def" domainObjectName="CStdEventScheduledDef"/>
-        <table schema="irdb" tableName="se_user_role" domainObjectName="SeUserRole"/>
+        <!--        <table schema="scdb" tableName="se_thd_function_type" domainObjectName="SeThdFunctionType"/>-->
+        <!--        <table schema="scdb" tableName="se_thd_function" domainObjectName="SeThdFunction"/>-->
+        <!--        <table schema="scdb" tableName="se_thd_dataset" domainObjectName="SeThdDataset"/>-->
+        <!--        <table schema="scdb" tableName="se_thd_dataset_detail" domainObjectName="SeThdDatasetDetail"/>-->
+        <!--        <table schema="scdb" tableName="se_thd_role" domainObjectName="SeThdRole"/>-->
+        <!--        <table schema="scdb" tableName="se_thd_role_function" domainObjectName="SeThdRoleFunction"/>-->
+        <!--        <table schema="scdb" tableName="se_thd_user_role_rela" domainObjectName="SeThdUserRoleRela"/>-->
+        <!--        <table schema="scdb" tableName="se_thd_user_data_rela" domainObjectName="SeThdUserDataRela"/>-->
+        <!--        <table schema="scdb" tableName="se_thd_user_function_rela" domainObjectName="SeThdUserFunctionRela"/>-->
+        <!--        <table schema="irdb" tableName="c_dic_id2string" domainObjectName="CDicId2String"/>-->
+        <!--        <table schema="irdb" tableName="c_std_event" domainObjectName="CStdEvent"/>-->
+        <!--        <table schema="irdb" tableName="c_std_event_alarm" domainObjectName="CStdEventAlarm"/>-->
+        <!--        <table schema="irdb" tableName="c_std_event_complain" domainObjectName="CStdEventComplain"/>-->
+        <!--        <table schema="irdb" tableName="c_std_event_complainttkt" domainObjectName="CStdEventComplainttkt"/>-->
+        <!--        <table schema="irdb" tableName="c_std_event_doc" domainObjectName="CStdEventDoc"/>-->
+        <!--        <table schema="irdb" tableName="c_std_event_engineer" domainObjectName="CStdEventEngineer"/>-->
+        <!--        <table schema="irdb" tableName="c_std_event_pm" domainObjectName="CStdEventPm"/>-->
+        <!--        <table schema="irdb" tableName="c_std_event_pm_grp" domainObjectName="CStdEventPmGrp"/>-->
+        <!--        <table schema="irdb" tableName="c_std_event_severity" domainObjectName="CStdEventSeverity"/>-->
+        <!--        <table schema="irdb" tableName="c_std_event_treatment" domainObjectName="CStdEventTreatment"/>-->
+        <!--        <table schema="irdb" tableName="c_std_event_var" domainObjectName="CStdEventVar"/>-->
+        <!--        &lt;!&ndash; &ndash;&gt;-->
+        <!--        <table schema="irdb" tableName="c_pre_task" domainObjectName="CPreTask"/>-->
+        <!--&lt;!&ndash;        <table schema="irdb" tableName="c_pre_task_step" domainObjectName="CPreTaskStep"/>&ndash;&gt;-->
+        <!--        <table schema="irdb" tableName="c_std_event_alarm_count" domainObjectName="CStdEventAlarmCount"/>-->
+        <!--        <table schema="irdb" tableName="c_std_event_last" domainObjectName="CStdEventLast"/>-->
+        <!--        <table schema="irdb" tableName="c_std_event_topo" domainObjectName="CStdEventTopo"/>-->
+        <!--        <table schema="irdb" tableName="c_kpi_group" domainObjectName="CKpiGroup"/>-->
+        <!--        <table schema="irdb" tableName="c_kpi_kpis" domainObjectName="CKpiKpis"/>-->
+        <!--        <table schema="irdb" tableName="c_sp_operation" domainObjectName="CSpOperation"/>-->
+        <!--        <table schema="irdb" tableName="c_std_doc" domainObjectName="CStdDoc"/>-->
+        <!--        <table schema="irdb" tableName="c_std_event_doc" domainObjectName="CStdEventDoc"/>-->
+        <!--        <table schema="irdb" tableName="c_stat_dim" domainObjectName="CStatDim"/>-->
+        <!--        <table schema="irdb" tableName="c_stat_item" domainObjectName="CStatItem"/>-->
+        <!--        <table schema="irdb" tableName="c_stat_item_relation" domainObjectName="CStatItemRelation"/>-->
+        <!--        <table schema="irdb" tableName="c_stat_condition" domainObjectName="CStatCondition"/>-->
+        <!--        <table schema="irdb" tableName="c_topo_info" domainObjectName="CTopoInfo"/>-->
+        <!--        <table schema="irdb" tableName="e_tkt_complaint_count" domainObjectName="ETktComplaintCount"/>-->
+        <!--        <table schema="irdb" tableName="se_role" domainObjectName="SeRole"/>-->
+        <!--        <table schema="irdb" tableName="se_title" domainObjectName="SeTitle"/>-->
+        <!--        <table schema="irdb" tableName="se_user_role" domainObjectName="SeUserRole"/>-->
+        <!--        <table schema="irdb" tableName="c_dic_zone" domainObjectName="CDicZone"/>-->
+        <!--        <table schema="irdb" tableName="c_std_event_pm_kpis" domainObjectName="CStdEventPmKpis"/>-->
+        <!--        <table schema="irdb" tableName="c_std_event_pm_nes" domainObjectName="CStdEventPmNes"/>-->
+        <!--        <table schema="irdb" tableName="c_std_event_scheduled" domainObjectName="CStdEventScheduled"/>-->
+        <!--        <table schema="irdb" tableName="c_std_event_scheduled_def" domainObjectName="CStdEventScheduledDef"/>-->
+        <!--        <table schema="irdb" tableName="se_user_role" domainObjectName="SeUserRole"/>-->
+        <table schema="irdb" tableName="c_dic_zone" domainObjectName="c_dic_zone">
+            <property name="useActualColumnNames" value="${extend.table.useActualColumnNames}"/>
+        </table>
+        <table schema="irdb" tableName="c_dic_id2string" domainObjectName="c_dic_id2string">
+            <property name="useActualColumnNames" value="${extend.table.useActualColumnNames}"/>
+        </table>
+        <table schema="irdb" tableName="se_app" domainObjectName="se_app">
+            <property name="useActualColumnNames" value="${extend.table.useActualColumnNames}"/>
+        </table>
+        <table schema="irdb" tableName="se_dept" domainObjectName="se_dept">
+            <property name="useActualColumnNames" value="${extend.table.useActualColumnNames}"/>
+        </table>
+        <table schema="irdb" tableName="se_group" domainObjectName="se_group">
+            <property name="useActualColumnNames" value="${extend.table.useActualColumnNames}"/>
+        </table>
+        <table schema="irdb" tableName="se_group_outer" domainObjectName="se_group_outer">
+            <property name="useActualColumnNames" value="${extend.table.useActualColumnNames}"/>
+        </table>
+        <table schema="irdb" tableName="se_group_role" domainObjectName="se_group_role">
+            <property name="useActualColumnNames" value="${extend.table.useActualColumnNames}"/>
+        </table>
+        <table schema="irdb" tableName="se_log" domainObjectName="se_log">
+            <property name="useActualColumnNames" value="${extend.table.useActualColumnNames}"/>
+        </table>
+        <table schema="irdb" tableName="se_mobile_verify" domainObjectName="se_mobile_verify">
+            <property name="useActualColumnNames" value="${extend.table.useActualColumnNames}"/>
+        </table>
+        <table schema="irdb" tableName="se_operation" domainObjectName="se_operation">
+            <property name="useActualColumnNames" value="${extend.table.useActualColumnNames}"/>
+        </table>
+        <table schema="irdb" tableName="se_operation_ver" domainObjectName="se_operation_ver">
+            <property name="useActualColumnNames" value="${extend.table.useActualColumnNames}"/>
+        </table>
+        <table schema="irdb" tableName="se_policy" domainObjectName="se_policy">
+            <property name="useActualColumnNames" value="${extend.table.useActualColumnNames}"/>
+        </table>
+        <table schema="irdb" tableName="se_priv_data" domainObjectName="se_priv_data">
+            <property name="useActualColumnNames" value="${extend.table.useActualColumnNames}"/>
+        </table>
+        <table schema="irdb" tableName="se_role" domainObjectName="se_role">
+            <property name="useActualColumnNames" value="${extend.table.useActualColumnNames}"/>
+        </table>
+        <table schema="irdb" tableName="se_role_priv_data" domainObjectName="se_role_priv_data">
+            <property name="useActualColumnNames" value="${extend.table.useActualColumnNames}"/>
+        </table>
+        <table schema="irdb" tableName="se_role_priv_op" domainObjectName="se_role_priv_op">
+            <property name="useActualColumnNames" value="${extend.table.useActualColumnNames}"/>
+        </table>
+        <table schema="irdb" tableName="se_sso_log" domainObjectName="se_sso_log">
+            <property name="useActualColumnNames" value="${extend.table.useActualColumnNames}"/>
+        </table>
+        <table schema="irdb" tableName="se_system" domainObjectName="se_system">
+            <property name="useActualColumnNames" value="${extend.table.useActualColumnNames}"/>
+        </table>
+        <table schema="irdb" tableName="se_title" domainObjectName="se_title">
+            <property name="useActualColumnNames" value="${extend.table.useActualColumnNames}"/>
+        </table>
+        <table schema="irdb" tableName="se_user" domainObjectName="se_user">
+            <property name="useActualColumnNames" value="${extend.table.useActualColumnNames}"/>
+        </table>
+        <table schema="irdb" tableName="se_user_group" domainObjectName="se_user_group">
+            <property name="useActualColumnNames" value="${extend.table.useActualColumnNames}"/>
+        </table>
+        <table schema="irdb" tableName="se_user_group_outer" domainObjectName="se_user_group_outer">
+            <property name="useActualColumnNames" value="${extend.table.useActualColumnNames}"/>
+        </table>
+        <table schema="irdb" tableName="se_user_outer" domainObjectName="se_user_outer">
+            <property name="useActualColumnNames" value="${extend.table.useActualColumnNames}"/>
+        </table>
+        <table schema="irdb" tableName="se_user_pwd_his" domainObjectName="se_user_pwd_his">
+            <property name="useActualColumnNames" value="${extend.table.useActualColumnNames}"/>
+        </table>
+        <table schema="irdb" tableName="se_user_role" domainObjectName="se_user_role">
+            <property name="useActualColumnNames" value="${extend.table.useActualColumnNames}"/>
+        </table>
+        <table schema="irdb" tableName="se_zone_relation" domainObjectName="se_zone_relation">
+            <property name="useActualColumnNames" value="${extend.table.useActualColumnNames}"/>
+        </table>
+        <table schema="irdb" tableName="se_thd_user" domainObjectName="SeThdUser">
+            <property name="useActualColumnNames" value="${extend.table.useActualColumnNames}"/>
+        </table>
+        <table schema="irdb" tableName="se_operation" domainObjectName="SeOperation">
+            <property name="useActualColumnNames" value="${extend.table.useActualColumnNames}"/>
+        </table>
+        <table schema="irdb" tableName="e_tkt_complaint" domainObjectName="ETktComplaint">
+            <property name="useActualColumnNames" value="${extend.table.useActualColumnNames}"/>
+        </table>
     </context>
 </generatorConfiguration>
