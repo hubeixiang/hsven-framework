@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://10.223.254.114:8003/qualityTesting/services/e102CheckServer" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:impl="http://10.223.254.114:8003/qualityTesting/services/e102CheckServer" xmlns:intf="http://10.223.254.114:8003/qualityTesting/services/e102CheckServer" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <!--WSDL created by Apache Axis version: 1.4
+    Built on Apr 22, 2006 (06:55:48 PDT)-->
+    <!--[root@jzgz23743ywgl ~]# curl http://10.223.254.114:8003/qualityTesting/services/e102CheckServer?wsdl-->
+    <wsdl:message name="wirelessForGzResponse">
+
+        <wsdl:part name="wirelessForGzReturn" type="soapenc:string">
+
+        </wsdl:part>
+
+    </wsdl:message>
+
+    <wsdl:message name="ReceiveDataResponse">
+
+        <wsdl:part name="ReceiveDataReturn" type="soapenc:string">
+
+        </wsdl:part>
+
+    </wsdl:message>
+
+    <wsdl:message name="isAliveRequest">
+
+    </wsdl:message>
+
+    <wsdl:message name="autoCheckRequest">
+
+        <wsdl:part name="serviceType" type="soapenc:string">
+
+        </wsdl:part>
+
+        <wsdl:part name="serSupplier" type="soapenc:string">
+
+        </wsdl:part>
+
+        <wsdl:part name="serCaller" type="soapenc:string">
+
+        </wsdl:part>
+
+        <wsdl:part name="callerPwd" type="soapenc:string">
+
+        </wsdl:part>
+
+        <wsdl:part name="opDetail" type="soapenc:string">
+
+        </wsdl:part>
+
+    </wsdl:message>
+
+    <wsdl:message name="ReceiveDataRequest">
+
+        <wsdl:part name="sheetType" type="soapenc:string">
+
+        </wsdl:part>
+
+        <wsdl:part name="sheetAction" type="soapenc:string">
+
+        </wsdl:part>
+
+        <wsdl:part name="eomsNo" type="soapenc:string">
+
+        </wsdl:part>
+
+        <wsdl:part name="serCaller" type="soapenc:string">
+
+        </wsdl:part>
+
+        <wsdl:part name="opPerson" type="soapenc:string">
+
+        </wsdl:part>
+
+        <wsdl:part name="opCorp" type="soapenc:string">
+
+        </wsdl:part>
+
+        <wsdl:part name="opDepart" type="soapenc:string">
+
+        </wsdl:part>
+
+        <wsdl:part name="opContact" type="soapenc:string">
+
+        </wsdl:part>
+
+        <wsdl:part name="opTime" type="soapenc:string">
+
+        </wsdl:part>
+
+        <wsdl:part name="opDetail" type="soapenc:string">
+
+        </wsdl:part>
+
+    </wsdl:message>
+
+    <wsdl:message name="isAliveResponse">
+
+        <wsdl:part name="isAliveReturn" type="soapenc:string">
+
+        </wsdl:part>
+
+    </wsdl:message>
+
+    <wsdl:message name="autoCheckResponse">
+
+        <wsdl:part name="autoCheckReturn" type="soapenc:string">
+
+        </wsdl:part>
+
+    </wsdl:message>
+
+    <wsdl:message name="wirelessForGzRequest">
+
+        <wsdl:part name="sheetType" type="soapenc:string">
+
+        </wsdl:part>
+
+        <wsdl:part name="serSupplier" type="soapenc:string">
+
+        </wsdl:part>
+
+        <wsdl:part name="serCaller" type="soapenc:string">
+
+        </wsdl:part>
+
+        <wsdl:part name="callerPwd" type="soapenc:string">
+
+        </wsdl:part>
+
+        <wsdl:part name="opDetail" type="soapenc:string">
+
+        </wsdl:part>
+
+    </wsdl:message>
+
+    <wsdl:portType name="E102CheckServer">
+
+        <wsdl:operation name="isAlive">
+
+            <wsdl:input message="impl:isAliveRequest" name="isAliveRequest">
+
+            </wsdl:input>
+
+            <wsdl:output message="impl:isAliveResponse" name="isAliveResponse">
+
+            </wsdl:output>
+
+        </wsdl:operation>
+
+        <wsdl:operation name="autoCheck" parameterOrder="serviceType serSupplier serCaller callerPwd opDetail">
+
+            <wsdl:input message="impl:autoCheckRequest" name="autoCheckRequest">
+
+            </wsdl:input>
+
+            <wsdl:output message="impl:autoCheckResponse" name="autoCheckResponse">
+
+            </wsdl:output>
+
+        </wsdl:operation>
+
+        <wsdl:operation name="ReceiveData" parameterOrder="sheetType sheetAction eomsNo serCaller opPerson opCorp opDepart opContact opTime opDetail">
+
+            <wsdl:input message="impl:ReceiveDataRequest" name="ReceiveDataRequest">
+
+            </wsdl:input>
+
+            <wsdl:output message="impl:ReceiveDataResponse" name="ReceiveDataResponse">
+
+            </wsdl:output>
+
+        </wsdl:operation>
+
+        <wsdl:operation name="wirelessForGz" parameterOrder="sheetType serSupplier serCaller callerPwd opDetail">
+
+            <wsdl:input message="impl:wirelessForGzRequest" name="wirelessForGzRequest">
+
+            </wsdl:input>
+
+            <wsdl:output message="impl:wirelessForGzResponse" name="wirelessForGzResponse">
+
+            </wsdl:output>
+
+        </wsdl:operation>
+
+    </wsdl:portType>
+
+    <wsdl:binding name="e102CheckServerSoapBinding" type="impl:E102CheckServer">
+
+        <wsdlsoap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+        <wsdl:operation name="isAlive">
+
+            <wsdlsoap:operation soapAction=""/>
+
+            <wsdl:input name="isAliveRequest">
+
+                <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.e102.eoms.bmcc.com.cn" use="encoded"/>
+
+            </wsdl:input>
+
+            <wsdl:output name="isAliveResponse">
+
+                <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://10.223.254.114:8003/qualityTesting/services/e102CheckServer" use="encoded"/>
+
+            </wsdl:output>
+
+        </wsdl:operation>
+
+        <wsdl:operation name="autoCheck">
+
+            <wsdlsoap:operation soapAction=""/>
+
+            <wsdl:input name="autoCheckRequest">
+
+                <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.e102.eoms.bmcc.com.cn" use="encoded"/>
+
+            </wsdl:input>
+
+            <wsdl:output name="autoCheckResponse">
+
+                <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://10.223.254.114:8003/qualityTesting/services/e102CheckServer" use="encoded"/>
+
+            </wsdl:output>
+
+        </wsdl:operation>
+
+        <wsdl:operation name="ReceiveData">
+
+            <wsdlsoap:operation soapAction=""/>
+
+            <wsdl:input name="ReceiveDataRequest">
+
+                <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.e102.eoms.bmcc.com.cn" use="encoded"/>
+
+            </wsdl:input>
+
+            <wsdl:output name="ReceiveDataResponse">
+
+                <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://10.223.254.114:8003/qualityTesting/services/e102CheckServer" use="encoded"/>
+
+            </wsdl:output>
+
+        </wsdl:operation>
+
+        <wsdl:operation name="wirelessForGz">
+
+            <wsdlsoap:operation soapAction=""/>
+
+            <wsdl:input name="wirelessForGzRequest">
+
+                <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://server.e102.eoms.bmcc.com.cn" use="encoded"/>
+
+            </wsdl:input>
+
+            <wsdl:output name="wirelessForGzResponse">
+
+                <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://10.223.254.114:8003/qualityTesting/services/e102CheckServer" use="encoded"/>
+
+            </wsdl:output>
+
+        </wsdl:operation>
+
+    </wsdl:binding>
+
+    <wsdl:service name="E102CheckServerService">
+
+        <wsdl:port binding="impl:e102CheckServerSoapBinding" name="e102CheckServer">
+
+            <wsdlsoap:address location="http://10.223.254.114:8003/qualityTesting/services/e102CheckServer"/>
+
+        </wsdl:port>
+
+    </wsdl:service>
+
+</wsdl:definitions>
