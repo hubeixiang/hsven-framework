@@ -4,9 +4,9 @@
         "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 
 <generatorConfiguration>
-    <properties resource="config/jdbc.properties"/>
+    <properties resource="config/jdbc-hios-dm.properties"/>
 
-    <classPathEntry location="./src/driver/lib/mysql-database-driver.jar"/>
+    <classPathEntry location="./src/driver/lib/dm18-database-driver.jar"/>
 
     <!-- 一个数据库一个context -->
     <!-- defaultModelType:flat 大数据字段,不分表 -->

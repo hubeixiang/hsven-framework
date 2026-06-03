@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 
 <generatorConfiguration>
-    <properties resource="config/jdbc.properties"/>
+    <properties resource="config/jdbc-race.properties"/>
 
     <classPathEntry location="./src/driver/lib/mysql-database-driver.jar"/>
 
@@ -33,7 +33,7 @@
             <property name="forceBigDecimals" value="false"/>
         </javaTypeResolver>
 
-        <javaModelGenerator targetPackage="com.hios.event.backend.database.entity"
+        <javaModelGenerator targetPackage="com.unsys.race.database.entity"
                             targetProject="./src/main/java">
             <!-- 是否在当前路径下新加一层schem -->
             <property name="enableSubPackages" value="false"/>
@@ -48,12 +48,12 @@
             <property name="enableSubPackages" value="false"/>
         </sqlMapGenerator>
 
-        <javaClientGenerator type="XMLMAPPER" targetPackage="com.hios.event.backend.database.mapper"
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.unsys.race.database.mapper"
                              targetProject="./src/main/java">
             <property name="enableSubPackages" value="false"/>
         </javaClientGenerator>
 
-        <table schema="irdb" tableName="c_rel_rule_basic" domainObjectName="CRelRuleBasic">
+        <table schema="irdb" tableName="dic_id2string" domainObjectName="DicId2String">
             <property name="useActualColumnNames" value="${extend.table.useActualColumnNames}"/>
         </table>
     </context>

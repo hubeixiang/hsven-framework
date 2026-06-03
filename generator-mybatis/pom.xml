@@ -90,21 +90,23 @@
                     <artifactItems>
                         <artifactItem>
                             <!-- generatorConfig 文件中classPathEntry属性配置-->
-                            <destFileName>database-driver.jar</destFileName>
+                            <destFileName>mysql-database-driver.jar</destFileName>
                             <!-- 下面是不同数据库类型配置不同的依赖驱动 -->
                             <groupId>mysql</groupId>
                             <artifactId>mysql-connector-java</artifactId>
                             <version>${mysql.version}</version>
-                            <!--
+                        </artifactItem>
+                        <artifactItem>
+                            <destFileName>ojdbc6-database-driver.jar</destFileName>
                             <groupId>com.oracle</groupId>
                             <artifactId>ojdbc6</artifactId>
                             <version>${ojdbc6.version}</version>
-                            -->
-                            <!--
+                        </artifactItem>
+                        <artifactItem>
+                            <destFileName>dm18-database-driver.jar</destFileName>
                             <groupId>dm</groupId>
                             <artifactId>DmJdbcDriver18</artifactId>
                             <version>${dm.version}</version>
-                            -->
                         </artifactItem>
                     </artifactItems>
                 </configuration>
@@ -114,7 +116,13 @@
                 <artifactId>mybatis-generator-maven-plugin</artifactId>
                 <version>${mybatis-generator-maven-plugin.version}</version>
                 <configuration>
-                    <configurationFile>src/main/resources/generatorConfig.xml</configurationFile>
+<!--                    <configurationFile>src/main/resources/generatorConfig.xml</configurationFile>-->
+<!--                    <configurationFile>src/main/resources/generatorConfig-hios-backend.xml</configurationFile>-->
+<!--                    <configurationFile>src/main/resources/generatorConfig-hios-dm.xml</configurationFile>-->
+                    <configurationFile>src/main/resources/generatorConfig-hios-faultcase.xml</configurationFile>
+<!--                    <configurationFile>src/main/resources/generatorConfig-project.xml</configurationFile>-->
+<!--                    <configurationFile>src/main/resources/generatorConfig-race.xml</configurationFile>-->
+<!--                    <configurationFile>src/main/resources/generatorConfig-smart-city.xml</configurationFile>-->
                     <overwrite>true</overwrite>
                     <verbose>true</verbose>
                 </configuration>
